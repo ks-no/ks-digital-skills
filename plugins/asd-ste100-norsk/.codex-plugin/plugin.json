@@ -1,0 +1,30 @@
+{
+  "name": "asd-ste100-norsk",
+  "version": "0.1.0",
+  "description": "Write Norwegian bokmål technical text with the discipline of ASD-STE100 (Simplified Technical English), adapted to Norwegian grammar: imperative and one instruction per sentence, active voice instead of s-passive, sentence length caps, no semicolons, short compounds, one word for one meaning, and hedges kept intact. Use for instructions, error messages, operational notices, procedures and Norwegian field descriptions, or when the user asks for STE in Norwegian. Pairs with norsk-sprakvask, which owns spelling, punctuation and term choice.",
+  "author": {
+    "name": "Sindre Eik de Lange"
+  },
+  "keywords": [
+    "norsk",
+    "bokmål",
+    "ste100",
+    "kontrollert-språk",
+    "klarspråk",
+    "skriving"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "ASD-STE100 norsk",
+    "shortDescription": "Skriv norsk teknisk tekst som ikke kan misforstås, etter prinsippene i ASD-STE100 tilpasset norsk.",
+    "developerName": "Sindre Eik de Lange",
+    "category": "Productivity",
+    "capabilities": [
+      "Skills"
+    ],
+    "longDescription": "Write Norwegian bokmål technical text with the discipline of ASD-STE100 (Simplified Technical English), adapted to Norwegian grammar: imperative and one instruction per sentence, active voice instead of s-passive, sentence length caps, no semicolons, short compounds, one word for one meaning, and hedges kept intact. Use for instructions, error messages, operational notices, procedures and Norwegian field descriptions, or when the user asks for STE in Norwegian. Pairs with norsk-sprakvask, which owns spelling, punctuation and term choice.",
+    "defaultPrompt": [
+      "Use the ASD-STE100 norsk skill."
+    ]
+  }
+}

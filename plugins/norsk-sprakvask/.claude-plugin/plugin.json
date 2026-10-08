@@ -1,0 +1,18 @@
+{
+  "name": "norsk-sprakvask",
+  "description": "Write and proofread Norwegian bokmål to Språkrådet norms and public-sector plain-language guidance, tailored to KS Digital: catches English-influenced phrasing and punctuation, inconsistent word forms, compound-word splits and AI-text markers in UI text, docs, commit messages, Jira issues and e-mail. Use whenever generating or editing Norwegian text.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Sindre Eik de Lange"
+  },
+  "repository": "https://github.com/ks-no/ks-digital-skills",
+  "license": "MIT",
+  "keywords": [
+    "norsk",
+    "bokmål",
+    "språkvask",
+    "klarspråk",
+    "korrektur",
+    "skriving"
+  ]
+}

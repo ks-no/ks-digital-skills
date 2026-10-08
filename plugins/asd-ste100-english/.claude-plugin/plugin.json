@@ -1,0 +1,17 @@
+{
+  "name": "asd-ste100-english",
+  "description": "Write and rewrite English in ASD-STE100 (Simplified Technical English) style, adapted from the MIT-licensed danyuchn/asd-ste100-skill: short sentences, active voice, one instruction per sentence, no semicolons, one word for one meaning, and hedges kept intact. Use for tool descriptions, error messages, prompts, inter-agent instructions, procedures and status reports, or when the user asks for STE, STE100 or \"80% STE\". Norwegian domain terms stay Norwegian.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Sindre Eik de Lange"
+  },
+  "repository": "https://github.com/ks-no/ks-digital-skills",
+  "license": "MIT",
+  "keywords": [
+    "english",
+    "ste100",
+    "simplified-technical-english",
+    "controlled-language",
+    "writing"
+  ]
+}
