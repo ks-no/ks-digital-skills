@@ -1,0 +1,18 @@
+{
+  "name": "asd-ste100-norsk",
+  "description": "Write Norwegian bokmål technical text with the discipline of ASD-STE100 (Simplified Technical English), adapted to Norwegian grammar: imperative and one instruction per sentence, active voice instead of s-passive, sentence length caps, no semicolons, short compounds, one word for one meaning, and hedges kept intact. Use for instructions, error messages, operational notices, procedures and Norwegian field descriptions, or when the user asks for STE in Norwegian. Pairs with norsk-sprakvask, which owns spelling, punctuation and term choice.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Sindre Eik de Lange"
+  },
+  "repository": "https://github.com/ks-no/ks-digital-skills",
+  "license": "MIT",
+  "keywords": [
+    "norsk",
+    "bokmål",
+    "ste100",
+    "kontrollert-språk",
+    "klarspråk",
+    "skriving"
+  ]
+}

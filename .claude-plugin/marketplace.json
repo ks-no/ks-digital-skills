@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "ks-digital-skills",
+  "owner": {
+    "name": "KS Digital",
+    "url": "https://github.com/ks-no"
+  },
+  "description": "Open skills for AI agents from KS Digital. Add this marketplace once, then install only the skills you want.",
+  "plugins": [
+    {
+      "name": "asd-ste100-english",
+      "source": "./plugins/asd-ste100-english",
+      "description": "Write and rewrite English in ASD-STE100 (Simplified Technical English) style, adapted from the MIT-licensed danyuchn/asd-ste100-skill: short sentences, active voice, one instruction per sentence, no semicolons, one word for one meaning, and hedges kept intact. Use for tool descriptions, error messages, prompts, inter-agent instructions, procedures and status reports, or when the user asks for STE, STE100 or \"80% STE\". Norwegian domain terms stay Norwegian.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Sindre Eik de Lange"
+      },
+      "category": "skriving",
+      "tags": [
+        "english",
+        "ste100",
+        "simplified-technical-english",
+        "controlled-language",
+        "skriving"
+      ]
+    },
+    {
+      "name": "asd-ste100-norsk",
+      "source": "./plugins/asd-ste100-norsk",
+      "description": "Write Norwegian bokmål technical text with the discipline of ASD-STE100 (Simplified Technical English), adapted to Norwegian grammar: imperative and one instruction per sentence, active voice instead of s-passive, sentence length caps, no semicolons, short compounds, one word for one meaning, and hedges kept intact. Use for instructions, error messages, operational notices, procedures and Norwegian field descriptions, or when the user asks for STE in Norwegian. Pairs with norsk-sprakvask, which owns spelling, punctuation and term choice.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Sindre Eik de Lange"
+      },
+      "category": "skriving",
+      "tags": [
+        "norsk",
+        "bokmål",
+        "ste100",
+        "kontrollert-språk",
+        "klarspråk",
+        "skriving"
+      ]
+    },
+    {
+      "name": "norsk-sprakvask",
+      "source": "./plugins/norsk-sprakvask",
+      "description": "Write and proofread Norwegian bokmål to Språkrådet norms and public-sector plain-language guidance, tailored to KS Digital: catches English-influenced phrasing and punctuation, inconsistent word forms, compound-word splits and AI-text markers in UI text, docs, commit messages, Jira issues and e-mail. Use whenever generating or editing Norwegian text.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Sindre Eik de Lange"
+      },
+      "category": "skriving",
+      "tags": [
+        "norsk",
+        "bokmål",
+        "språkvask",
+        "klarspråk",
+        "korrektur",
+        "skriving"
+      ]
+    }
+  ]
+}

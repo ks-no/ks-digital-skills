@@ -1,0 +1,30 @@
+{
+  "name": "norsk-sprakvask",
+  "version": "0.1.0",
+  "description": "Write and proofread Norwegian bokmål to Språkrådet norms and public-sector plain-language guidance, tailored to KS Digital: catches English-influenced phrasing and punctuation, inconsistent word forms, compound-word splits and AI-text markers in UI text, docs, commit messages, Jira issues and e-mail. Use whenever generating or editing Norwegian text.",
+  "author": {
+    "name": "Sindre Eik de Lange"
+  },
+  "keywords": [
+    "norsk",
+    "bokmål",
+    "språkvask",
+    "klarspråk",
+    "korrektur",
+    "skriving"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Norsk språkvask",
+    "shortDescription": "Skriv og språkvask norsk bokmål etter Språkrådets normer og klarspråksrådene, tilpasset KS Digital.",
+    "developerName": "Sindre Eik de Lange",
+    "category": "Productivity",
+    "capabilities": [
+      "Skills"
+    ],
+    "longDescription": "Write and proofread Norwegian bokmål to Språkrådet norms and public-sector plain-language guidance, tailored to KS Digital: catches English-influenced phrasing and punctuation, inconsistent word forms, compound-word splits and AI-text markers in UI text, docs, commit messages, Jira issues and e-mail. Use whenever generating or editing Norwegian text.",
+    "defaultPrompt": [
+      "Use the Norsk språkvask skill."
+    ]
+  }
+}

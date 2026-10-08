@@ -1,0 +1,44 @@
+{
+  "name": "ks-digital-skills",
+  "interface": {
+    "displayName": "KS Digital Skills"
+  },
+  "plugins": [
+    {
+      "name": "asd-ste100-english",
+      "source": {
+        "source": "local",
+        "path": "./plugins/asd-ste100-english"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "asd-ste100-norsk",
+      "source": {
+        "source": "local",
+        "path": "./plugins/asd-ste100-norsk"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "norsk-sprakvask",
+      "source": {
+        "source": "local",
+        "path": "./plugins/norsk-sprakvask"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
