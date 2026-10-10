@@ -91,6 +91,7 @@ Tabellen viser skrivemåte og bøyning for vanlige ord fra steg 5 over.
 | secret, secreten | hemmelighet (om GitHub-secrets) | |
 | token, tokenet, tokens | tokener | `tokenet er utløpt`, `hent nye tokens` |
 | image, imaget; chart, chartet | | Docker-image, Helm-chart |
+| tekststreng, tekststrengen, tekststrenger | streng (om string) | `streng` alene kan også bety «strict», slik ASD-STE100-skillene bruker ordet |
 
 Til kommuner, saksbehandlere og ledelse gjelder tabellen «Teknologi» lenger ned.
 
