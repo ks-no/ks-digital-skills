@@ -258,9 +258,17 @@ Tekst som er riktig, men som alle ser er skrevet av en maskin.
 - **Ikke falsk balanse** («på den ene siden … på den andre siden») når teksten
   faktisk har et standpunkt.
 - **Ikke bilder som forklaring:** `fungerer som et sorteringsanlegg`, `tenk på den som
-  et postkontor`, `ryggraden i`. Sammenligner teksten med noe fra et helt annet område,
-  stryk bildet og si hva tingen gjør. Står forklaringen allerede i teksten, er bildet
-  bare pynt. Mangler den, si fra om det i stedet for å gjette.
+  et postkontor`. Regelen gjelder sammenligninger med noe fra et helt annet område. Har
+  vendingen en fast erstatning i sjekk 1, i [engelsk-smitte.md](references/engelsk-smitte.md)
+  eller i tabellen «Oversatte favoritter» i [ki-markorer.md](references/ki-markorer.md)
+  (`i det lange løp`, `bygge bro`), bruk den. Er bildet bare skryt eller dramatikk
+  (`ryggraden i`), stryk det, men behold påstanden: `Fiks IO er ryggraden i
+  integrasjonen` blir `Integrasjonen bygger på Fiks IO`. Sier dramatikken hvor ofte eller
+  hvor ille, og teksten ikke gjør det, si fra om det. Står forklaringen også i teksten,
+  stryk bildet. Det er bare pynt. Gir bildet
+  selv konkrete steg, stryk sammenligningen, behold stegene og si fra om det som
+  fortsatt er uklart (`blir stemplet`: med hva?). Gir bildet ingen steg og mangler
+  forklaringen, la bildet stå og si fra i stedet for å gjette.
 - **Ikke bindestrek som rytme.** Mer enn én i et avsnitt er en vane, ikke et valg,
   og den overlever at tegnet byttes ut: ` - ` er like mye en vane som lang bindestrek
   (U+2014). Komma, punktum, kolon eller parentes gjør som regel jobben bedre.

@@ -103,9 +103,11 @@ Two deliberate calls worth stating rather than hiding:
 - 34 words, over the 25-word descriptive cap.
 
 **After:**
-> We designed our caching layer to fit into your current stack, with no vendor lock-in. The caching layer uses semantic similarity to reduce cache misses in LLM workloads.
+> We designed our caching layer to fit into your current stack, with no vendor lock-in. Cache misses are a long-standing problem in LLM workloads. The caching layer uses semantic similarity to reduce these cache misses.
 
-Flavored mode kept the explanatory rhythm and did not force one fixed verb per action. It still cut the marketing adjectives, the semicolon, and the length. It kept only the claims in the source: "minimal friction" and "dramatically" had no measurement, so they went, and the rewrite does not add a mechanism that the source does not state. If the reader needs to know how semantic similarity reduces misses, ask the author in a `Check:` line. Do not invent it.
+`Check: "traditionally plague" says how often or how badly cache misses affect LLM workloads, but the source gives no rate.`
+
+Flavored mode kept the explanatory rhythm and did not force one fixed verb per action. It still cut the marketing adjectives, the semicolon, and the length. It kept only the claims in the source: "minimal friction" and "dramatically" had no measurement, so they went, and the rewrite does not add a mechanism that the source does not state. "Plague" is an alarm image, so it went too, but the statement it carried stayed as a full sentence ("Cache misses are a long-standing problem in LLM workloads"), with "traditionally" as "long-standing". The `Check:` line reports the frequency that the image claims and the source does not measure. If the reader needs to know how semantic similarity reduces misses, ask the author in a `Check:` line. Do not invent it.
 
 ## Part 3: Applied to a Fiks tool description
 
@@ -138,4 +140,4 @@ What stays and why:
 
 ## How to read these examples
 
-Part 1 shows the actual rules this skill is built on. Part 2 shows the transfer: the same discipline (one meaning per word, active voice, simple tense, one instruction per sentence, explicit conditions instead of buried subordinate clauses) makes machine-to-machine and cross-language text safer to parse, not just aircraft manuals. Part 3 shows what stays unchanged in text from a Norwegian team.
+Part 1 shows the actual rules this skill is built on. Part 2 shows the transfer: the same discipline (one meaning per word, active voice, simple tense, one instruction per sentence, explicit conditions instead of buried subordinate clauses) makes machine-to-machine and cross-language text safer to parse, as it does for aircraft manuals. Part 3 shows what stays unchanged in text from a Norwegian team.

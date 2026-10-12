@@ -107,12 +107,19 @@ Vendinger språkmodeller har lært av engelsk tekst og gjentar i alle språk.
 - **Hedging i hver setning.** `kan potensielt bidra til å muligens …` Si det, eller
   si at vi ikke vet.
 - **Bilder i stedet for forklaring.** `Koblingen fungerer som et sorteringsanlegg for
-  meldinger.` `Tenk på den som et postkontor.` `Selve ryggraden i løsningen.` Leseren må
-  oversette bildet tilbake til det som faktisk skjer, og hver leser gjør det på sin måte.
-  Ofte står forklaringen i neste setning, og da er bildet bare pynt. Stryk bildet og si
-  hva tingen gjør. Mangler forklaringen, si fra i stedet for å finne på en. Dette gjelder
-  sammenligninger med noe fra et helt annet område. En sammenligning med noe av samme
-  slag, som `virker som en vanlig HTTP-proxy`, er en opplysning og skal stå.
+  meldinger.` `Tenk på den som et postkontor.` Leseren må oversette bildet tilbake til
+  det som faktisk skjer, og hver leser gjør det på sin måte. Dette gjelder
+  sammenligninger med noe fra et helt annet område. Har vendingen en fast erstatning i
+  tabellen «Oversatte favoritter» over eller i [engelsk-smitte.md](engelsk-smitte.md)
+  (`bygge bro`, `i det lange løp`), bruk den. Er bildet bare skryt eller dramatikk
+  (`selve ryggraden i løsningen`), stryk det, men behold påstanden: `Fiks IO er ryggraden
+  i integrasjonen` blir `Integrasjonen bygger på Fiks IO`. Sier dramatikken hvor ofte
+  eller hvor ille, og teksten ikke gjør det, si fra om det. Står forklaringen også i
+  teksten, ofte i neste setning, er bildet bare pynt. Stryk det. Gir bildet selv
+  konkrete steg, stryk sammenligningen, behold stegene og si fra om det som fortsatt er
+  uklart (`blir stemplet`: med hva?). Gir bildet ingen steg og mangler forklaringen, la
+  bildet stå og si fra i stedet for å finne på en. En sammenligning med noe av samme
+  slag, som `fungerer som en vanlig HTTP-proxy`, er en opplysning og skal stå.
 - **Presiseringer ingen ba om.** `(det vil si …)`, `med andre ord`, `nærmere
   bestemt` rett etter en setning som var klar.
 - **Høflighetsfraser i systemtekst.** `Vennligst vent`, `Vi beklager ulempen`,

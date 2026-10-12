@@ -162,16 +162,41 @@ rule. Scan for all eight before you rewrite.
 6. **Soft phrasal verbs.** Spin up, reach out, dive into, kick off. Fix: use one
    plain verb (start, contact, read, begin).
 7. **Negative parallelism.** "It is not just X, it is Y", "not only X but also Y",
-   and the softer "it does more than X". The contrast says that the thing is more
-   than X, but not what more. Fix: state each fact plainly ("it checks the schema
-   and the signature"). If Y contains no fact ("it is the backbone of your
-   integration"), delete the claim. "Does more than X" is the same habit, not a fix.
-8. **Analogy and metaphor.** "Think of it as a postal sorting office", "works
-   like", "the backbone of". Each reader converts the image into a mechanism in a
-   different way. Fix: delete the comparison and describe the mechanism in literal
-   words. If the image hides a fact that you cannot state literally ("messages get
-   stamped": with what?), keep the source word and report it in a `Check:` line.
-   Do not invent the mechanism.
+   and the softer "it does more than X". The contrast adds emphasis, not
+   information. A correction that says X is false ("it is not a breaking change, it
+   is a bug fix", "not an outage, only slow responses") is not this habit, so keep
+   it. Fix: first look for these cases. If the text is an instruction ("don't just
+   fix the test, explain the failure"), if X has a hedge, or if the source gives no
+   Y ("it does more than X"), keep the source words and report the contrast in a
+   `Check:` line. In all other cases, state the facts plainly and keep what the
+   source says about X and Y. If Y adds to X, keep both ("it checks the schema and
+   the signature"). If Y is a stronger form of the same claim, about the same scope
+   ("not just recommended, it is required"), keep Y. If Y is stronger but covers
+   less ("not just advised, it is required for payment data"), keep both. If Y is
+   only praise ("it is the backbone of your integration"), delete the praise and
+   keep any literal claim, as in the next item. If you cannot tell which case
+   applies, keep the source words and report the contrast in a `Check:` line. When
+   the source gives a Y, do not write the contrast in other words ("it goes beyond
+   X", "it does more than X"). That is the same habit.
+8. **Analogy and metaphor.** "Think of it as a postal sorting office", "it works
+   like a traffic controller". Each reader converts the image into a mechanism in a
+   different way. A phrasal verb that item 6 replaces ("dive into", "spin up")
+   belongs to item 6, not to this item. A comparison with a thing of the same kind
+   ("works like a standard HTTP proxy") is a fact, so keep it. A role that the text
+   gives to the reader or to a model ("think of yourself as a strict security
+   reviewer") is an instruction, not an image, so keep it. An image that only
+   adds emphasis, as praise or alarm ("the backbone of", "plagues"), hides no
+   mechanism. Delete the emphasis and keep the literal claim: "Fiks IO is the
+   backbone of the integration" becomes "The integration depends on Fiks IO". If the
+   image also says how often or how bad ("plagues": how often?), and the text does
+   not, report that in a `Check:` line. For all other comparisons with a thing from
+   another domain, use these rules. If the text also states the mechanism, delete
+   the comparison. If the comparison itself gives literal steps ("messages arrive,
+   get stamped and go to the right inbox"), delete the comparison and keep the
+   steps. Report a step that is still unclear in a `Check:` line ("stamped": with
+   what?). If the comparison gives no step and the text does not state the mechanism
+   ("it works like a traffic controller"), keep the comparison and report it in a
+   `Check:` line. Do not invent the mechanism.
 
 ## Norwegian context
 
