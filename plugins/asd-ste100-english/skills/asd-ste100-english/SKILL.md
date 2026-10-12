@@ -139,9 +139,9 @@ cases, obey the rule.
 
 ## Scan checklist
 
-These six habits cause most of the problems in machine-written English. Each one
+These eight habits cause most of the problems in machine-written English. Each one
 is mechanical: you can point to the word or the punctuation mark that breaks the
-rule. Scan for all six before you rewrite.
+rule. Scan for all eight before you rewrite.
 
 1. **Synonym rotation.** One thing has several names in one document ("the user",
    "the customer", "the client"). The reader cannot know if this is one thing or
@@ -161,6 +161,17 @@ rule. Scan for all six before you rewrite.
    dashes or spaced hyphens. Fix: one idea per sentence.
 6. **Soft phrasal verbs.** Spin up, reach out, dive into, kick off. Fix: use one
    plain verb (start, contact, read, begin).
+7. **Negative parallelism.** "It is not just X, it is Y", "not only X but also Y",
+   and the softer "it does more than X". The contrast says that the thing is more
+   than X, but not what more. Fix: state each fact plainly ("it checks the schema
+   and the signature"). If Y contains no fact ("it is the backbone of your
+   integration"), delete the claim. "Does more than X" is the same habit, not a fix.
+8. **Analogy and metaphor.** "Think of it as a postal sorting office", "works
+   like", "the backbone of". Each reader converts the image into a mechanism in a
+   different way. Fix: delete the comparison and describe the mechanism in literal
+   words. If the image hides a fact that you cannot state literally ("messages get
+   stamped": with what?), keep the source word and report it in a `Check:` line.
+   Do not invent the mechanism.
 
 ## Norwegian context
 
@@ -311,6 +322,10 @@ Copyright (c) 2026 Dustin Yuchen Teng, under the MIT License. The license text i
 in `LICENSE-asd-ste100-skill.txt` in this directory. The main changes are the
 Norwegian context section, the identifier rule and the "80%" request. The upstream
 linter is not included.
+
+Scan items 7 and 8 restate two rules from
+[docwriter-org/plain-writing-skill](https://github.com/docwriter-org/plain-writing-skill)
+(MIT) in new words.
 
 This skill is not published or approved by ASD, and it does not contain the
 ASD-STE100 dictionary.

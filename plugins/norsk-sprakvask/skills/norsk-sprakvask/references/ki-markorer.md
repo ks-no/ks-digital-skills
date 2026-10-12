@@ -106,6 +106,13 @@ Vendinger språkmodeller har lært av engelsk tekst og gjentar i alle språk.
   Én tanke per setning er en god tommelfingerregel i tekst til kommuner.
 - **Hedging i hver setning.** `kan potensielt bidra til å muligens …` Si det, eller
   si at vi ikke vet.
+- **Bilder i stedet for forklaring.** `Koblingen fungerer som et sorteringsanlegg for
+  meldinger.` `Tenk på den som et postkontor.` `Selve ryggraden i løsningen.` Leseren må
+  oversette bildet tilbake til det som faktisk skjer, og hver leser gjør det på sin måte.
+  Ofte står forklaringen i neste setning, og da er bildet bare pynt. Stryk bildet og si
+  hva tingen gjør. Mangler forklaringen, si fra i stedet for å finne på en. Dette gjelder
+  sammenligninger med noe fra et helt annet område. En sammenligning med noe av samme
+  slag, som `virker som en vanlig HTTP-proxy`, er en opplysning og skal stå.
 - **Presiseringer ingen ba om.** `(det vil si …)`, `med andre ord`, `nærmere
   bestemt` rett etter en setning som var klar.
 - **Høflighetsfraser i systemtekst.** `Vennligst vent`, `Vi beklager ulempen`,

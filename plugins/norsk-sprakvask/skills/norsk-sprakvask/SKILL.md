@@ -257,6 +257,10 @@ Tekst som er riktig, men som alle ser er skrevet av en maskin.
   overskrift, fet skrift overalt eller emoji som punktmarkører.**
 - **Ikke falsk balanse** («på den ene siden … på den andre siden») når teksten
   faktisk har et standpunkt.
+- **Ikke bilder som forklaring:** `fungerer som et sorteringsanlegg`, `tenk på den som
+  et postkontor`, `ryggraden i`. Sammenligner teksten med noe fra et helt annet område,
+  stryk bildet og si hva tingen gjør. Står forklaringen allerede i teksten, er bildet
+  bare pynt. Mangler den, si fra om det i stedet for å gjette.
 - **Ikke bindestrek som rytme.** Mer enn én i et avsnitt er en vane, ikke et valg,
   og den overlever at tegnet byttes ut: ` - ` er like mye en vane som lang bindestrek
   (U+2014). Komma, punktum, kolon eller parentes gjør som regel jobben bedre.
@@ -345,5 +349,7 @@ klart språk i digitale tjenester.
 
 Sjekklistens oppbygning og flere eksempler er inspirert av de åpne
 (MIT-lisensierte) skillene `sivert-io/sprakvask` og `bokmaal-proof` fra
-`tenki-labs/public-claude-skills`. Denne skillen er skrevet for KS Digital og er ikke
-utgitt av eller godkjent av Språkrådet.
+`tenki-labs/public-claude-skills`. Punktet om bilder som forklaring bygger på en regel i
+den MIT-lisensierte skillen `plain-writing` fra `docwriter-org/plain-writing-skill`.
+Denne skillen er skrevet for KS Digital og er ikke utgitt av eller godkjent av
+Språkrådet.
