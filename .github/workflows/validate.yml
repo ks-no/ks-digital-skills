@@ -13,5 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Say Hello
+        run: echo "Hello World!"
+
       - name: Valider repoet
         run: python3 scripts/validate.py
