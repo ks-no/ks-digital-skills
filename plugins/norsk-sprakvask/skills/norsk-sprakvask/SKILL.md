@@ -291,7 +291,7 @@ Se [ki-markorer.md](references/ki-markorer.md).
 ## Etter sjekkene
 
 Si kort hva du rettet, og bare det som betyr noe: «Rettet særskriving i fire
-overskrifter, byttet ut sju oversatte vendinger og gjorde formvalget konsekvent (fram,
+overskrifter, byttet ut syv oversatte vendinger og gjorde formvalget konsekvent (fram,
 ikke frem).» En liste over hvert komma er støy.
 
 **Ikke rett det som er riktig.** Likestilte former er likestilte.
