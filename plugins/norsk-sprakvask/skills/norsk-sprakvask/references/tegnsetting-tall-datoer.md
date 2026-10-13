@@ -79,7 +79,7 @@ standard.
   `3 200 000`. Firesifrede tall kan stå uten: `1000` eller `1 000`. Vær konsekvent.
 - **Desimalskille er komma:** `3,5`, `0,25`. Aldri punktum.
 - **Tall til og med tolv skrives med bokstaver** i løpende tekst (`tre kommuner`,
-  `sju dager`), større tall med siffer. Unntak: tekniske tekster og tabeller, der
+  `syv dager`), større tall med siffer. Unntak: tekniske tekster og tabeller, der
   siffer er greit hele veien. Vær konsekvent innenfor én setning: `3 av 15`, ikke
   `tre av 15`.
 - **Prosent:** `25 %` med mellomrom, eller `25 prosent`. Ikke `25%`.

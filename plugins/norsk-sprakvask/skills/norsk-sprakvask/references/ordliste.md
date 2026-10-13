@@ -16,7 +16,8 @@ tillatt etter gjeldende rettskriving; dette er valg, ikke regler.
 | --- | --- | --- |
 | fram, framover, framdrift | frem, fremover, fremdrift | språkmodeller trekker mot `frem` |
 | nå | nu | |
-| sju, tjue, tretti | syv, tyve, tredve | |
+| syv | sju | |
+| tjue, tretti | tyve, tredve | |
 | bare | kun | `kun` er tillatt, men stivt |
 | også | òg | |
 | senere, senest | seinere, seinest | begge tillatt; velg én |
