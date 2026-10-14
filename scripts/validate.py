@@ -14,6 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PLUGINS = ROOT / "plugins"
+CASES = ROOT / "evals" / "cases.json"
 
 # Built with chr() so that this file does not contain the characters it rejects.
 LONG_DASH = chr(0x2014)
@@ -34,6 +35,10 @@ HARNESS_PATHS = (
 LINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s]+)[^)]*\)")
 FENCE_RE = re.compile(r"^(```|~~~).*?^\1", re.MULTILINE | re.DOTALL)
 SKIP_DIRS = {".git", ".venv", "venv", "node_modules", "__pycache__", "build", "dist"}
+CASE_KEYS = ("id", "type", "text", "pass")
+SENTENCE_END_RE = re.compile(r"(?<=[.!?])\s+")
+# Shorter sentences, such as "It runs in each cluster.", can occur in a skill by chance.
+SENTENCE_MIN = 25
 
 errors = []
 
@@ -214,6 +219,39 @@ def check_links(path, text):
             error(path, f"link target {target!r} does not exist")
 
 
+def check_cases(texts):
+    """Check evals/cases.json, and that no skill file contains a sentence from a case.
+
+    A case must use words that are not in the skills. If a skill copies a sentence from
+    a case, the case measures if the agent knows the example, not if it uses the rule.
+    """
+    if not CASES.is_file():
+        return
+    data = load_json(CASES)
+    if data is None:
+        return
+    if not isinstance(data, dict) or not all(isinstance(v, list) for v in data.values()):
+        error(CASES, "must be an object with a list of cases for each language")
+        return
+    skills = " ".join(
+        " ".join(text.split()).casefold() for path, text in texts.items() if PLUGINS in path.parents
+    )
+    seen = set()
+    for case in (case for cases in data.values() for case in cases):
+        case_id = case.get("id") if isinstance(case, dict) else None
+        missing = [key for key in CASE_KEYS if not isinstance(case, dict) or not case.get(key)]
+        if missing:
+            error(CASES, f"case {case_id!r} has no {', '.join(missing)}")
+            continue
+        if case_id in seen:
+            error(CASES, f"case {case_id!r} occurs more than once")
+        seen.add(case_id)
+        for sentence in SENTENCE_END_RE.split(" ".join(case["text"].split())):
+            sentence = sentence.rstrip(".!?").casefold()
+            if len(sentence) >= SENTENCE_MIN and sentence in skills:
+                error(CASES, f"case {case_id!r}: a skill contains {sentence!r}. Write a new case.")
+
+
 def main():
     texts = {}
     for path in list_files():
@@ -241,6 +279,7 @@ def main():
     for path, text in texts.items():
         if path.suffix == ".md" and PLUGINS in path.parents:
             check_links(path, text)
+    check_cases(texts)
 
     if errors:
         for line in errors:

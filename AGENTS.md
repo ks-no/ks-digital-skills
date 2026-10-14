@@ -25,6 +25,8 @@ plugins/<skill-name>/
     ├── SKILL.md                     # required, with frontmatter
     └── references/                  # optional supporting files
 scripts/validate.py                  # repository validation
+evals/cases.json                     # held-out test texts for the AI-marker rules
+evals/run.py                         # runs the test texts through a model
 README.md                            # overview and installation (Norwegian)
 ```
 
@@ -86,6 +88,15 @@ README.md                            # overview and installation (Norwegian)
 - All text files are UTF-8.
 - Follow the style of existing `SKILL.md` files for tone and structure.
 
+## Testing a rule change
+
+`validate.py` checks structure, not behaviour. When you change a rule that tells an
+agent how to rewrite text, run the rule with an agent before and after the change.
+For the AI-marker rules in `asd-ste100-english` and `norsk-sprakvask`, use the test
+texts in `evals/`. `evals/README.md` tells how to run them and how to add a text. A
+new rule or exception gets at least one new text, with words that are not in any
+skill. Do not copy a sentence from a test text into a skill.
+
 ## Validation
 
 Run validation after every change:
@@ -105,7 +116,9 @@ It needs only Python 3. It checks that:
 - `SKILL.md` files do not contain obvious harness-specific paths,
 - no text file contains U+2014, except files named `LICENSE*`,
 - markdown files are not empty and have no trailing whitespace,
-- every text file is valid UTF-8.
+- every text file is valid UTF-8,
+- each case in `evals/cases.json` has an `id`, a `type`, a `text` and a `pass`,
+  the IDs are unique, and no skill file contains a sentence from a case.
 
 CI runs the same script on every push to `main` and on every pull request.
 
