@@ -99,6 +99,14 @@ Følg språket repoet bruker. Er det norsk:
   deploy, ikke utrulling`). Har repoet ingen fast form, skriv imperativ, kort, uten
   punktum og med bare første ord stor: `Legg til validering av organisasjonsnummer`,
   `Rett kommafeil i feilmeldinger`. Ikke `Lagt til …`, ikke `Fikset …`.
+- **Emnelinjen nevner det som endres, med navn.** ✗ `Versjon 0.2.0 for alle tre
+  skillene` → ✓ `Versjon 0.2.0 for norsk-sprakvask, asd-ste100-norsk og
+  asd-ste100-english`. Et antall (`alle tre`) eller et samlenavn (`tjenestene`,
+  `diverse rettelser`) tvinger leseren til å åpne endringen for å se hva den gjelder.
+  Navnene står i emnelinjen også når brødteksten har dem i en punktliste. En lang
+  emnelinje er bedre enn en uklar. Er det fem eller flere, skriv det som avgrenser
+  dem nøyaktig (`alle feilmeldinger i innloggingen`), og list navnene i brødteksten.
+  Det samme gjelder tittelen på en PR eller en sak.
 - Konvensjonelle prefikser kan stå på engelsk (`feat:`, `fix:`, `chore:`) hvis
   repoet bruker dem; resten av linjen på norsk.
 - **Brødtekst sier hvorfor**, ikke hva (diffen sier hva): `Kommuner med
