@@ -1,0 +1,168 @@
+{
+  "en": [
+    {
+      "id": "E1",
+      "type": "not only X, also Y (Y adds)",
+      "text": "The importer doesn't only read CSV files, it also accepts Excel workbooks.",
+      "pass": "Both facts kept (CSV and Excel). No contrast left."
+    },
+    {
+      "id": "E2",
+      "type": "not merely X, Y is praise",
+      "text": "Our retry logic is not merely a feature, it is the crown jewel of the SDK.",
+      "pass": "Praise deleted. The literal claim (the SDK has retry logic) kept. No new facts."
+    },
+    {
+      "id": "E3",
+      "type": "more than X, no Y",
+      "text": "The audit module offers far more than basic logging. It stores each entry for 90 days.",
+      "pass": "Source words about 'more than basic logging' kept and the missing 'what more' flagged in a Check: line. Not narrowed to 'offers basic logging'."
+    },
+    {
+      "id": "E4",
+      "type": "plain correction",
+      "text": "The outage was not caused by the deploy, it was caused by an expired certificate.",
+      "pass": "Still says the deploy was not the cause and the certificate was. Never says the deploy caused it."
+    },
+    {
+      "id": "E5",
+      "type": "not only X, Y does not include X",
+      "text": "The v1 endpoint is not only deprecated, it will stop responding on 1 June.",
+      "pass": "Both facts kept: deprecated now, and stops responding on 1 June."
+    },
+    {
+      "id": "E6",
+      "type": "analogy, mechanism stated",
+      "text": "The rate limiter acts like a bouncer at a nightclub. It allows 100 requests per minute per client and rejects the rest with HTTP 429.",
+      "pass": "Bouncer comparison gone. 100 per minute and HTTP 429 kept."
+    },
+    {
+      "id": "E7",
+      "type": "analogy, steps are also images",
+      "text": "Picture the job runner as a restaurant kitchen: orders come in, a cook picks each one up, and the finished dish goes back to the waiter.",
+      "pass": "No invented mapping (does not claim what cook, dish or waiter are). Unclear parts flagged in a Check: line. The image does not survive unflagged."
+    },
+    {
+      "id": "E8",
+      "type": "analogy, no mechanism",
+      "text": "The secrets store behaves like a bank vault. It runs in each cluster.",
+      "pass": "No invented mechanism (no 'encrypts', 'restricts access'). Comparison kept and flagged in a Check: line, or removed with a Check: line."
+    },
+    {
+      "id": "E9",
+      "type": "praise image",
+      "text": "PostgreSQL is the beating heart of the booking system.",
+      "pass": "Image gone. Claim kept: the booking system depends on or uses PostgreSQL."
+    },
+    {
+      "id": "E10",
+      "type": "alarm image",
+      "text": "Flaky tests haunt the release pipeline.",
+      "pass": "Image gone. Claim kept (the pipeline has flaky tests). How often flagged in a Check: line."
+    },
+    {
+      "id": "E11",
+      "type": "same-kind comparison",
+      "text": "The new client behaves like the official Altinn client, but it also retries failed calls.",
+      "pass": "Comparison with the Altinn client kept."
+    },
+    {
+      "id": "E12",
+      "type": "technical names that are metaphors",
+      "text": "The watchdog restarts a worker when its heartbeat is missing for 30 seconds.",
+      "pass": "'watchdog' and 'heartbeat' kept. No Check: line about them."
+    },
+    {
+      "id": "E13",
+      "type": "not just X where X is discouraged",
+      "text": "Don't just restart the pod. Check the logs for the root cause first.",
+      "pass": "Does not tell the reader to restart first or as an equal step. Checking the logs comes first."
+    },
+    {
+      "id": "E14",
+      "type": "role instruction in a prompt",
+      "text": "Act as a senior accessibility auditor. List each WCAG 2.1 AA failure on the page.",
+      "pass": "The role instruction stays."
+    },
+    {
+      "id": "E15",
+      "type": "not just X, Y has a hedge",
+      "text": "Rotating the API key every 90 days is not just recommended, it may be required by your hosting contract. Rotate the key before you change the deploy pipeline.",
+      "pass": "Both claims kept: rotation is recommended (no hedge), and the hosting contract may require it (hedge kept). Not reduced to 'may be required' alone."
+    },
+    {
+      "id": "E16",
+      "type": "not just X, Y has a hedge (field description)",
+      "text": "consentToken: Sending this token is not just good practice, it could become mandatory in the next API version. The value is the token that the consent service returns.",
+      "pass": "Both claims kept: good practice now, and it could become mandatory in the next API version (hedge kept). 'consentToken' unchanged."
+    }
+  ],
+  "no": [
+    {
+      "id": "N1",
+      "type": "bilde med forklaring",
+      "text": "Køen fungerer som et venterom. Meldingene blir liggende der til mottakeren henter dem.",
+      "pass": "Bildet strøket. Forklaringen står."
+    },
+    {
+      "id": "N2",
+      "type": "bilde med konkrete steg",
+      "text": "Se for deg tjenesten som en resepsjon: den registrerer hver forespørsel, gir den et saksnummer og sender den til riktig avdeling.",
+      "pass": "Sammenligningen strøket. De tre stegene står."
+    },
+    {
+      "id": "N3",
+      "type": "bilde uten steg og forklaring",
+      "text": "Tilgangsstyringen er en dørvakt for API-et. Den kjører i hver kommune.",
+      "pass": "Ingen oppdiktet mekanisme. Bildet står og agenten sier fra, eller bildet er borte og agenten sier fra."
+    },
+    {
+      "id": "N4",
+      "type": "skrytebilde",
+      "text": "Integrasjonen er hjertet i den nye løsningen.",
+      "pass": "Bildet borte. Påstanden står (løsningen bygger på eller bruker integrasjonen)."
+    },
+    {
+      "id": "N5",
+      "type": "dramatikk",
+      "text": "Tidsavbrudd har vært en pest og en plage for brukerne siden oppgraderingen.",
+      "pass": "Bildet borte. Påstanden står (brukerne har fått tidsavbrudd siden oppgraderingen). Ingen oppdiktet hyppighet, eller agenten sier fra om hvor ofte."
+    },
+    {
+      "id": "N6",
+      "type": "sammenligning av samme slag",
+      "text": "Den nye klienten oppfører seg som Altinn-klienten, men prøver også mislykkede kall på nytt.",
+      "pass": "Sammenligningen med Altinn-klienten står."
+    },
+    {
+      "id": "N7",
+      "type": "vending med fast erstatning i tabellen",
+      "text": "Løsningen låser opp nye muligheter for kommunene.",
+      "pass": "«låser opp» byttet ut (for eksempel med «gjør mulig» eller «gir tilgang til»), eller setningen er skrevet om uten bildet. Agenten sier gjerne fra om at «nye muligheter» er uklart."
+    },
+    {
+      "id": "N8",
+      "type": "ikke bare X, men Y (ingen egen regel)",
+      "text": "Dette er ikke bare en oppdatering, det er en ny måte å jobbe på for saksbehandlerne.",
+      "pass": "Kontrasten borte eller flagget. Ingen ny påstand lagt til."
+    },
+    {
+      "id": "N9",
+      "type": "bokstavelig «låse opp»",
+      "text": "Trykk på hengelåsen for å låse opp skjemaet.",
+      "pass": "«låse opp» står."
+    },
+    {
+      "id": "N10",
+      "type": "rolle i en prompt",
+      "text": "Tenk på deg selv som en streng sikkerhetsrevisor. Gå gjennom endringene i PR-en, og se etter lekkede hemmeligheter, manglende tilgangskontroll og logging av personopplysninger. Skriv funnene som en punktliste med fil og linje.",
+      "pass": "Rollen («streng sikkerhetsrevisor») står. Ingen av de tre tingene agenten skal se etter, er borte."
+    },
+    {
+      "id": "N11",
+      "type": "rolle i en systemprompt",
+      "text": "Tenk på deg selv som en tålmodig veileder for nye saksbehandlere. Svar kort, vis til paragrafen i forvaltningsloven når det er relevant, og si fra når du ikke vet svaret.",
+      "pass": "Rollen («tålmodig veileder») står."
+    }
+  ]
+}
