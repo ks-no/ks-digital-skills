@@ -99,6 +99,7 @@ It needs only Python 3. It checks that:
 - each plugin has both manifests and a `skills/<name>/SKILL.md` with closed
   frontmatter, a valid `name` and a `description` of 1024 characters or fewer,
 - `name` matches across the directory, both manifests and `SKILL.md`,
+- `version` matches across both manifests and the Claude Code marketplace entry,
 - both marketplaces list exactly the plugin directories with the right source paths,
 - every plugin is in the README `## Skills` section,
 - relative links in markdown files under `plugins/` point to files that exist,
@@ -113,4 +114,8 @@ CI runs the same script on every push to `main` and on every pull request.
 
 - Run `python3 scripts/validate.py` and confirm that it prints `OK`.
 - Update `README.md` if skills were added, removed, or renamed.
+- If you changed a plugin, raise its `version` in both `plugin.json` manifests and
+  in its entry in `.claude-plugin/marketplace.json`. Claude Code stores each
+  installed plugin by version, so users do not get a change until the version
+  changes.
 - Do not commit secrets or local config files (see `.gitignore`).
