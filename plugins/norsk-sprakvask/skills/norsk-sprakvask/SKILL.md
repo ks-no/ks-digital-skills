@@ -257,6 +257,18 @@ Tekst som er riktig, men som alle ser er skrevet av en maskin.
   overskrift, fet skrift overalt eller emoji som punktmarkører.**
 - **Ikke falsk balanse** («på den ene siden … på den andre siden») når teksten
   faktisk har et standpunkt.
+- **Ikke bilder som forklaring:** `fungerer som et sorteringsanlegg`, `tenk på den som
+  et postkontor`. Regelen gjelder sammenligninger med noe fra et helt annet område. Har
+  vendingen en fast erstatning i sjekk 1, i [engelsk-smitte.md](references/engelsk-smitte.md)
+  eller i tabellen «Oversatte favoritter» i [ki-markorer.md](references/ki-markorer.md)
+  (`i det lange løp`, `bygge bro`), bruk den. Er bildet bare skryt eller dramatikk
+  (`ryggraden i`), stryk det, men behold påstanden: `Fiks IO er ryggraden i
+  integrasjonen` blir `Integrasjonen bygger på Fiks IO`. Sier dramatikken hvor ofte eller
+  hvor ille, og teksten ikke gjør det, si fra om det. Står forklaringen også i teksten,
+  stryk bildet. Det er bare pynt. Gir bildet
+  selv konkrete steg, stryk sammenligningen, behold stegene og si fra om det som
+  fortsatt er uklart (`blir stemplet`: med hva?). Gir bildet ingen steg og mangler
+  forklaringen, la bildet stå og si fra i stedet for å gjette.
 - **Ikke bindestrek som rytme.** Mer enn én i et avsnitt er en vane, ikke et valg,
   og den overlever at tegnet byttes ut: ` - ` er like mye en vane som lang bindestrek
   (U+2014). Komma, punktum, kolon eller parentes gjør som regel jobben bedre.
@@ -345,5 +357,7 @@ klart språk i digitale tjenester.
 
 Sjekklistens oppbygning og flere eksempler er inspirert av de åpne
 (MIT-lisensierte) skillene `sivert-io/sprakvask` og `bokmaal-proof` fra
-`tenki-labs/public-claude-skills`. Denne skillen er skrevet for KS Digital og er ikke
-utgitt av eller godkjent av Språkrådet.
+`tenki-labs/public-claude-skills`. Punktet om bilder som forklaring bygger på en regel i
+den MIT-lisensierte skillen `plain-writing` fra `docwriter-org/plain-writing-skill`.
+Denne skillen er skrevet for KS Digital og er ikke utgitt av eller godkjent av
+Språkrådet.

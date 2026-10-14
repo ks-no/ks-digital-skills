@@ -139,9 +139,9 @@ cases, obey the rule.
 
 ## Scan checklist
 
-These six habits cause most of the problems in machine-written English. Each one
+These eight habits cause most of the problems in machine-written English. Each one
 is mechanical: you can point to the word or the punctuation mark that breaks the
-rule. Scan for all six before you rewrite.
+rule. Scan for all eight before you rewrite.
 
 1. **Synonym rotation.** One thing has several names in one document ("the user",
    "the customer", "the client"). The reader cannot know if this is one thing or
@@ -161,6 +161,42 @@ rule. Scan for all six before you rewrite.
    dashes or spaced hyphens. Fix: one idea per sentence.
 6. **Soft phrasal verbs.** Spin up, reach out, dive into, kick off. Fix: use one
    plain verb (start, contact, read, begin).
+7. **Negative parallelism.** "It is not just X, it is Y", "not only X but also Y",
+   and the softer "it does more than X". The contrast adds emphasis, not
+   information. A correction that says X is false ("it is not a breaking change, it
+   is a bug fix", "not an outage, only slow responses") is not this habit, so keep
+   it. Fix: first look for these cases. If the text is an instruction ("don't just
+   fix the test, explain the failure"), if X has a hedge, or if the source gives no
+   Y ("it does more than X"), keep the source words and report the contrast in a
+   `Check:` line. In all other cases, state the facts plainly and keep what the
+   source says about X and Y. If Y adds to X, keep both ("it checks the schema and
+   the signature"). If Y is a stronger form of the same claim, about the same scope
+   ("not just recommended, it is required"), keep Y. If Y is stronger but covers
+   less ("not just advised, it is required for payment data"), keep both. If Y is
+   only praise ("it is the backbone of your integration"), delete the praise and
+   keep any literal claim, as in the next item. If you cannot tell which case
+   applies, keep the source words and report the contrast in a `Check:` line. When
+   the source gives a Y, do not write the contrast in other words ("it goes beyond
+   X", "it does more than X"). That is the same habit.
+8. **Analogy and metaphor.** "Think of it as a postal sorting office", "it works
+   like a traffic controller". Each reader converts the image into a mechanism in a
+   different way. A phrasal verb that item 6 replaces ("dive into", "spin up")
+   belongs to item 6, not to this item. A comparison with a thing of the same kind
+   ("works like a standard HTTP proxy") is a fact, so keep it. A role that the text
+   gives to the reader or to a model ("think of yourself as a strict security
+   reviewer") is an instruction, not an image, so keep it. An image that only
+   adds emphasis, as praise or alarm ("the backbone of", "plagues"), hides no
+   mechanism. Delete the emphasis and keep the literal claim: "Fiks IO is the
+   backbone of the integration" becomes "The integration depends on Fiks IO". If the
+   image also says how often or how bad ("plagues": how often?), and the text does
+   not, report that in a `Check:` line. For all other comparisons with a thing from
+   another domain, use these rules. If the text also states the mechanism, delete
+   the comparison. If the comparison itself gives literal steps ("messages arrive,
+   get stamped and go to the right inbox"), delete the comparison and keep the
+   steps. Report a step that is still unclear in a `Check:` line ("stamped": with
+   what?). If the comparison gives no step and the text does not state the mechanism
+   ("it works like a traffic controller"), keep the comparison and report it in a
+   `Check:` line. Do not invent the mechanism.
 
 ## Norwegian context
 
@@ -311,6 +347,10 @@ Copyright (c) 2026 Dustin Yuchen Teng, under the MIT License. The license text i
 in `LICENSE-asd-ste100-skill.txt` in this directory. The main changes are the
 Norwegian context section, the identifier rule and the "80%" request. The upstream
 linter is not included.
+
+Scan items 7 and 8 restate two rules from
+[docwriter-org/plain-writing-skill](https://github.com/docwriter-org/plain-writing-skill)
+(MIT) in new words.
 
 This skill is not published or approved by ASD, and it does not contain the
 ASD-STE100 dictionary.
