@@ -116,6 +116,7 @@ ordliste.
 | Ikke utelat ord | `Filen ble ikke funnet.` Er det vår tjeneste som leter, skriv `Vi fant ikke filen.` | `Fil ikke funnet.` Knapper og overskrifter er unntatt. |
 | Behold modaliteten | `Forespørselen kan ha feilet.` | `Forespørselen feilet.` Det er en annen påstand. |
 | Ett navn per ting | Velg ett navn for hver ting, og bruk det i hele teksten. | `bruker`, `innbygger` og `søker` om samme person. |
+| Navn i titler | I en emnelinje og i tittelen på en PR eller en sak: nevn det som endres, med navn. `Versjon 0.2.0 for norsk-sprakvask, asd-ste100-norsk og asd-ste100-english`. Navnene står i tittelen også når brødteksten lister dem. Er det fem eller flere, skriv det som avgrenser dem nøyaktig, og list navnene i brødteksten. Mangler teksten navnene, la ordene stå og si fra i en `Sjekk:`-linje. | Et antall eller et samlenavn: `alle tre skillene`, `tjenestene`, `diverse rettelser`. Leseren må åpne endringen for å se hva den gjelder. |
 | Verb framfor substantiv | `Vurder loggen.` | `Foreta en vurdering av loggen.` |
 | Ett tema per avsnitt | Høyst seks setninger. | Avsnitt om flere ting. |
 | Lister for rekkefølger og oppramsinger | Nummerert liste for tre steg eller flere. Punktliste for tre like ting eller flere, som filer, tilfeller eller krav. | Alle stegene eller alle tingene i én setning. |
