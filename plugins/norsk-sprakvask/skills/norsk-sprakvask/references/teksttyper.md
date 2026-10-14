@@ -106,6 +106,14 @@ Følg språket repoet bruker. Er det norsk:
 - **PR-beskrivelse:** hva endringen gjør, hvorfor, hvordan den er testet, hva
   den som ser på den, bør se nærmest på. Ingen `Denne PR-en …` som innledning. Gå
   rett på.
+- **Forklar bare det som ikke er åpenbart.** En utvikler vet at et mønster i
+  `.gitignore` holder filene utenfor `git add`, så det trenger ingen forklaring.
+  Eksplisitt er likevel bedre enn implisitt: si alltid hva som endres, og hver grunn
+  som ikke er åpenbar. Stryker du en forklaring, sjekk at ingen setning etterpå viser
+  til den (`på samme måte`).
+- **Ramser du opp tre ting eller flere, bruk en punktliste**, for eksempel filer,
+  mønstre, tilfeller eller nøkler. Ikke ramse dem opp i en setning. Formen står under
+  «Punktlister» i [tegnsetting-tall-datoer.md](tegnsetting-tall-datoer.md).
 - **Har repoet en PR-mal, fyll den ut** i stedet for å lage din egen oppbygning.
 - **Med squash blir PR-tittelen og PR-beskrivelsen commit-meldingen på `main`.** Skriv
   dem som en commit-melding: hva som endres og hvorfor.

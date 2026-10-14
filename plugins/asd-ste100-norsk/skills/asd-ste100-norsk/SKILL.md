@@ -118,7 +118,7 @@ ordliste.
 | Ett navn per ting | Velg ett navn for hver ting, og bruk det i hele teksten. | `bruker`, `innbygger` og `søker` om samme person. |
 | Verb framfor substantiv | `Vurder loggen.` | `Foreta en vurdering av loggen.` |
 | Ett tema per avsnitt | Høyst seks setninger. | Avsnitt om flere ting. |
-| Lister for rekkefølger | Nummerert liste for tre steg eller flere. | Alle stegene i én setning. |
+| Lister for rekkefølger og oppramsinger | Nummerert liste for tre steg eller flere. Punktliste for tre like ting eller flere, som filer, tilfeller eller krav. | Alle stegene eller alle tingene i én setning. |
 
 ### Tid: enkle former, men perfektum er norsk
 
