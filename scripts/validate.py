@@ -143,19 +143,27 @@ def parse_frontmatter(path, text):
 
 
 def check_plugin(plugin_dir):
+    """Check one plugin. Return the version in its manifests, or None."""
     name = plugin_dir.name
     if not NAME_RE.match(name) or len(name) > NAME_MAX:
         error(plugin_dir, f"directory name must match {NAME_RE.pattern} and be {NAME_MAX} characters or fewer")
 
+    versions = {}
     for manifest in (".claude-plugin/plugin.json", ".codex-plugin/plugin.json"):
         data = load_json(plugin_dir / manifest)
         if data is not None and data.get("name") != name:
             error(plugin_dir / manifest, f"name is {data.get('name')!r}, expected {name!r}")
+        if data is not None:
+            versions[manifest] = data.get("version")
+    if len(set(versions.values())) > 1:
+        found = ", ".join(f"{v!r} in {m}" for m, v in versions.items())
+        error(plugin_dir, f"the manifests have different versions: {found}")
+    version = next(iter(versions.values()), None)
 
     skill = plugin_dir / "skills" / name / "SKILL.md"
     if not skill.is_file():
         error(skill, "file is missing")
-        return
+        return version
     text = skill.read_text(encoding="utf-8", errors="replace")
     fields = parse_frontmatter(skill, text)
     if fields is not None:
@@ -170,9 +178,11 @@ def check_plugin(plugin_dir):
         found = lines_with(text, needle)
         if found:
             error(skill, f"harness-specific reference {needle!r} on line {', '.join(found)}")
+    return version
 
 
-def check_marketplace(path, names, source_of):
+def check_marketplace(path, versions, source_of):
+    names = list(versions)
     data = load_json(path)
     if data is None:
         return
@@ -188,6 +198,9 @@ def check_marketplace(path, names, source_of):
         expected = f"./plugins/{entry.get('name')}"
         if source_of(entry) != expected:
             error(path, f"{entry.get('name')!r} has source {source_of(entry)!r}, expected {expected!r}")
+        name = entry.get("name")
+        if "version" in entry and name in versions and entry["version"] != versions[name]:
+            error(path, f"{name!r} has version {entry['version']!r}, the manifests have {versions[name]!r}")
 
 
 def check_readme(names):
@@ -224,16 +237,15 @@ def main():
     plugin_dirs = sorted(
         d for d in PLUGINS.iterdir() if d.is_dir() and not d.name.startswith(("_", "."))
     ) if PLUGINS.is_dir() else []
-    names = [d.name for d in plugin_dirs]
-    for plugin_dir in plugin_dirs:
-        check_plugin(plugin_dir)
+    versions = {d.name: check_plugin(d) for d in plugin_dirs}
+    names = list(versions)
 
     check_marketplace(
-        ROOT / ".claude-plugin" / "marketplace.json", names, lambda e: e.get("source")
+        ROOT / ".claude-plugin" / "marketplace.json", versions, lambda e: e.get("source")
     )
     check_marketplace(
         ROOT / ".agents" / "plugins" / "marketplace.json",
-        names,
+        versions,
         lambda e: (e.get("source") or {}).get("path"),
     )
     check_readme(names)
