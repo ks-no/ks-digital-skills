@@ -109,7 +109,7 @@ direction. Do not claim dictionary compliance that you cannot verify.
 | One name for one thing | Select one name for each thing and use it in all of the text. | "the user", "the customer" and "the client" for the same person. |
 | Verb, not noun (Rule 3.7) | "Analyze the log." | "Perform an analysis of the log." The noun form makes the sentence longer and hides who does the action. |
 | Paragraph limits | One topic per paragraph, 6 sentences or fewer. | Paragraphs with more than one topic. |
-| Lists for sequences | A numbered or bulleted list for 3 or more steps or conditions. In a string that a UI or an API shows on one line (an error message, a field description), use short sentences in sequence. | A sequence inside one sentence of prose. |
+| Lists for sequences and enumerations | A numbered or bulleted list for 3 or more steps or conditions. A bulleted list for 3 or more parallel items, such as files, cases or keys. In a string that a UI or an API shows on one line (an error message, a field description), use short sentences in sequence. | A sequence or an enumeration inside one sentence of prose. |
 
 ### Lexical rules: a direction only
 
