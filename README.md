@@ -20,6 +20,7 @@ Repoet er nytt. Innhold og struktur kan endre seg.
 | `guided-click-through` | testing | test oppførselen til en endring i grensesnittet med komponenttestene i prosjektet, og lag en kort sjekkliste som brukeren klikker gjennom for det testene ikke ser, som layout, stil og synlig fokus |
 | `github-actions-security` | sikkerhet | skriv og gå gjennom workflowene i GitHub Actions med regler for risikoene i OWASP Top 10 og OWASP Top 10 CI/CD Security Risks, så tekst, kode og artefakter fra forks, issues og kommentarer ikke når tokenet og secretene |
 | `secure-coding` | sikkerhet | skriv og gå gjennom applikasjonskode i Java, Kotlin, C#, Python og TypeScript med regler for risikoene i OWASP Top 10, OWASP API Security Top 10 og OWASP Top 10 for LLM Applications, også for Maskinporten og ID-porten, uten ekstra kode og uten falske funn |
+| `container-security` | sikkerhet | skriv og gå gjennom Dockerfiler, Helm-charts og manifester for Kubernetes og OpenShift med regler for risikoene i OWASP Top 10 og OWASP Kubernetes Top 10, uten gjetteverdier som stopper arbeidslasten, og uten kommandoer som viser secrets |
 
 `asd-ste100-norsk` er laget for å brukes sammen med `norsk-sprakvask`. Den første tar
 setningsbygningen, og den andre tar rettskriving, tegnsetting og ordvalg. Installer
@@ -52,6 +53,7 @@ kilder og inneholder ingen opplysninger om interne systemer.
   ```text
   Before you write, change or review code, use the skill secure-coding.
   Before you create or change a GitHub Actions workflow, use the skill github-actions-security.
+  Before you create, change or review a Dockerfile, a Helm chart or a Kubernetes or OpenShift manifest, or run oc, kubectl or helm, use the skill container-security.
   ```
 
   Codex, Copilot og OpenCode leser `AGENTS.md`. Claude Code leser `AGENTS.md` fra
@@ -187,3 +189,11 @@ Microsoft Learn, [OWASP Top 10](https://owasp.org/www-project-top-ten/),
 [OWASP Top 10 for LLM Applications](https://genai.owasp.org/). Fra OWASP bruker vi bare
 ID-ene og navnene på risikoene. Skillen er ikke utgitt eller godkjent av OWASP, og den
 sier ikke at kode er i samsvar med noe fra OWASP.
+
+`container-security` har også bare egen tekst. Kildene står i skillen: dokumentasjonen
+fra Kubernetes, Red Hat OpenShift og Docker,
+[OWASP Top 10](https://owasp.org/www-project-top-ten/) og
+[OWASP Kubernetes Top 10](https://owasp.org/www-project-kubernetes-top-ten/). Fra OWASP
+bruker vi bare ID-ene og navnene på risikoene. Skillen er ikke utgitt eller godkjent av
+OWASP, Red Hat eller Kubernetes-prosjektet, og den sier ikke at filer er i samsvar med
+noe fra OWASP.
