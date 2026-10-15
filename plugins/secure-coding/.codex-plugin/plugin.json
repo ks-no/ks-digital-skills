@@ -1,0 +1,29 @@
+{
+  "name": "secure-coding",
+  "version": "0.1.0",
+  "description": "Write and review application code in Java, Kotlin, C#, Python and TypeScript with rules for the risks in the OWASP Top 10, the OWASP API Security Top 10 and the OWASP Top 10 for LLM Applications: access checks per object and tenant, safe queries and paths, no type names from input, no secrets or fødselsnummer in logs, Maskinporten and ID-porten tokens, and language-model features. Keeps answers in proportion: no new dependencies or invented helpers, minimal fixes, tests that fail without the control, and no findings for safe code.",
+  "author": {
+    "name": "Sindre Eik de Lange"
+  },
+  "keywords": [
+    "security",
+    "secure-coding",
+    "code-review",
+    "owasp",
+    "maskinporten"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Secure Coding",
+    "shortDescription": "Write and review application code with rules for the risks in the OWASP Top 10, without extra code or false findings.",
+    "developerName": "Sindre Eik de Lange",
+    "category": "Productivity",
+    "capabilities": [
+      "Skills"
+    ],
+    "longDescription": "Write and review application code in Java, Kotlin, C#, Python and TypeScript with rules for the risks in the OWASP Top 10, the OWASP API Security Top 10 and the OWASP Top 10 for LLM Applications: access checks per object and tenant, safe queries and paths, no type names from input, no secrets or fødselsnummer in logs, Maskinporten and ID-porten tokens, and language-model features. Keeps answers in proportion: no new dependencies or invented helpers, minimal fixes, tests that fail without the control, and no findings for safe code.",
+    "defaultPrompt": [
+      "Use the Secure Coding skill to review the changes on this branch."
+    ]
+  }
+}

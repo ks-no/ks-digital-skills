@@ -19,6 +19,7 @@ Repoet er nytt. Innhold og struktur kan endre seg.
 | `polish` | produktivitet | rydd opp i, språkvask og gå gjennom branchen i runder til sjekken passerer og en runde ikke finner flere feil, og avslutt alltid med en gjennomgang |
 | `guided-click-through` | testing | test oppførselen til en endring i grensesnittet med komponenttestene i prosjektet, og lag en kort sjekkliste som brukeren klikker gjennom for det testene ikke ser, som layout, stil og synlig fokus |
 | `github-actions-security` | sikkerhet | skriv og gå gjennom workflowene i GitHub Actions med regler for risikoene i OWASP Top 10 og OWASP Top 10 CI/CD Security Risks, så tekst, kode og artefakter fra forks, issues og kommentarer ikke når tokenet og secretene |
+| `secure-coding` | sikkerhet | skriv og gå gjennom applikasjonskode i Java, Kotlin, C#, Python og TypeScript med regler for risikoene i OWASP Top 10, OWASP API Security Top 10 og OWASP Top 10 for LLM Applications, også for Maskinporten og ID-porten, uten ekstra kode og uten falske funn |
 
 `asd-ste100-norsk` er laget for å brukes sammen med `norsk-sprakvask`. Den første tar
 setningsbygningen, og den andre tar rettskriving, tegnsetting og ordvalg. Installer
@@ -49,6 +50,7 @@ kilder og inneholder ingen opplysninger om interne systemer.
   velger den selv. Skriv derfor denne linjen i `AGENTS.md` i prosjektet:
 
   ```text
+  Before you write, change or review code, use the skill secure-coding.
   Before you create or change a GitHub Actions workflow, use the skill github-actions-security.
   ```
 
@@ -178,3 +180,10 @@ og [OWASP Top 10 CI/CD Security Risks](https://owasp.org/www-project-top-10-ci-c
 Fra OWASP bruker vi bare ID-ene og navnene på risikoene. Skillen er ikke utgitt eller
 godkjent av GitHub eller OWASP, og den sier ikke at kode eller workflows er i samsvar
 med noe fra OWASP.
+
+`secure-coding` har også bare egen tekst. Kildene står i skillen: OpenSSF, Digdir,
+Microsoft Learn, [OWASP Top 10](https://owasp.org/www-project-top-ten/),
+[OWASP API Security Top 10](https://owasp.org/www-project-api-security/) og
+[OWASP Top 10 for LLM Applications](https://genai.owasp.org/). Fra OWASP bruker vi bare
+ID-ene og navnene på risikoene. Skillen er ikke utgitt eller godkjent av OWASP, og den
+sier ikke at kode er i samsvar med noe fra OWASP.
