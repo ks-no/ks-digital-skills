@@ -41,6 +41,9 @@ SKILL_FILES = {
     "github-actions-security": [
         "plugins/github-actions-security/skills/github-actions-security/SKILL.md",
     ],
+    "secure-coding": [
+        "plugins/secure-coding/skills/secure-coding/SKILL.md",
+    ],
 }
 
 SECURITY_TASK = (
@@ -54,6 +57,7 @@ TASKS = {
     "no": "Oppgave: språkvask denne teksten med skillen. Svar bare med det skillen ber "
     "deg gi.",
     "github-actions-security": SECURITY_TASK,
+    "secure-coding": SECURITY_TASK,
 }
 
 # Variants without a skill. Use them to find out if a skill does better than no help,
