@@ -147,3 +147,24 @@ har kontrollert vurderingene ennå. Haiku er med som en nedre grense.
   bruker de samme verdiene. G4 viser derfor ikke om skillen virker på trygge verdier
   som den ikke nevner. Opus fikk 1,00 i G4 også uten skill. Haiku gikk fra 0,80 til
   1,00, og noe av økningen kommer trolig av at skillen nevner verdiene.
+
+### Laster agenten skillen selv?
+
+I alle kjøringene over fikk agenten beskjed om å lese skillen først. Tallene viser
+derfor hvor godt skillen virker når agenten har lastet den, ikke om agenten laster den
+selv. I Claude Code, Codex og Copilot velger agenten en skill ut fra beskrivelsen.
+
+En liten sjekk 15. oktober 2026 testet beskrivelsen. Agenten fikk en liste med elleve
+skills (navn, beskrivelse og fil) og en regel om å bruke en skill når oppgaven passer
+til beskrivelsen. Den fikk to vanlige oppgaver som ikke nevner sikkerhet eller en
+skill: en ny workflow som kommenterer pull requests, og en ny versjon av en action.
+Hver oppgave ble kjørt med og uten linjen fra README i `AGENTS.md`, på Opus og Sonnet.
+
+- Agenten lastet `github-actions-security` i alle de åtte kjøringene, også uten
+  linjen.
+- Listen og regelen sto i prompten. Et verktøy viser listen på sin egen måte, ofte
+  sammen med mange andre skills og verktøy. Sjekken viser derfor at beskrivelsen
+  passer til vanlige oppgaver, men ikke at et verktøy laster skillen.
+- README anbefaler derfor linjen i `AGENTS.md`. Agenten leser instruksjonsfilen hver
+  gang, men en skill bare når den velger den selv.
+- Ingen har gjort sjekken i et ekte verktøy ennå.

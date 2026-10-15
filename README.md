@@ -45,8 +45,9 @@ på offentlige kilder og inneholder ingen opplysninger om interne systemer.
 
 - Bruk en sterk modell når du ber om en sikkerhetsgjennomgang. Kjernereglene står i
   `SKILL.md`, så også en mindre modell får det viktigste.
-- Agenten laster ikke alltid en skill av seg selv. Skriv derfor gjerne denne linjen i
-  instruksjonsfilen til prosjektet, for eksempel `AGENTS.md`:
+- Agenten leser instruksjonsfilen til prosjektet hver gang, men en skill bare når den
+  velger den selv. Skriv derfor denne linjen i instruksjonsfilen, for eksempel
+  `AGENTS.md`:
 
   ```text
   Before you create or change a GitHub Actions workflow, use the skill github-actions-security.
