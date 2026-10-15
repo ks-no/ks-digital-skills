@@ -63,7 +63,8 @@ Keep the answer in proportion:
 
 1. **Run as a user that is not root.** Set a numeric `USER`, for example
    `USER 1001`. When a pod does not set `runAsUser`, Kubernetes cannot verify
-   `runAsNonRoot` for a user name, and it does not start the container. (K01)
+   `runAsNonRoot` for a user name, and it does not start the container. On
+   OpenShift the platform sets `runAsUser`, so a user name also works there. (K01)
 2. **Support a random user ID.** OpenShift starts the container with a random user
    ID in group 0. Give group 0 the same permissions as the owner on each path that
    the app writes, and only there:
@@ -72,8 +73,10 @@ Keep the answer in proportion:
 3. **Small, pinned images.** Build in one stage and copy only the result to a
    runtime stage, so that the runtime image has no compiler, package manager cache
    or build tool. Pin each base image to an exact version and a digest:
-   `FROM image:1.2.3@sha256:<digest>`. Do not invent a digest. If you do not know
-   it, write the exact version tag and add a `Check:` line. (A03)
+   `FROM image:1.2.3@sha256:<digest>`. Do not invent a version or a digest. If you
+   do not know them, write the most exact version tag that you know exists, and add
+   a `Check:` line that tells the user to pin the version and the digest. Do not put
+   a placeholder in a `FROM` line, because the build then fails. (A03)
 4. **No secrets in images.** Do not put a secret in `ARG`, `ENV`, a copied file or a
    layer. A file that a later step deletes stays in the earlier layer. Give a build
    secret with `RUN --mount=type=secret` and `docker build --secret`. Add a
@@ -93,13 +96,16 @@ Keep the answer in proportion:
    environment variable with `secretKeyRef`, or a mounted file. Do not put a secret
    value in `values.yaml`, a ConfigMap, a command argument, an annotation or a
    committed file. (K03)
-9. **Least privilege for the API.** Give each workload its own ServiceAccount. Give
-   it a Role and a RoleBinding in its namespace, with the exact resources and verbs
-   that it uses. No `cluster-admin`, no `*`, and no ClusterRoleBinding for a task in
-   one namespace. Set `automountServiceAccountToken: false` when the app does not
-   call the Kubernetes API. (K02)
-10. **Resources.** Set CPU and memory requests and a memory limit. Use the values
-    that the user gives, or values from `values.yaml` with a default. (K01)
+9. **Least privilege for the API.** A workload that calls the Kubernetes API gets
+   its own ServiceAccount, created in the same change, and a Role and a RoleBinding
+   in its namespace with the exact resources and verbs that it uses. No
+   `cluster-admin`, no `*`, and no ClusterRoleBinding for a task in one namespace.
+   When the app does not call the API, keep the ServiceAccount of the namespace and
+   set `automountServiceAccountToken: false`. Do not refer to a ServiceAccount that
+   does not exist. (K02)
+10. **Resources.** Set CPU and memory requests and a memory limit in each manifest
+    or template that you write. Use the values that the user gives. If the user gives
+    none, use values from `values.yaml` with a default, and add a `Check:` line. (K01)
 11. **Safe commands.** See the next section. (K03)
 
 ## Commands
@@ -116,8 +122,9 @@ Keep the answer in proportion:
   file, or a literal value in a new pod.
 - Do not give a command that changes the cluster (`apply`, `create`, `delete`,
   `patch`, `edit`, `scale`, `rollout restart`, `adm policy add-...`) in a check or
-  debug task. If the user must change something, put that command in a separate note with
-  its condition. Show it with `--dry-run=server` or `diff` first.
+  debug task, also not as an option. If the user must change something, say so in
+  one sentence, and give the command only when the user asks for it. Then show it
+  with `--dry-run=server` or `diff` first.
 - Give `--namespace` in each command, and tell the user to confirm the context. Do
   not change the context for the user.
 
@@ -126,15 +133,20 @@ Keep the answer in proportion:
 - `readOnlyRootFilesystem: true` stops an app that writes to its root file system.
   Add it only when you know each path that the app writes, and mount an `emptyDir`
   on each path.
-- A liveness or readiness probe on a wrong path or port restarts the pod again and
-  again. Add a probe only when the user gives the path and the port.
+- A liveness probe on a wrong path or port restarts the container again and again. A
+  readiness probe on a wrong path keeps the pod out of the Service. Add a probe only
+  when the user gives the path and the port.
 - With `drop: ["ALL"]`, a process that is not root cannot listen on a port below
   1024. Use a port of 1024 or more, or add only `NET_BIND_SERVICE`.
 - A Helm template that uses a value needs that value in `values.yaml`, or a
-  `default`. Use only the helper templates that the chart has. Make sure that
-  `helm template` can render the chart.
+  `default`. A `default` does not help when a parent key is missing:
+  `.Values.a.b` fails when `a` is not set. Use `with`, or give the values. Use only
+  the helper templates that the chart has. Make sure that `helm template` can render
+  the chart.
 - A fix for a permission error must keep the user ID random. Change the group and
-  the permissions of the path, or mount an `emptyDir` on it.
+  the permissions of the path, or mount an `emptyDir` on it. The fix must also work
+  for the user that the image sets, for example when the user runs the image
+  locally. Keep the owner of the path, and add group 0.
 
 ## Self-check before you answer
 

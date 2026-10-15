@@ -60,6 +60,9 @@ attacker gains.
 When the files have no real problem, say so in one sentence. You can add up to three
 low notes after it. Do not rewrite the files, and do not add new resources.
 
+Hardening without an attack path is a note, not a finding. Put the notes after the
+findings, one line each, without an attacker or a severity.
+
 ## Finding format
 
 For each finding, give:
