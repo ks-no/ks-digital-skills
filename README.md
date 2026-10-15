@@ -18,7 +18,7 @@ Repoet er nytt. Innhold og struktur kan endre seg.
 | `asd-ste100-english` | skriving | skriv engelsk etter ASD-STE100 (Simplified Technical English), så verktøybeskrivelser, feilmeldinger og instruksjoner ikke kan misforstås av en agent eller en leser |
 | `polish` | produktivitet | rydd opp i, språkvask og gå gjennom branchen i runder til sjekken passerer og en runde ikke finner flere feil, og avslutt alltid med en gjennomgang |
 | `guided-click-through` | testing | test oppførselen til en endring i grensesnittet med komponenttestene i prosjektet, og lag en kort sjekkliste som brukeren klikker gjennom for det testene ikke ser, som layout, stil og synlig fokus |
-| `github-actions-security` | sikkerhet | skriv og gå gjennom workflowene i GitHub Actions etter OWASP Top 10 og OWASP Top 10 CI/CD Security Risks, så tekst, kode og artefakter fra forks, issues og kommentarer ikke når tokenet og secretene |
+| `github-actions-security` | sikkerhet | skriv og gå gjennom workflowene i GitHub Actions med regler for risikoene i OWASP Top 10 og OWASP Top 10 CI/CD Security Risks, så tekst, kode og artefakter fra forks, issues og kommentarer ikke når tokenet og secretene |
 
 `asd-ste100-norsk` er laget for å brukes sammen med `norsk-sprakvask`. Den første tar
 setningsbygningen, og den andre tar rettskriving, tegnsetting og ordvalg. Installer
@@ -161,6 +161,8 @@ lisensteksten står i skill-mappene. Skillene er ikke utgitt eller godkjent av A
 eller Språkrådet, og de inneholder ikke ordlisten i ASD-STE100.
 
 `github-actions-security` har bare egen tekst. Kildene står i skillen: dokumentasjonen
-fra GitHub og npm, zizmor, OpenSSF og OWASP Top 10 CI/CD Security Risks. Fra OWASP
-bruker vi bare ID-ene og navnene på risikoene. Skillen er ikke utgitt eller godkjent av
-GitHub eller OWASP.
+fra GitHub og npm, zizmor, OpenSSF, [OWASP Top 10](https://owasp.org/www-project-top-ten/)
+og [OWASP Top 10 CI/CD Security Risks](https://owasp.org/www-project-top-10-ci-cd-security-risks/).
+Fra OWASP bruker vi bare ID-ene og navnene på risikoene. Skillen er ikke utgitt eller
+godkjent av GitHub eller OWASP, og den sier ikke at kode eller workflows er i samsvar
+med noe fra OWASP.

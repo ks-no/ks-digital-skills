@@ -193,7 +193,9 @@ All text in this skill is original. These public sources informed it:
 - OpenSSF, "Security-Focused Guide for AI Code Assistant Instructions"
   (best.openssf.org).
 - npm Docs, "Trusted publishing" (docs.npmjs.com).
-- OWASP Top 10 CI/CD Security Risks. [review.md](references/review.md) maps
-  findings to its IDs.
+- OWASP Top 10 (owasp.org/www-project-top-ten) and OWASP Top 10 CI/CD Security
+  Risks (owasp.org/www-project-top-10-ci-cd-security-risks).
+  [review.md](references/review.md) maps findings to the IDs of the CI/CD list.
 
-This skill is not published or approved by GitHub or OWASP.
+This skill is not published or approved by GitHub or OWASP. Do not say that a
+workflow complies with OWASP material. Say which risks a change reduces.
