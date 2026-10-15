@@ -18,6 +18,7 @@ Repoet er nytt. Innhold og struktur kan endre seg.
 | `asd-ste100-english` | skriving | skriv engelsk etter ASD-STE100 (Simplified Technical English), så verktøybeskrivelser, feilmeldinger og instruksjoner ikke kan misforstås av en agent eller en leser |
 | `polish` | produktivitet | rydd opp i, språkvask og gå gjennom branchen i runder til sjekken passerer og en runde ikke finner flere feil, og avslutt alltid med en gjennomgang |
 | `guided-click-through` | testing | test oppførselen til en endring i grensesnittet med komponenttestene i prosjektet, og lag en kort sjekkliste som brukeren klikker gjennom for det testene ikke ser, som layout, stil og synlig fokus |
+| `github-actions-security` | sikkerhet | skriv og gå gjennom workflowene i GitHub Actions, så tekst, kode og artefakter fra forks, issues og kommentarer ikke når tokenet og secretene |
 
 `asd-ste100-norsk` er laget for å brukes sammen med `norsk-sprakvask`. Den første tar
 setningsbygningen, og den andre tar rettskriving, tegnsetting og ordvalg. Installer
@@ -35,6 +36,20 @@ foreslår agenten å legge dem til, men gjør det bare når du ber om det. Deret
 den steg for det testene ikke ser, og du klikker gjennom i appen slik du pleier. Du
 svarer «ok» eller oppgir stegene som feilet, og agenten retter dem. Er et valg lettere
 å ta når du ser appen, kan sjekklisten også be deg velge mellom to eller tre løsninger.
+
+### Sikkerhet
+
+Sikkerhetsskillene er generelle. De bygger på offentlige kilder og inneholder ingen
+opplysninger om interne systemer.
+
+- Bruk en sterk modell når du ber om en sikkerhetsgjennomgang. Kjernereglene står i
+  `SKILL.md`, så også en mindre modell får det viktigste.
+- Agenten laster ikke alltid en skill av seg selv. Skriv derfor gjerne denne linjen i
+  instruksjonsfilen til prosjektet, for eksempel `AGENTS.md`:
+
+  ```text
+  Before you create or change a GitHub Actions workflow, use the skill github-actions-security.
+  ```
 
 ## Installer
 
@@ -143,3 +158,8 @@ MIT, se [LICENSE](LICENSE).
 [danyuchn/asd-ste100-skill](https://github.com/danyuchn/asd-ste100-skill) (MIT), og
 lisensteksten står i skill-mappene. Skillene er ikke utgitt eller godkjent av ASD
 eller Språkrådet, og de inneholder ikke ordlisten i ASD-STE100.
+
+`github-actions-security` har bare egen tekst. Kildene står i skillen: dokumentasjonen
+fra GitHub og npm, zizmor, OpenSSF og OWASP Top 10 CI/CD Security Risks. Fra OWASP
+bruker vi bare ID-ene og navnene på risikoene. Skillen er ikke utgitt eller godkjent av
+GitHub eller OWASP.

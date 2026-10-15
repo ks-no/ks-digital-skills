@@ -1,7 +1,7 @@
-# Testtekster for KI-markørene
+# Testtekster
 
-Tekstene i `cases.json` tester reglene for KI-markører i `asd-ste100-english` og
-`norsk-sprakvask`:
+Tekstene i `cases.json` tester sikkerhetsskillene (se [Sikkerhetsskillene](#sikkerhetsskillene))
+og reglene for KI-markører i `asd-ste100-english` og `norsk-sprakvask`:
 
 - kontraster av typen «not just X, it is Y»
 - bilder og sammenligninger som skal forklare noe
@@ -76,3 +76,60 @@ Svake punkter etter endringen:
   sier fra om at det er en tolkning.
 - E7: agenten gjetter hva kokken og servitøren står for, men sier fra om at det er en
   tolkning.
+
+## Sikkerhetsskillene
+
+`cases.json` har også tekster for sikkerhetsskillene, under navnet på skillen. G1–G8
+tester `github-actions-security`. Det er fire typer tekster:
+
+- `write`: en oppgave der den usikre løsningen ligger nær
+- `review`: en workflow med en feil som agenten skal finne
+- `safe`: en workflow som ser usikker ut, men som er trygg. Den måler falske funn.
+- `neutral`: en oppgave uten noe å beskytte. Den måler om agenten gjør mer enn
+  brukeren ba om.
+
+`pass` sier både hva som må være sikkert, og hva som må virke.
+
+### Kjøring
+
+Kjør hver tekst i tre varianter: uten skill, med én setning og med skillen.
+
+```sh
+python3 evals/run.py --cmd "claude -p" --only G1,G2 --baseline none,sentence --runs 3 --workdir "$(mktemp -d)"
+```
+
+- `--baseline none,sentence` legger til en variant uten skill og en variant med
+  én setning om sikkerhet i stedet for skillen.
+- `--workdir` kjører modellen i en tom mappe, så den ikke leser prosjektet.
+- `--dump <mappe>` skriver promptene til filer og kaller ingen modell. Bruk det når
+  agenter kjører promptene.
+- Et `files`-felt i en tekst legger flere filer fra skillen til i prompten.
+
+Kjør på en sterk og en svakere modell som folk faktisk bruker, for eksempel Claude
+Opus og Sonnet.
+
+### Vurdering
+
+Bland svarene fra alle variantene, og fjern variantnavnene før du vurderer. Vurder
+hvert krav i `pass` som riktig, delvis eller feil. Vurder også om workflowen virker,
+og om svaret tar med mer enn brukeren ba om.
+
+### Resultater for github-actions-security
+
+Kjørt 15. oktober 2026 med agenter i Claude Code, tre kjøringer per tekst og variant.
+En egen agent vurderte svarene til hver tekst uten å vite varianten. Haiku er med som
+en nedre grense.
+
+| Variant | Opus: krav oppfylt | Opus: virker | Haiku: krav oppfylt | Haiku: virker |
+| --- | --- | --- | --- | --- |
+| Uten skill | 0,97 | 0,92 | 0,92 | 0,54 |
+| Én setning | 0,97 | 0,88 | 0,88 | 0,33 |
+| Med skillen | 0,98 | 1,00 | 0,98 | 0,96 |
+
+- «Krav oppfylt» er snittet av kravene i `pass` (riktig = 1, delvis = 0,5).
+  «Virker» er andelen svar der workflowen gjør det brukeren ba om, og kan kjøre.
+- Med én setning tok Opus med OWASP-tabeller, ekstra filer og lange forklaringer i
+  nesten alle svarene. Med skillen gjorde ingen av svarene det, og svarene var
+  kortere enn uten skill.
+- Etter kjøringen ble seks svake punkter i skillen rettet. G6, G7 og G8 ble kjørt på
+  nytt med Opus og Sonnet for å sjekke rettelsene.

@@ -1,0 +1,29 @@
+{
+  "name": "github-actions-security",
+  "version": "0.1.0",
+  "description": "Write and review GitHub Actions workflows, reusable workflows and composite actions so that text, code and artifacts from forks, issues and comments cannot reach the token and the secrets. Covers expression injection, privileged triggers such as pull_request_target and workflow_run, least-privilege permissions, actions pinned to a commit SHA, secrets and OIDC, caches, self-hosted runners and language-model steps. Includes a review mode mapped to the OWASP Top 10 CI/CD Security Risks.",
+  "author": {
+    "name": "Sindre Eik de Lange"
+  },
+  "keywords": [
+    "security",
+    "github-actions",
+    "ci-cd",
+    "supply-chain",
+    "owasp"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "GitHub Actions Security",
+    "shortDescription": "Write and review GitHub Actions workflows so that untrusted input cannot reach the token and the secrets.",
+    "developerName": "Sindre Eik de Lange",
+    "category": "Productivity",
+    "capabilities": [
+      "Skills"
+    ],
+    "longDescription": "Write and review GitHub Actions workflows, reusable workflows and composite actions so that text, code and artifacts from forks, issues and comments cannot reach the token and the secrets. Covers expression injection, privileged triggers such as pull_request_target and workflow_run, least-privilege permissions, actions pinned to a commit SHA, secrets and OIDC, caches, self-hosted runners and language-model steps. Includes a review mode mapped to the OWASP Top 10 CI/CD Security Risks.",
+    "defaultPrompt": [
+      "Use the GitHub Actions Security skill to review the workflows in this repository."
+    ]
+  }
+}
