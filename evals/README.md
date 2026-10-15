@@ -143,3 +143,7 @@ har kontrollert vurderingene ennå. Haiku er med som en nedre grense.
   kortere enn uten skill.
 - Etter kjøringen ble seks svake punkter i skillen rettet. G6, G7 og G8 ble kjørt på
   nytt med Opus og Sonnet for å sjekke rettelsene.
+- Skillen nevner `pull_request.number` og `github.sha` som trygge verdier, og G4
+  bruker de samme verdiene. G4 viser derfor ikke om skillen virker på trygge verdier
+  som den ikke nevner. Opus fikk 1,00 i G4 også uten skill. Haiku gikk fra 0,80 til
+  1,00, og noe av økningen kommer trolig av at skillen nevner verdiene.
