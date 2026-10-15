@@ -262,7 +262,7 @@ def check_cases(texts):
     if data is None:
         return
     if not isinstance(data, dict) or not all(isinstance(v, list) for v in data.values()):
-        error(CASES, "must be an object with a list of cases for each language")
+        error(CASES, "must be an object with a list of cases for each language or skill")
         return
     skills = " ".join(
         " ".join(text.split()).casefold() for path, text in texts.items() if PLUGINS in path.parents
@@ -277,6 +277,13 @@ def check_cases(texts):
         if case_id in seen:
             error(CASES, f"case {case_id!r} occurs more than once")
         seen.add(case_id)
+        files = case.get("files", [])
+        if not isinstance(files, list):
+            error(CASES, f"case {case_id!r}: files must be a list of paths")
+            files = []
+        for name in files:
+            if not isinstance(name, str) or not (ROOT / name).is_file():
+                error(CASES, f"case {case_id!r}: file {name!r} does not exist")
         for sentence in SENTENCE_END_RE.split(" ".join(case["text"].split())):
             sentence = sentence.rstrip(".!?").casefold()
             if len(sentence) >= SENTENCE_MIN and sentence in skills:

@@ -1,7 +1,8 @@
-# Testtekster for KI-markørene
+# Testtekster
 
-Tekstene i `cases.json` tester reglene for KI-markører i `asd-ste100-english` og
-`norsk-sprakvask`:
+Tekstene i `cases.json` tester sikkerhetsskillene (se [Sikkerhetsskillene](#sikkerhetsskillene))
+og reglene for KI-markører i `asd-ste100-english` og `norsk-sprakvask`. Tekstene for
+KI-markørene inneholder:
 
 - kontraster av typen «not just X, it is Y»
 - bilder og sammenligninger som skal forklare noe
@@ -15,8 +16,9 @@ får en setning fra en testtekst.
 
 ## Innhold
 
-- `cases.json`: tekstene, med `en` for engelsk og `no` for norsk. Hver tekst har en
-  `id`, en `type`, selve teksten (`text`) og kravet til et riktig svar (`pass`).
+- `cases.json`: tekstene, med `en` for engelsk, `no` for norsk og en liste for hver
+  sikkerhetsskill. Hver tekst har en `id`, en `type`, selve teksten (`text`) og kravet
+  til et riktig svar (`pass`).
 - `run.py`: kjører tekstene gjennom en modell og setter svarene ved siden av kravene.
 
 ## Kjøring
@@ -76,3 +78,145 @@ Svake punkter etter endringen:
   sier fra om at det er en tolkning.
 - E7: agenten gjetter hva kokken og servitøren står for, men sier fra om at det er en
   tolkning.
+
+## Sikkerhetsskillene
+
+`cases.json` har også tekster for sikkerhetsskillene, under navnet på skillen. G1–G11
+tester `github-actions-security`. Det er fire typer tekster:
+
+- `write`: en oppgave der den usikre løsningen ligger nær
+- `review`: en workflow med en feil som agenten skal finne
+- `safe`: en workflow som ser usikker ut, men som er trygg. Den måler falske funn.
+- `neutral`: en oppgave uten noe å beskytte. Den måler om agenten gjør mer enn
+  brukeren ba om.
+
+`pass` sier både hva som må være sikkert, og hva som må virke.
+
+### Kjøring
+
+Kjør hver tekst i tre varianter: uten skill, med én setning og med skillen.
+
+```sh
+python3 evals/run.py --cmd "claude -p" --only G1,G2 --baseline none,sentence --runs 3 --workdir "$(mktemp -d)"
+```
+
+- `--baseline none,sentence` legger til en variant uten skill og en variant med
+  én setning om sikkerhet i stedet for skillen.
+- `--workdir <mappe>` kjører modellen i mappen. Er mappen tom, leser ikke modellen
+  prosjektet.
+- Et agentverktøy som `claude -p` kan laste skills som du har installert, også i
+  variantene uten skill. Slå av skillene fra dette repoet før du kjører.
+- `--dump <mappe>` skriver promptene til filer og kaller ingen modell. Bruk det når
+  agenter kjører promptene.
+- Et `files`-felt i en tekst legger flere filer fra skillen til i prompten.
+
+Kjør på en sterk og en svakere modell som folk faktisk bruker, for eksempel Claude
+Opus og Sonnet.
+
+### Vurdering
+
+Bland svarene fra alle variantene, og fjern variantnavnene før du vurderer. Vurder
+hvert krav i `pass` som riktig, delvis eller feil. Vurder også om workflowen virker,
+og om svaret tar med mer enn brukeren ba om.
+
+Foreløpig vurderer en KI-agent svarene, ikke en person. En agent sjekker lett om et
+svar følger reglene, men ikke alltid om svaret er riktig. Målet er at en person går
+gjennom et utvalg av vurderingene, særlig de som avgjør om en regel blir stående.
+Til da:
+
+- Les tallene som en retning, ikke som et fasitsvar.
+- Små forskjeller, for eksempel 0,97 mot 0,98, er innenfor det som varierer fra
+  kjøring til kjøring.
+- Si alltid i en PR at en KI-agent vurderte svarene.
+
+### Resultater for github-actions-security
+
+Kjørt 15. oktober 2026 med agenter i Claude Code, tre kjøringer per tekst og variant.
+En egen KI-agent vurderte svarene til hver tekst uten å vite varianten. Ingen person
+har kontrollert vurderingene ennå. Haiku er med som en nedre grense.
+
+| Variant | Opus: krav oppfylt | Opus: virker | Haiku: krav oppfylt | Haiku: virker |
+| --- | --- | --- | --- | --- |
+| Uten skill | 0,97 | 0,92 | 0,92 | 0,54 |
+| Én setning | 0,97 | 0,88 | 0,88 | 0,33 |
+| Med skillen | 0,98 | 1,00 | 0,98 | 0,96 |
+
+- «Krav oppfylt» er snittet av kravene i `pass` (riktig = 1, delvis = 0,5).
+  «Virker» er andelen svar der workflowen gjør det brukeren ba om, og kan kjøre.
+- Med én setning tok Opus med OWASP-tabeller, ekstra filer og lange forklaringer i
+  nesten alle svarene. Med skillen gjorde ingen av svarene det, og svarene var
+  kortere enn uten skill.
+- Etter kjøringen ble seks svake punkter i skillen rettet. G6, G7 og G8 ble kjørt på
+  nytt med Opus og Sonnet for å sjekke rettelsene.
+- Skillen nevner `pull_request.number` og `github.sha` som trygge verdier, og G4
+  bruker de samme verdiene. G4 viser derfor ikke om skillen virker på trygge verdier
+  som den ikke nevner. Opus fikk 1,00 i G4 også uten skill. Haiku gikk fra 0,80 til
+  1,00, og noe av økningen kommer trolig av at skillen nevner verdiene.
+
+### Rettelser etter en gjennomgang
+
+En gjennomgang av branchen og testene 15. oktober 2026 fant fire feil i skillen. Hver
+rettelse ble testet med teksten før og etter rettelsen, med to kjøringer per modell på
+Opus og Sonnet. En egen KI-agent vurderte svarene uten å vite versjonen. Ingen person
+har kontrollert vurderingene ennå.
+
+- Regel 9 sa ikke at noen `setup-*`-actions cacher uten at du ber om det.
+  - G2 og den nye teksten G10 (Gradle, som skillen ikke nevner) oppfylte alle kravene
+    med begge versjonene.
+  - Med den nye teksten slo alle fire Sonnet-svarene på G2 av cachen i
+    publiseringsjobben. Med den gamle gjorde ingen av de to det.
+  - Den nye teksten G11 (Go) oppfylte alle kravene før og etter den siste endringen
+    av ordlyden. G11 bruker `cache: false` på `actions/setup-go`, som regel 9 nevner.
+    To av de fire svarene etter endringen brukte ikke `actions/setup-go` i
+    release-jobben.
+- Eksempelet i `ai-agents-in-workflows.md` kjørte et skript uten checkout. G5
+  oppfylte alle kravene med begge versjonene.
+- «Labels as approval» i `triggers-and-privilege.md` sa at en label kan godkjenne en
+  kjøring med skrivetilgang, i strid med kjerneregel 5. G8 fikk det samme resultatet
+  med begge versjonene.
+- `actions/checkout` v7 stopper en checkout av en fork under `pull_request_target` og
+  `workflow_run`, med mindre steget setter `allow-unsafe-pr-checkout: true`. Skillen
+  sier nå at agenten ikke skal sette denne verdien, men si fra og overlate valget til
+  en person. Den nye teksten G9 tester dette:
+  - Med den opprinnelige skillen satte ett av fire svar verdien selv, og ett stoppet
+    ved sperren uten å si fra. De to andre brukte v4 av `actions/checkout`, som ikke
+    har sperren.
+  - En mellomversjon ba agenten sette verdien. Da gjorde alle fire svarene det.
+  - Med den endelige teksten om sperren satte ingen av de fire svarene verdien, og
+    alle sa fra.
+  - G9 bruker en verdi som skillen nevner. Testen viser derfor om agenten følger
+    regelen, ikke om den finner sperren selv.
+- «Labels as approval» sa ikke at jobben som kjører koden, bare skal starte når
+  labelen blir satt. En jobb som bare sjekker at pull requesten har labelen, kjører
+  igjen etter et nytt push. Skillen sier dette nå, og G9 krever det. Alle de tolv
+  svarene på G9, fire med den nye teksten og åtte med den gamle, startet jobben bare
+  når labelen ble satt. Rettelsen endret derfor ikke resultatet. Kravet kom inn i G9
+  etter at regelen var skrevet, så G9 er ikke en uavhengig test av regelen.
+- G5 og G8 ble kjørt før de siste endringene i regel 9, i sikkerhetsreglene og i
+  avsnittet om labels. Endringene i regel 9 ble testet med G2, G10 og G11, og
+  endringene om sperren og labelen med G9.
+- Mellom to versjoner endret snittlengden på svarene seg med opptil 94 ord, både opp
+  og ned. To kjøringer av samme versjon kunne skille seg med opptil 145 ord.
+- G3, G4 og G7 er gjennomganger. De har nå `review.md` i `files`, så også en modell
+  som ikke kan lese filer, får filen som skillen ber om.
+
+### Laster agenten skillen selv?
+
+I alle kjøringene over fikk agenten beskjed om å lese skillen først. Tallene viser
+derfor hvor godt skillen virker når agenten har lastet den, ikke om agenten laster den
+selv. I Claude Code, Codex og Copilot velger agenten en skill ut fra beskrivelsen.
+
+En liten sjekk 15. oktober 2026 testet beskrivelsen. Agenten fikk en liste med elleve
+skills (navn, beskrivelse og fil) og en regel om å bruke en skill når oppgaven passer
+til beskrivelsen. Den fikk to vanlige oppgaver som ikke nevner sikkerhet eller en
+skill: en ny workflow som kommenterer pull requests, og en ny versjon av en action.
+Hver oppgave ble kjørt med og uten linjen fra README i `AGENTS.md`, på Opus og Sonnet.
+
+- Agenten lastet `github-actions-security` i alle de åtte kjøringene, også uten
+  linjen.
+- Listen og regelen sto i prompten. Et verktøy viser listen på sin egen måte, ofte
+  sammen med mange andre skills og verktøy. Sjekken viser derfor at beskrivelsen
+  passer til vanlige oppgaver, men ikke at et verktøy laster skillen.
+- README anbefaler derfor linjen i `AGENTS.md`. Agenten leser instruksjonsfilen hver
+  gang, men en skill bare når den velger den selv.
+- Ingen har gjort sjekken i et ekte verktøy ennå.

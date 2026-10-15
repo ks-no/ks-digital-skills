@@ -25,7 +25,7 @@ plugins/<skill-name>/
     ├── SKILL.md                     # required, with frontmatter
     └── references/                  # optional supporting files
 scripts/validate.py                  # repository validation
-evals/cases.json                     # held-out test texts for the AI-marker rules
+evals/cases.json                     # held-out test texts for the AI-marker rules and security skills
 evals/run.py                         # runs the test texts through a model
 README.md                            # overview and installation (Norwegian)
 ```
@@ -84,6 +84,10 @@ README.md                            # overview and installation (Norwegian)
 - ASD-STE100 is free to get but not free to redistribute. Never add the ASD
   dictionary, word lists taken from it, or verbatim text from the standard.
   Paraphrase the rules and cite rule numbers.
+- The OWASP lists, Cheat Sheets and ASVS are CC BY-SA, and the OWASP Kubernetes
+  Top 10 is CC BY-NC-SA. Do not copy their text. Cite IDs and names only.
+- Security skills are generic. Do not describe the setup, tools or findings of KS
+  Digital or of any other organization.
 
 ## Conventions
 
@@ -105,6 +109,11 @@ For the AI-marker rules in `asd-ste100-english` and `norsk-sprakvask`, use the t
 texts in `evals/`. `evals/README.md` tells how to run them and how to add a text. A
 new rule or exception gets at least one new text, with words that are not in any
 skill. Do not copy a sentence from a test text into a skill.
+
+For a security skill, use its cases in `evals/cases.json`. Run each case without the
+skill and with the skill, on a strong model and on a weaker model that people use.
+Grade the answers blind. A change must not make an answer longer or stop a workflow
+or program from working. `evals/README.md` tells how.
 
 ## Validation
 
@@ -129,7 +138,8 @@ It needs only Python 3. It checks that:
 - markdown files are not empty and have no trailing whitespace,
 - every text file is valid UTF-8,
 - each case in `evals/cases.json` has an `id`, a `type`, a `text` and a `pass`,
-  the IDs are unique, and no skill file contains a sentence from a case.
+  the IDs are unique, each path in a `files` list exists, and no skill file
+  contains a sentence from a case.
 
 CI runs the same script on every push to `main` and on every pull request.
 
