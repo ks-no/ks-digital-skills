@@ -16,10 +16,25 @@ Repoet er nytt. Innhold og struktur kan endre seg.
 | `norsk-sprakvask` | skriving | skriv og språkvask norsk bokmål etter Språkrådets normer og klarspråksrådene, og fanger engelsk smitte, inkonsekvente former, særskriving og KI-preg |
 | `asd-ste100-norsk` | skriving | skriv norsk teknisk tekst som ikke kan misforstås, etter prinsippene i ASD-STE100 tilpasset norsk grammatikk |
 | `asd-ste100-english` | skriving | skriv engelsk etter ASD-STE100 (Simplified Technical English), så verktøybeskrivelser, feilmeldinger og instruksjoner ikke kan misforstås av en agent eller en leser |
+| `polish` | produktivitet | rydd opp i, språkvask og gå gjennom branchen i runder til sjekken passerer og en runde ikke finner flere feil, og avslutt alltid med en gjennomgang |
+| `guided-click-through` | testing | test oppførselen til en endring i grensesnittet med komponenttestene i prosjektet, og lag en kort sjekkliste som brukeren klikker gjennom for det testene ikke ser, som layout, stil og synlig fokus |
 
 `asd-ste100-norsk` er laget for å brukes sammen med `norsk-sprakvask`. Den første tar
 setningsbygningen, og den andre tar rettskriving, tegnsetting og ordvalg. Installer
 begge.
+
+`polish` bruker de tre språkskillene i språkvasken. Er en av dem ikke installert, hopper
+`polish` over den skillen og sier fra i rapporten. Endrer branchen grensesnittet og
+prosjektet har komponenttester, skriver `polish` tester for oppførselen med
+`guided-click-through` før første runde. Rapporten slutter med en sjekkliste fra samme
+skill når testene ikke viser alt, eller når et valg er lettere å ta i appen.
+
+`guided-click-through` starter ikke appen og bruker ingen nettleser. Har prosjektet
+komponenttester, tester agenten oppførselen selv. Mangler prosjektet slike tester,
+foreslår agenten å legge dem til, men gjør det bare når du ber om det. Deretter skriver
+den steg for det testene ikke ser, og du klikker gjennom i appen slik du pleier. Du
+svarer «ok» eller oppgir stegene som feilet, og agenten retter dem. Er et valg lettere
+å ta når du ser appen, kan sjekklisten også be deg velge mellom to eller tre løsninger.
 
 ## Installer
 
@@ -104,6 +119,8 @@ plugins/min-skill/
 - Legg plugin-en til i `.claude-plugin/marketplace.json`,
   `.agents/plugins/marketplace.json` og i tabellen over.
 - Skriv skillen uten stier, kommandoer eller begreper som bare finnes i ett verktøy.
+- En plugin inneholder bare skills. Den tar ikke med MCP-servere, LSP-servere eller
+  hooks, fordi verktøyet kan starte dem utenfor sandboxen.
 - Repoet er offentlig. Ikke ta med interne adresser, Jira-nøkler, personopplysninger
   eller hemmeligheter.
 
@@ -114,8 +131,9 @@ python3 scripts/validate.py
 ```
 
 Valideringen sjekker at navnene stemmer, at marketplace-filene og README er i synk, at
-lenkene i skillene virker, og at ingen tekstfil har lang bindestrek (U+2014). CI kjører
-den samme sjekken. Alle reglene står i [AGENTS.md](AGENTS.md).
+lenkene i skillene virker, at ingen plugin tar med MCP-servere, LSP-servere eller
+hooks, og at ingen tekstfil har lang bindestrek (U+2014). CI kjører den samme sjekken.
+Alle reglene står i [AGENTS.md](AGENTS.md).
 
 ## Lisens
 

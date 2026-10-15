@@ -1,0 +1,29 @@
+{
+  "name": "guided-click-through",
+  "version": "0.1.0",
+  "description": "Verify the behaviour of a change to a web interface with the component tests of the project, then give the user a short click-through for what tests cannot show, such as layout, styles and visible focus. The agent does not run the app or a browser. It fixes the steps that the user reports as failed.",
+  "author": {
+    "name": "Sindre Eik de Lange"
+  },
+  "keywords": [
+    "ui",
+    "manual-testing",
+    "click-through",
+    "accessibility",
+    "workflow"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Guided Click-Through",
+    "shortDescription": "Test a UI change with component tests, then get a short click-through for the visuals.",
+    "developerName": "Sindre Eik de Lange",
+    "category": "Productivity",
+    "capabilities": [
+      "Skills"
+    ],
+    "longDescription": "Verify the behaviour of a change to a web interface with the component tests of the project, then give the user a short click-through for what tests cannot show, such as layout, styles and visible focus. The agent does not run the app or a browser. It fixes the steps that the user reports as failed.",
+    "defaultPrompt": [
+      "Use the Guided Click-Through skill on the change I just made."
+    ]
+  }
+}

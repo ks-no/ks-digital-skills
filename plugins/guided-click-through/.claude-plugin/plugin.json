@@ -1,0 +1,17 @@
+{
+  "name": "guided-click-through",
+  "description": "Verify the behaviour of a change to a web interface with the component tests of the project, then give the user a short click-through for what tests cannot show, such as layout, styles and visible focus. The agent does not run the app or a browser. It fixes the steps that the user reports as failed.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Sindre Eik de Lange"
+  },
+  "repository": "https://github.com/ks-no/ks-digital-skills",
+  "license": "MIT",
+  "keywords": [
+    "ui",
+    "manual-testing",
+    "click-through",
+    "accessibility",
+    "workflow"
+  ]
+}
