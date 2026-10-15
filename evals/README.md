@@ -233,20 +233,32 @@ Ingen person har kontrollert vurderingene ennå.
 ### Laster agenten skillen selv?
 
 I alle kjøringene over fikk agenten beskjed om å lese skillen først. Tallene viser
-derfor hvor godt skillen virker når agenten har lastet den, ikke om agenten laster den
-selv. I Claude Code, Codex og Copilot velger agenten en skill ut fra beskrivelsen.
+derfor hvor godt skillene virker når agenten har lastet dem, ikke om agenten laster
+dem selv. I Claude Code, Codex og Copilot velger agenten en skill ut fra beskrivelsen.
 
-En liten sjekk 15. oktober 2026 testet beskrivelsen. Agenten fikk en liste med elleve
+En liten sjekk 15. oktober 2026 testet beskrivelsene. Agenten fikk en liste med elleve
 skills (navn, beskrivelse og fil) og en regel om å bruke en skill når oppgaven passer
-til beskrivelsen. Den fikk to vanlige oppgaver som ikke nevner sikkerhet eller en
-skill: en ny workflow som kommenterer pull requests, og en ny versjon av en action.
-Hver oppgave ble kjørt med og uten linjen fra README i `AGENTS.md`, på Opus og Sonnet.
+til beskrivelsen. Den fikk seks vanlige oppgaver på norsk og engelsk som ikke nevner
+sikkerhet eller en skill:
 
-- Agenten lastet `github-actions-security` i alle de åtte kjøringene, også uten
-  linjen.
+- tre oppgaver med applikasjonskode: et endepunkt som henter ett objekt, en
+  nedlasting av filer og en gjennomgang av en diff før merge
+- to oppgaver med workflows: en ny workflow som kommenterer pull requests, og en ny
+  versjon av en action
+- én datofunksjon uten noe å beskytte
+
+Hver oppgave ble kjørt med og uten linjene fra README i `AGENTS.md`, på Opus og
+Sonnet.
+
+- Agenten lastet riktig skill i alle de 20 kjøringene med kode eller workflows, også
+  uten linjene.
+- For datofunksjonen lastet ingen av modellene `secure-coding` uten linjene. Med
+  linjene lastet begge den, men la ikke til noe i koden.
+- Med linjene lastet agenten også `secure-coding` i tre av fire kjøringer med
+  workflows. Det gjør prompten lengre.
 - Listen og regelen sto i prompten. Et verktøy viser listen på sin egen måte, ofte
-  sammen med mange andre skills og verktøy. Sjekken viser derfor at beskrivelsen
-  passer til vanlige oppgaver, men ikke at et verktøy laster skillen.
-- README anbefaler derfor linjen i `AGENTS.md`. Agenten leser instruksjonsfilen hver
+  sammen med mange andre skills og verktøy. Sjekken viser derfor at beskrivelsene
+  passer til vanlige oppgaver, men ikke at et verktøy laster skillene.
+- README anbefaler derfor linjene i `AGENTS.md`. Agenten leser instruksjonsfilen hver
   gang, men en skill bare når den velger den selv.
 - Ingen har gjort sjekken i et ekte verktøy ennå.

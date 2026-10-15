@@ -47,7 +47,7 @@ kilder og inneholder ingen opplysninger om interne systemer.
 - Bruk en sterk modell når du ber om en sikkerhetsgjennomgang. Kjernereglene står i
   `SKILL.md`, så også en mindre modell får det viktigste.
 - Agenten leser instruksjonsfilen til prosjektet hver gang, men en skill bare når den
-  velger den selv. Skriv derfor denne linjen i `AGENTS.md` i prosjektet:
+  velger den selv. Skriv derfor disse linjene i `AGENTS.md` i prosjektet:
 
   ```text
   Before you write, change or review code, use the skill secure-coding.
