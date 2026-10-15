@@ -82,7 +82,8 @@ Svake punkter etter endringen:
 ## Sikkerhetsskillene
 
 `cases.json` har også tekster for sikkerhetsskillene, under navnet på skillen. G1–G11
-tester `github-actions-security`. Det er fire typer tekster:
+tester `github-actions-security`, og S1–S9 tester `secure-coding`. Det er fire typer
+tekster:
 
 - `write`: en oppgave der den usikre løsningen ligger nær
 - `review`: en workflow med en feil som agenten skal finne
@@ -216,9 +217,15 @@ Ingen person har kontrollert vurderingene ennå.
 - Uten skill var de fleste svarene for omfattende: rate limiting, ekstra
   avhengigheter, hjelpefunksjoner som ikke finnes, og lange forklaringer. Med skillen
   var ingen av svarene det.
-- Den største forskjellen var i S4, der koden er trygg. Uten skill fant agentene
-  problemer som ikke finnes (0,55 og 0,65). Med skillen svarte alle kort at koden er
-  trygg (1,00).
+- Tabellen gjelder S1–S8 med den første versjonen av skillen.
+- S4 er trygg kode. Uten skill fant agentene problemer som ikke finnes (0,55 med Opus
+  og 0,65 med Sonnet). Den første versjonen av skillen nevnte de samme mønstrene som
+  S4, så resultatet sa lite om annen kode. Nå sier skillen bare prinsippet. Med den
+  nye teksten fikk alle de fire svarene på S4 fortsatt 1,00.
+- S9 er en ny tekst med trygg kode og mønstre som skillen ikke nevner. Den ble laget
+  etter at skillen var skrevet. Uten skill fikk Opus 0,75 og Sonnet 0,56, og tre av
+  fire svar var for omfattende. Med skillen fikk alle fire svarene 1,00, og ingen var
+  for omfattende.
 - Etter kjøringen ble fem svake punkter i skillen rettet, blant annet tester som
   passerer av feil grunn. S1, S3, S5 og S7 ble kjørt på nytt med Sonnet for å sjekke
   rettelsene.
