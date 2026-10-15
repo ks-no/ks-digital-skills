@@ -59,6 +59,15 @@ README.md                            # overview and installation (Norwegian)
   only exist in one tool, such as Claude Code, GitHub Copilot, Codex, OpenCode, or
   Pi. Harness-specific packaging belongs in plugin manifests and marketplace files,
   not in `SKILL.md` instructions.
+- A plugin contains skills only. Do not add MCP servers, LSP servers or hooks: no
+  `.mcp.json`, `.lsp.json` or `hooks/hooks.json`, and no `mcpServers`, `lspServers` or
+  `hooks` key in a manifest or a marketplace entry. The tool can start these outside
+  the sandbox that the agent's commands run in.
+- A skill must not tell the agent or the user to install tools for the agent, add tool
+  servers, or change sandbox or permission settings. A skill can suggest a dependency
+  for the project itself, such as a test framework. The agent adds it only when the
+  user asks. If a restriction, such as the sandbox or a permission, can stop a command
+  that the skill runs, the skill tells the agent to report the restriction and stop.
 - Add the plugin to `.claude-plugin/marketplace.json` (with `source`
   `./plugins/<name>`), add it to `.agents/plugins/marketplace.json` (with
   `source.path` `./plugins/<name>`), and add a row to the `## Skills` table in
@@ -111,6 +120,7 @@ It needs only Python 3. It checks that:
   frontmatter, a valid `name` and a `description` of 1024 characters or fewer,
 - `name` matches across the directory, both manifests and `SKILL.md`,
 - `version` matches across both manifests and the Claude Code marketplace entry,
+- no plugin or marketplace entry brings MCP servers, LSP servers or hooks,
 - both marketplaces list exactly the plugin directories with the right source paths,
 - every plugin is in the README `## Skills` section,
 - relative links in markdown files under `plugins/` point to files that exist,

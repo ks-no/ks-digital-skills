@@ -32,6 +32,10 @@ HARNESS_PATHS = (
     "~/.codex",
     ".agents/",
 )
+# Components that the tool starts as processes, which can run outside the agent's sandbox.
+PROCESS_FILES = (".mcp.json", ".lsp.json", "hooks/hooks.json")
+PROCESS_KEYS = ("mcpServers", "lspServers", "hooks")
+SKILLS_ONLY = "plugins contain skills only, not MCP servers, LSP servers or hooks"
 LINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s]+)[^)]*\)")
 FENCE_RE = re.compile(r"^(```|~~~).*?^\1", re.MULTILINE | re.DOTALL)
 SKIP_DIRS = {".git", ".venv", "venv", "node_modules", "__pycache__", "build", "dist"}
@@ -158,12 +162,16 @@ def check_plugin(plugin_dir):
         data = load_json(plugin_dir / manifest)
         if data is not None and data.get("name") != name:
             error(plugin_dir / manifest, f"name is {data.get('name')!r}, expected {name!r}")
+        check_no_processes(plugin_dir / manifest, data)
         if data is not None:
             versions[manifest] = data.get("version")
     if len(set(versions.values())) > 1:
         found = ", ".join(f"{v!r} in {m}" for m, v in versions.items())
         error(plugin_dir, f"the manifests have different versions: {found}")
     version = next(iter(versions.values()), None)
+    for path in PROCESS_FILES:
+        if (plugin_dir / path).exists():
+            error(plugin_dir / path, SKILLS_ONLY)
 
     skill = plugin_dir / "skills" / name / "SKILL.md"
     if not skill.is_file():
@@ -186,6 +194,15 @@ def check_plugin(plugin_dir):
     return version
 
 
+def check_no_processes(path, data, label=""):
+    """Report each key in a manifest or a marketplace entry that makes the tool start a process."""
+    if not isinstance(data, dict):
+        return
+    for key in PROCESS_KEYS:
+        if key in data:
+            error(path, f"{label}has {key!r}, but {SKILLS_ONLY}")
+
+
 def check_marketplace(path, versions, source_of):
     names = list(versions)
     data = load_json(path)
@@ -200,6 +217,7 @@ def check_marketplace(path, versions, source_of):
     for extra in sorted(set(listed) - set(names)):
         error(path, f"{extra!r} is listed, but plugins/{extra} does not exist")
     for entry in entries:
+        check_no_processes(path, entry, f"{entry.get('name')!r} ")
         expected = f"./plugins/{entry.get('name')}"
         if source_of(entry) != expected:
             error(path, f"{entry.get('name')!r} has source {source_of(entry)!r}, expected {expected!r}")

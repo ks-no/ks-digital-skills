@@ -1,0 +1,18 @@
+{
+  "name": "polish",
+  "description": "Run a cleanup review, a language pass with the STE100 and Norwegian language skills, and a correctness review on the current branch, round by round, until the project's check passes and a round finds nothing that affects correctness or a stated requirement, or until the round limit (default 3). The run always ends on a correctness review. For a change to a web interface, it first writes behaviour tests when the project has component tests, and ends the report with a click-through when tests cannot show everything or a visual decision is open.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Sindre Eik de Lange"
+  },
+  "repository": "https://github.com/ks-no/ks-digital-skills",
+  "license": "MIT",
+  "keywords": [
+    "review",
+    "code-review",
+    "cleanup",
+    "ste100",
+    "language",
+    "workflow"
+  ]
+}

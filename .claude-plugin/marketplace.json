@@ -59,6 +59,41 @@
         "korrektur",
         "skriving"
       ]
+    },
+    {
+      "name": "polish",
+      "source": "./plugins/polish",
+      "description": "Run a cleanup review, a language pass with the STE100 and Norwegian language skills, and a correctness review on the current branch, round by round, until the project's check passes and a round finds nothing that affects correctness or a stated requirement, or until the round limit (default 3). The run always ends on a correctness review. For a change to a web interface, it first writes behaviour tests when the project has component tests, and ends the report with a click-through when tests cannot show everything or a visual decision is open.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Sindre Eik de Lange"
+      },
+      "category": "productivity",
+      "tags": [
+        "review",
+        "code-review",
+        "cleanup",
+        "ste100",
+        "language",
+        "workflow"
+      ]
+    },
+    {
+      "name": "guided-click-through",
+      "source": "./plugins/guided-click-through",
+      "description": "Verify the behaviour of a change to a web interface with the component tests of the project, then give the user a short click-through for what tests cannot show, such as layout, styles and visible focus. The agent does not run the app or a browser. It fixes the steps that the user reports as failed.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Sindre Eik de Lange"
+      },
+      "category": "testing",
+      "tags": [
+        "ui",
+        "manual-testing",
+        "click-through",
+        "accessibility",
+        "workflow"
+      ]
     }
   ]
 }
