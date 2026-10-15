@@ -39,9 +39,9 @@ svarer «ok» eller oppgir stegene som feilet, og agenten retter dem. Er et valg
 
 ### Sikkerhet
 
-Sikkerhetsskillene hjelper agenten å unngå svakhetene i OWASP Top 10:2025 og i
-listene til OWASP for CI/CD, API-er og språkmodeller. Skillene er generelle. De bygger
-på offentlige kilder og inneholder ingen opplysninger om interne systemer.
+Sikkerhetsskillene hjelper agenten å unngå svakhetene i listene fra OWASP som
+tabellen over nevner for hver skill. Skillene er generelle. De bygger på offentlige
+kilder og inneholder ingen opplysninger om interne systemer.
 
 - Bruk en sterk modell når du ber om en sikkerhetsgjennomgang. Kjernereglene står i
   `SKILL.md`, så også en mindre modell får det viktigste.
