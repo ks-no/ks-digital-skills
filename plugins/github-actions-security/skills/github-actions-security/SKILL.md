@@ -7,7 +7,8 @@ description: >-
   Also use when a workflow builds pull requests from forks, reacts to issues or
   comments, uses secrets or OIDC, publishes or signs a package, deploys, or sends
   text to a language model. Also use when the user asks to harden, audit or review
-  CI/CD security, asks about pull_request_target, workflow_run, script injection,
+  CI/CD security, asks for an OWASP Top 10 or OWASP Top 10 CI/CD Security Risks
+  check of workflows, asks about pull_request_target, workflow_run, script injection,
   token permissions or pinning of actions, or asks if a compromised action affects
   the repository. For application code, use secure-coding. For Dockerfiles, Helm
   charts and Kubernetes or OpenShift manifests, use container-security.

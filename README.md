@@ -18,7 +18,7 @@ Repoet er nytt. Innhold og struktur kan endre seg.
 | `asd-ste100-english` | skriving | skriv engelsk etter ASD-STE100 (Simplified Technical English), så verktøybeskrivelser, feilmeldinger og instruksjoner ikke kan misforstås av en agent eller en leser |
 | `polish` | produktivitet | rydd opp i, språkvask og gå gjennom branchen i runder til sjekken passerer og en runde ikke finner flere feil, og avslutt alltid med en gjennomgang |
 | `guided-click-through` | testing | test oppførselen til en endring i grensesnittet med komponenttestene i prosjektet, og lag en kort sjekkliste som brukeren klikker gjennom for det testene ikke ser, som layout, stil og synlig fokus |
-| `github-actions-security` | sikkerhet | skriv og gå gjennom workflowene i GitHub Actions, så tekst, kode og artefakter fra forks, issues og kommentarer ikke når tokenet og secretene |
+| `github-actions-security` | sikkerhet | skriv og gå gjennom workflowene i GitHub Actions etter OWASP Top 10 og OWASP Top 10 CI/CD Security Risks, så tekst, kode og artefakter fra forks, issues og kommentarer ikke når tokenet og secretene |
 
 `asd-ste100-norsk` er laget for å brukes sammen med `norsk-sprakvask`. Den første tar
 setningsbygningen, og den andre tar rettskriving, tegnsetting og ordvalg. Installer
@@ -39,8 +39,9 @@ svarer «ok» eller oppgir stegene som feilet, og agenten retter dem. Er et valg
 
 ### Sikkerhet
 
-Sikkerhetsskillene er generelle. De bygger på offentlige kilder og inneholder ingen
-opplysninger om interne systemer.
+Sikkerhetsskillene hjelper agenten å unngå svakhetene i OWASP Top 10:2025 og i
+listene til OWASP for CI/CD, API-er og språkmodeller. Skillene er generelle. De bygger
+på offentlige kilder og inneholder ingen opplysninger om interne systemer.
 
 - Bruk en sterk modell når du ber om en sikkerhetsgjennomgang. Kjernereglene står i
   `SKILL.md`, så også en mindre modell får det viktigste.
