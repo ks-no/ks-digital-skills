@@ -46,12 +46,23 @@ på offentlige kilder og inneholder ingen opplysninger om interne systemer.
 - Bruk en sterk modell når du ber om en sikkerhetsgjennomgang. Kjernereglene står i
   `SKILL.md`, så også en mindre modell får det viktigste.
 - Agenten leser instruksjonsfilen til prosjektet hver gang, men en skill bare når den
-  velger den selv. Skriv derfor denne linjen i instruksjonsfilen, for eksempel
-  `AGENTS.md`:
+  velger den selv. Skriv derfor denne linjen i `AGENTS.md` i prosjektet:
 
   ```text
   Before you create or change a GitHub Actions workflow, use the skill github-actions-security.
   ```
+
+  Codex, Copilot og OpenCode leser `AGENTS.md`. Claude Code leser `AGENTS.md` fra
+  versjon 2.1.277, men bare når det ikke finnes en `CLAUDE.md` eller
+  `CLAUDE.local.md` i prosjektmappen eller i en mappe over den. Skriv `@AGENTS.md` på
+  en egen linje i `CLAUDE.md` hvis
+
+  - prosjektet allerede har en `CLAUDE.md`
+  - noen i teamet har en `CLAUDE.local.md`
+  - noen i teamet bruker en eldre versjon av Claude Code
+
+  Da leser Claude Code `AGENTS.md` i alle tilfellene, og aldri to ganger. Se
+  [dokumentasjonen til Claude Code](https://code.claude.com/docs/en/memory#share-one-file-with-other-coding-tools).
 
 ## Installer
 
