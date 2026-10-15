@@ -44,8 +44,12 @@ permissions: {}
 jobs:
   summarize:
     runs-on: ubuntu-latest
-    permissions: {}
+    permissions:
+      contents: read
     steps:
+      - uses: actions/checkout@<SHA> # v4
+        with:
+          persist-credentials: false
       - env:
           LLM_TOKEN: ${{ secrets.LLM_TOKEN }}
           ISSUE_TITLE: ${{ github.event.issue.title }}

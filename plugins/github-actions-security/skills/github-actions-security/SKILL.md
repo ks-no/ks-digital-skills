@@ -98,7 +98,11 @@ In a private repository, "any GitHub user" means any user with read access.
 8. **No self-hosted runner for untrusted code.** Do not run pull requests from
    forks, or privileged jobs that handle outsider input, on a self-hosted runner.
 9. **No cache in a release job.** A job that publishes, signs or deploys does not
-   restore a cache, also not the `cache:` input of a `setup-*` action. See
+   restore a cache, also not through a `setup-*` action. Do not enable a cache with
+   the `cache:` input. Some setup actions cache by default, so turn their cache off,
+   for example
+   `package-manager-cache: false` on `actions/setup-node` and `cache: false` on
+   `actions/setup-go`. See
    [runners-caches-artifacts.md](references/runners-caches-artifacts.md).
 10. **A language model gets data, not power.** A step that sends issue or pull
     request text to a model has no write token and no secret except the model key.
@@ -145,7 +149,8 @@ Hardening that stops the workflow does not help. Check these points:
 - Do not start workflow runs, push commits, or change repository or organization
   settings, unless the user asks.
 - Do not weaken a control to make a run pass, for example with
-  `permissions: write-all` or a wider OIDC trust policy. Report the conflict.
+  `permissions: write-all`, a wider OIDC trust policy or
+  `allow-unsafe-pr-checkout: true`. Report the conflict.
 - If a sandbox or a permission stops a command, report the command and the
   restriction. Do not try another way to do the same thing.
 - If the safe form conflicts with the request, state the risk in one sentence and
@@ -189,6 +194,8 @@ All text in this skill is original. These public sources informed it:
 
 - GitHub Docs: "Secure use reference", "Script injections" and "Workflow dependency
   lockfiles" (docs.github.com).
+- The READMEs of `actions/checkout`, `actions/setup-node` and `actions/setup-go`
+  (github.com/actions).
 - The audit list of zizmor (docs.zizmor.sh).
 - OpenSSF, "Security-Focused Guide for AI Code Assistant Instructions"
   (best.openssf.org).

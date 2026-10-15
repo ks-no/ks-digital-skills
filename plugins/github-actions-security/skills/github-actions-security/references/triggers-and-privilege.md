@@ -90,10 +90,22 @@ of release jobs (see [runners-caches-artifacts.md](runners-caches-artifacts.md))
 
 ## Labels as approval
 
-A label can approve a privileged run. A new push after the label keeps the label,
-so the run can use code that the maintainer did not see. Check out
-`github.event.pull_request.head.sha`, not the branch name. Remove the label on the
-`synchronize` event.
+A label does not make a privileged job safe. Core rule 5 in the skill still applies,
+so first offer the design above. If the user still wants a label to start a
+privileged run of code from the pull request, limit it:
+
+- Run the job that runs the code only when `github.event.action` is `labeled` and
+  `github.event.label.name` is that label. A check that the pull request has the
+  label is not enough, because a new push keeps the label and starts the workflow
+  again.
+- Check out `github.event.pull_request.head.sha`, not the branch name.
+- From v7, `actions/checkout` blocks a checkout of a fork under
+  `pull_request_target` and `workflow_run`, unless the step sets
+  `allow-unsafe-pr-checkout: true`. Do not set this input, and do not use an older
+  version to avoid the block. Tell the user that the block stops the workflow, and
+  that a person who accepts the risk must add the input.
+- Remove the label on the `synchronize` event, in a job that runs no code from the
+  pull request. Then a maintainer must read the new code and add the label again.
 
 ## Identity checks
 
