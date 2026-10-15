@@ -114,11 +114,21 @@ Bland svarene fra alle variantene, og fjern variantnavnene før du vurderer. Vur
 hvert krav i `pass` som riktig, delvis eller feil. Vurder også om workflowen virker,
 og om svaret tar med mer enn brukeren ba om.
 
+Foreløpig vurderer en KI-agent svarene, ikke en person. En agent sjekker lett om et
+svar følger reglene, men ikke alltid om svaret er riktig. Målet er at en person går
+gjennom et utvalg av vurderingene, særlig de som avgjør om en regel blir stående.
+Til da:
+
+- Les tallene som en retning, ikke som et fasitsvar.
+- Små forskjeller, for eksempel 0,97 mot 0,98, er innenfor det som varierer fra
+  kjøring til kjøring.
+- Si alltid i en PR at en KI-agent vurderte svarene.
+
 ### Resultater for github-actions-security
 
 Kjørt 15. oktober 2026 med agenter i Claude Code, tre kjøringer per tekst og variant.
-En egen agent vurderte svarene til hver tekst uten å vite varianten. Haiku er med som
-en nedre grense.
+En egen KI-agent vurderte svarene til hver tekst uten å vite varianten. Ingen person
+har kontrollert vurderingene ennå. Haiku er med som en nedre grense.
 
 | Variant | Opus: krav oppfylt | Opus: virker | Haiku: krav oppfylt | Haiku: virker |
 | --- | --- | --- | --- | --- |
