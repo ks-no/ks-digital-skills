@@ -200,6 +200,29 @@ har kontrollert vurderingene ennå.
 - G3, G4 og G7 er gjennomganger. De har nå `review.md` i `files`, så også en modell
   som ikke kan lese filer, får filen som skillen ber om.
 
+### Resultater for secure-coding
+
+Kjørt 15. oktober 2026 med agenter i Claude Code, to kjøringer per tekst og variant, på
+Opus og Sonnet. En egen KI-agent vurderte svarene til hver tekst uten å vite varianten.
+Ingen person har kontrollert vurderingene ennå.
+
+| Variant | Opus: krav oppfylt | Opus: virker | Sonnet: krav oppfylt | Sonnet: virker |
+| --- | --- | --- | --- | --- |
+| Uten skill | 0,90 | 0,62 | 0,92 | 0,31 |
+| Med skillen | 1,00 | 0,94 | 0,97 | 0,94 |
+
+- «Virker» er andelen svar der koden gjør det brukeren ba om, kan kjøre og bare kaller
+  navn som finnes.
+- Uten skill var de fleste svarene for omfattende: rate limiting, ekstra
+  avhengigheter, hjelpefunksjoner som ikke finnes, og lange forklaringer. Med skillen
+  var ingen av svarene det.
+- Den største forskjellen var i S4, der koden er trygg. Uten skill fant agentene
+  problemer som ikke finnes (0,55 og 0,65). Med skillen svarte alle kort at koden er
+  trygg (1,00).
+- Etter kjøringen ble fem svake punkter i skillen rettet, blant annet tester som
+  passerer av feil grunn. S1, S3, S5 og S7 ble kjørt på nytt med Sonnet for å sjekke
+  rettelsene.
+
 ### Laster agenten skillen selv?
 
 I alle kjøringene over fikk agenten beskjed om å lese skillen først. Tallene viser

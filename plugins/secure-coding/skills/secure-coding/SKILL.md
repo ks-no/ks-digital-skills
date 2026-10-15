@@ -62,7 +62,9 @@ Keep the answer in proportion:
    what is allowed. (A05)
 2. **Safe API for each sink.** Use bound parameters for queries. A name that cannot
    be a parameter, such as a column or a sort order, must come from a fixed map, not
-   from the input. Use argument lists, not a shell. Use templates that escape. (A05)
+   from the input. The map contains every value that the code accepted before. In
+   JavaScript, use a `Map` or `Object.hasOwn()`, so that keys such as `constructor`
+   do not match. Use argument lists, not a shell. Use templates that escape. (A05)
 3. **Access to each object.** Filter on the owner or the tenant in the query, and
    give 404 for objects that the user cannot see. Take the user and the tenant from
    the authenticated identity, never from the request body. (A01, API1, API3)
@@ -109,7 +111,16 @@ For OAuth2, OpenID Connect, Maskinporten and ID-porten, load
   reaches the code under test. An HTTP client can remove `../` before it sends the
   request, and a router can refuse an encoded slash. If the input cannot reach the
   handler, test the check as a function.
-- Use only test fixtures that exist in the project, or write them.
+- The test must fail for the right reason. Point it at a file that exists outside
+  the allowed area, so that only the check stops it. A path to a file that does not
+  exist, or to a folder, gives 404 also without the check.
+- Test each part of a check alone. For a check on the parent object and on the
+  tenant, write one test that changes only the parent and one that changes only the
+  tenant.
+- Do not mock the layer that does the check. If the query filters on the tenant, test
+  against the query, not against a mock of it.
+- Use only test fixtures and test libraries that the project has, or write the
+  fixtures.
 
 ## Self-check before you answer
 
@@ -117,7 +128,9 @@ For OAuth2, OpenID Connect, Maskinporten and ID-porten, load
 2. For each new endpoint or handler, find the access check.
 3. For each negative test, make sure that it fails without the check.
 4. Make sure that each name that you call exists.
-5. Make sure that the answer contains only what the task needs.
+5. For each claim about what a library function accepts or refuses, make sure that
+   you know it. If you are not sure, write a test for it or add a `Check:` line.
+6. Make sure that the answer contains only what the task needs.
 
 ## Safety
 

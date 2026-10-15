@@ -62,11 +62,13 @@ low notes after it.
 For each finding, give:
 
 - **Title** and **severity** (critical, high, medium or low)
-- **Location**: `file:line`
+- **Location**: `file:line`. For pasted code without a file name, quote the line
+  instead of a line number.
 - **Attacker and path**: who can do it, and how, in two or three sentences
 - **Impact**: what the attacker gets
 - **Fix**: the smallest change that removes the problem, as code. Keep the routes,
-  status codes, field names and behaviour. Use only names that exist.
+  status codes, field names and behaviour. Use only names that exist. An allow-list
+  in a fix contains every value that the code accepted before.
 - **ID**: the OWASP risk and, if useful, the CWE
 
 Start the report with one to three lines that give the result. Order the findings
