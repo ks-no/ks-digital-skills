@@ -41,18 +41,19 @@ check that a framework default already covers is not high.
 
 ## These are not findings
 
-- A query part that comes from a fixed set, for example a `switch` on an enum or a
-  lookup in a fixed map, and is then joined into the SQL text.
-- Bound parameters: `$1`, `?`, `:name`, `@Name`, and `FromSql` or `ExecuteSql` in
-  EF Core 7 or later.
-- A hash such as SHA-256 that makes an ETag, a cache key or a checksum. A fast hash
-  is wrong for passwords and for signatures, not for these uses.
-- An access check in a component that you cannot see, for example
-  `@PreAuthorize("@access.canRead(authentication, #id)")`. Do not report it. If the
-  answer depends on it, add a `Check:` line that the component does what its name
-  says.
-- A missing rate limit, audit log, security header or input length limit, when the
-  change does not touch that area.
+A pattern that looks risky is a finding only if an attacker can reach it. Before you
+report a pattern, find out where each value comes from and what the code uses it
+for.
+
+- Text that the code joins into a query, a command or a path, when every value comes
+  from a fixed set in the code and none comes from the input.
+- Values that go to the database as bound parameters.
+- A fast hash or a random value that is not for security, when no secret, password,
+  token or signature depends on it.
+- An access check that the code calls but that you cannot see. Do not report it. If
+  your answer depends on it, add a `Check:` line.
+- A missing control in an area that the change does not touch, for example rate
+  limits, audit logs or security headers.
 
 When the code has no real problem, say so in one sentence. You can add up to three
 low notes after it.
