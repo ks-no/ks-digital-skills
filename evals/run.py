@@ -57,7 +57,8 @@ TASKS = {
 }
 
 # Variants without a skill. Use them to find out if a skill does better than no help,
-# and better than one short sentence.
+# and better than one short sentence. They run only for the groups with SECURITY_TASK,
+# because the sentence is about security and the other tasks tell the model to use a skill.
 BASELINES = {
     "none": ("No skill", None),
     "sentence": (
@@ -81,7 +82,8 @@ def read_file(ref, name):
         path = ROOT / name
         return path.read_text(encoding="utf-8") if path.is_file() else None
     result = subprocess.run(
-        ["git", "show", f"{ref}:{name}"], cwd=ROOT, capture_output=True, text=True
+        ["git", "show", f"{ref}:{name}"], cwd=ROOT, capture_output=True, text=True,
+        encoding="utf-8",
     )
     return result.stdout if result.returncode == 0 else None
 
@@ -110,10 +112,13 @@ def prompt(task, text, skill=None, sentence=None):
 def ask(cmd, text, timeout, workdir):
     try:
         result = subprocess.run(
-            cmd, input=text, capture_output=True, text=True, timeout=timeout, cwd=workdir
+            cmd, input=text, capture_output=True, text=True, encoding="utf-8",
+            errors="replace", timeout=timeout, cwd=workdir,
         )
     except subprocess.TimeoutExpired:
         return f"(no answer after {timeout} seconds)"
+    except OSError as error:
+        return f"(the command could not start: {error})"
     if result.returncode != 0:
         return f"(the command failed with exit code {result.returncode}) {result.stderr.strip()}".strip()
     return result.stdout.strip()
@@ -129,7 +134,7 @@ def main():
     parser.add_argument("--before", help="git ref with the skills to compare with, for example main")
     parser.add_argument(
         "--baseline",
-        help="comma-separated variants without a skill: none, sentence",
+        help="comma-separated variants without a skill, for the security cases only: none, sentence",
     )
     parser.add_argument("--only", help="comma-separated case IDs, for example E3,E7,N3")
     parser.add_argument("--runs", type=int, default=1, help="runs per case and version (default 1)")
@@ -141,7 +146,12 @@ def main():
 
     if not args.cmd and not args.dump:
         sys.exit("give --cmd, or --dump to write the prompts to files")
+    if args.workdir and not Path(args.workdir).is_dir():
+        sys.exit(f"--workdir: {args.workdir!r} is not a directory")
     cmd = shlex.split(args.cmd) if args.cmd else None
+    if cmd and "/" in cmd[0]:
+        # A relative path must not change meaning when --workdir changes the directory.
+        cmd[0] = str(Path(cmd[0]).resolve())
     cases = json.loads(CASES.read_text(encoding="utf-8"))
     only = set(args.only.split(",")) if args.only else None
     if args.before and subprocess.run(
@@ -173,16 +183,19 @@ def main():
         dump.mkdir(parents=True, exist_ok=True)
     skills = {}
     for group in SKILL_FILES:
-        for case in cases.get(group, []):
-            if only and case["id"] not in only:
-                continue
+        group_cases = [case for case in cases.get(group, []) if not only or case["id"] in only]
+        group_versions = versions
+        if group_cases and baselines and TASKS[group] != SECURITY_TASK:
+            group_versions = [version for version in versions if version[3]]
+            print(f"{group}: --baseline is only for the security cases", file=sys.stderr)
+        for case in group_cases:
             names = tuple(SKILL_FILES[group] + case.get("files", []))
             lines += [
                 f"## {case['id']}: {case['type']}\n",
                 f"Input: {case['text']}\n",
                 f"Pass: {case['pass']}\n",
             ]
-            for label, ref, sentence, uses_skill in versions:
+            for label, ref, sentence, uses_skill in group_versions:
                 skill = None
                 if uses_skill:
                     if (ref, names) not in skills:
@@ -190,7 +203,9 @@ def main():
                     skill = skills[ref, names]
                     if skill is None:
                         where = f"`{ref}`" if ref else "the checkout"
-                        lines += [f"### {label}\n", f"(the skill files do not exist in {where})\n"]
+                        note = f"the skill files do not exist in {where}"
+                        print(f"{case['id']} {label.lower()}: {note}", file=sys.stderr)
+                        lines += [f"### {label}\n", f"({note})\n"]
                         continue
                 text = prompt(TASKS[group], case["text"], skill, sentence)
                 if dump:

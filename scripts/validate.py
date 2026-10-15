@@ -262,7 +262,7 @@ def check_cases(texts):
     if data is None:
         return
     if not isinstance(data, dict) or not all(isinstance(v, list) for v in data.values()):
-        error(CASES, "must be an object with a list of cases for each language")
+        error(CASES, "must be an object with a list of cases for each language or skill")
         return
     skills = " ".join(
         " ".join(text.split()).casefold() for path, text in texts.items() if PLUGINS in path.parents
