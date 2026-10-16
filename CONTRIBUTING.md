@@ -62,18 +62,18 @@ dem. Endrer du en innstilling, endre også listen her.
   - En pull request kreves. Ingen godkjenning kreves, og en ny push avviser en
     godkjenning som noen har gitt.
   - Alle samtaler i pull requesten må være løst.
-  - Jobben `validate` i `.github/workflows/validate.yml` må være grønn. Endrer du navnet
-    på jobben, endre rulesetet når du merger. Ellers venter hver pull request på en
-    sjekk som ikke kommer.
+  - Jobben `validate` i `.github/workflows/validate.yml` må være grønn, og branchen må
+    være oppdatert med `main`. Endrer du navnet på jobben, endre rulesetet når du
+    merger. Ellers venter hver pull request på en sjekk som ikke kommer.
   - Funn fra CodeQL og varsler fra secret scanning som ikke er løst, stopper en merge.
   - Bare squash er lov, og historikken er lineær.
   - Ingen kan force-pushe til `main` eller slette den.
   - Ingen har unntak (bypass).
-- **Rulesetet «Brancher: bare vedlikeholdere»** gjelder alle brancher unntatt `main`.
+- **Rulesetet «Brancher: bare maintainers»** gjelder alle brancher unntatt `main`.
   Ingen kan lage, endre eller slette en branch, eller force-pushe til den. Rollene
   Repository admin og Maintain og appen Dependabot har unntak. Dependabot trenger
   unntaket for å pushe branchene til sine pull requester.
-- **Rulesetet «Tagger: bare vedlikeholdere»** gjelder alle tagger og har de samme
+- **Rulesetet «Tagger: bare maintainers»** gjelder alle tagger og har de samme
   reglene. Rollene Repository admin og Maintain har unntak.
 - **Den klassiske regelen for `main`** (Settings → Branches) har bare «Restrict who can
   push to matching branches» med vedlikeholderne, og «Do not allow bypassing the above
