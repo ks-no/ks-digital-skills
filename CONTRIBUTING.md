@@ -1,0 +1,102 @@
+# Bidra til KS Digital Skills
+
+Alle kan bidra, også de som ikke jobber i KS Digital. Denne filen forklarer hvordan du
+lager en endring, hvem som kan merge den, og hvordan repoet er satt opp på GitHub.
+
+## Slik lager du en endring
+
+1. Lag en fork av repoet.
+2. Gjør endringen i en branch i forken.
+3. Kjør `python3 scripts/validate.py`, og rett feilene den finner.
+4. Åpne en pull request mot `main`.
+
+Reglene for skillene står i [README.md](README.md) under «Legg til en skill» og i
+[AGENTS.md](AGENTS.md).
+
+Workflowen `Validate` kjører på pull requesten. Er du ikke medlem av ks-no, må noen med
+skrivetilgang godkjenne kjøringen før den starter. En pull request fra en fork får
+ingen secrets og bare lesetilgang til repoet.
+
+Har du funnet en sårbarhet, følg [SECURITY.md](SECURITY.md) i stedet.
+
+## Vedlikeholdere
+
+Vedlikeholderne har rollen Maintain eller Admin på repoet. Bare de kan:
+
+- pushe brancher og tagger til repoet
+- merge pull requester til `main`
+
+Det er to grunner til dette:
+
+- En workflow som starter av en push, kjører slik den er i commiten som ble pushet. Den
+  kan lese alle secrets som repoet har tilgang til. Den som kan pushe en branch eller en
+  tag, kan derfor lese de samme secretene.
+- Alle som installerer skillene, får det som står på `main`. En skill er instruksjoner
+  som en agent følger, så en endring på `main` når agentene til alle brukerne.
+
+Rollen Write gir ikke unntak fra reglene, fordi flere enn vedlikeholderne har den.
+
+### Legg til en vedlikeholder
+
+1. Gi personen rollen Maintain under Settings → Collaborators and teams.
+2. Åpne regelen for `main` under Settings → Branches.
+3. Legg personen til under «Restrict who can push to matching branches».
+4. Skal personen få forespørsler om review, legg brukernavnet til i
+   [.github/CODEOWNERS](.github/CODEOWNERS).
+
+Når en vedlikeholder slutter, fjern personen fra de samme stedene.
+
+### Godkjenn en kjøring fra en fork
+
+Alle med skrivetilgang kan godkjenne en kjøring. Les endringene under `.github/` før du
+godkjenner. En pull request kan endre workflowen som kjører.
+
+## Innstillinger på GitHub
+
+Disse innstillingene er satt på GitHub, ikke i filer, og ingenting i repoet kan sjekke
+dem. Endrer du en innstilling, endre også listen her.
+
+### Regler for brancher og tagger
+
+- **Rulesetet `main`** (Settings → Rules → Rulesets):
+  - En pull request kreves. Ingen godkjenning kreves, og en ny push avviser en
+    godkjenning som noen har gitt.
+  - Alle samtaler i pull requesten må være løst.
+  - Jobben `validate` i `.github/workflows/validate.yml` må være grønn, og branchen må
+    være oppdatert med `main`. Endrer du navnet på jobben, endre rulesetet når du
+    merger. Ellers venter hver pull request på en sjekk som ikke kommer.
+  - Funn fra CodeQL og varsler fra secret scanning som ikke er løst, stopper en merge.
+  - Bare squash er lov, og historikken er lineær.
+  - Ingen kan force-pushe til `main` eller slette den.
+  - Ingen har unntak (bypass).
+- **Rulesetet «Brancher: bare maintainers»** gjelder alle brancher unntatt `main`.
+  Ingen kan lage, endre eller slette en branch, eller force-pushe til den. Rollene
+  Repository admin og Maintain og appen Dependabot har unntak. Dependabot trenger
+  unntaket for å pushe branchene til sine pull requester.
+- **Rulesetet «Tagger: bare maintainers»** gjelder alle tagger og har de samme
+  reglene. Rollene Repository admin og Maintain har unntak.
+- **Den klassiske regelen for `main`** (Settings → Branches) har bare «Restrict who can
+  push to matching branches» med vedlikeholderne, og «Do not allow bypassing the above
+  settings». Bare vedlikeholderne kan derfor merge til `main`. Hver vedlikeholder står i
+  listen med brukernavn, også de som er admin. Regelen er klassisk og ikke et ruleset,
+  fordi et ruleset slipper vedlikeholderne gjennom bare med unntak. Da ber GitHub om et
+  ekstra kryss ved hver merge.
+
+### Andre innstillinger
+
+- **Pull Requests** (Settings → General): bare «Allow squash merging» er på.
+  «Automatically delete head branches» er på.
+- **Features** (Settings → General): Issues er på. Wiki og Projects er av. Et ruleset
+  gjelder ikke wikien, så med wikien på kunne alle med skrivetilgang endre den.
+- **Actions permissions** (Settings → Actions → General): «Require actions to be pinned
+  to a full-length commit SHA» er på.
+- **Workflow permissions** (samme side): «Read repository contents and packages
+  permissions» er valgt, og «Allow GitHub Actions to create and approve pull requests»
+  er av.
+- **Fork pull request workflows** (samme side): «Require approval for all external
+  contributors» er valgt.
+- **Sikkerhet**: CodeQL kjører med standardoppsettet for Actions og Python. Secret
+  scanning, Dependabot alerts, Dependabot security updates og «Private vulnerability
+  reporting» er på.
+- **Secrets**: ingen workflow i repoet bruker secrets. Trenger en ny workflow en secret,
+  ta det opp i en issue først.

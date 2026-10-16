@@ -1,0 +1,15 @@
+# Dependabot updates the actions in .github/workflows. Each action is pinned to a
+# commit SHA, so no other tool updates them.
+#
+# Cooldown of 7 days: Dependabot proposes a version only when it is 7 days old. In that
+# time, the publisher can withdraw a broken or compromised release.
+#
+# The branch ruleset lets Dependabot push its branches (CONTRIBUTING.md).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7

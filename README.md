@@ -167,6 +167,15 @@ lenkene i skillene virker, at ingen plugin tar med MCP-servere, LSP-servere elle
 hooks, og at ingen tekstfil har lang bindestrek (U+2014). CI kjører den samme sjekken.
 Alle reglene står i [AGENTS.md](AGENTS.md).
 
+Lag endringen i en fork, og åpne en pull request mot `main`.
+[CONTRIBUTING.md](CONTRIBUTING.md) forklarer hvem som kan merge, og hvordan repoet er
+satt opp på GitHub.
+
+## Meld en sårbarhet
+
+Har du funnet en sårbarhet, meld den privat slik [SECURITY.md](SECURITY.md) forklarer.
+Ikke meld den i en vanlig issue.
+
 ## Lisens
 
 MIT, se [LICENSE](LICENSE).
