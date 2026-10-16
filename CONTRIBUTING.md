@@ -42,6 +42,10 @@ vi bruker, en kjent sårbarhet, blir jobben rød. Er den planlagte kjøringen p�
 sender GitHub e-post til den som sist endret `schedule` i
 `.github/workflows/validate.yml`.
 
+Kjøringen på mandag finner en ny advisory også i uker uten pull requester. GitHub slår den
+av når repoet har vært uten aktivitet i 60 dager. Da står det en advarsel under Actions →
+Validate. Slå kjøringen på igjen med «Enable workflow».
+
 Gjelder sårbarheten oss, bumper en vedlikeholder actionen for hånd med en gang:
 
 1. Lag en egen pull request for fiksen.
