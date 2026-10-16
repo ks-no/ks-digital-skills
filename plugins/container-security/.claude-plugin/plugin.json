@@ -1,0 +1,18 @@
+{
+  "name": "container-security",
+  "description": "Write and review Dockerfiles, Helm charts and Kubernetes or OpenShift manifests with rules for the risks in the OWASP Top 10 and the OWASP Kubernetes Top 10: images that run as a user that is not root and with a random user ID, pinned base images, no secrets in layers, a restricted security context, no host access, secrets from Secret objects, least-privilege RBAC, and oc and kubectl commands that do not show secrets or change the cluster. Keeps answers in proportion: minimal fixes, no invented tags, paths or user IDs, and no findings for safe settings.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Sindre Eik de Lange"
+  },
+  "repository": "https://github.com/ks-no/ks-digital-skills",
+  "license": "MIT",
+  "keywords": [
+    "security",
+    "containers",
+    "kubernetes",
+    "openshift",
+    "helm",
+    "owasp"
+  ]
+}

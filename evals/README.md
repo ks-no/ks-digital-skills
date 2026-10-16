@@ -230,6 +230,42 @@ Ingen person har kontrollert vurderingene ennå.
   passerer av feil grunn. S1, S3, S5 og S7 ble kjørt på nytt med Sonnet for å sjekke
   rettelsene.
 
+### Resultater for container-security
+
+Kjørt 15. oktober 2026 med agenter i Claude Code, to kjøringer per tekst og variant, på
+Opus og Sonnet. En egen KI-agent vurderte svarene til hver tekst uten å vite varianten.
+Ingen person har kontrollert vurderingene ennå.
+
+| Tekster | Variant | Opus: krav oppfylt | Opus: virker | Sonnet: krav oppfylt | Sonnet: virker |
+| --- | --- | --- | --- | --- | --- |
+| C1–C8 | Uten skill | 0,77 | 0,72 | 0,77 | 0,81 |
+| C1–C8 | Med skillen | 0,95 | 0,97 | 0,97 | 0,91 |
+| C9–C10 | Uten skill | 0,92 | 1,00 | 0,82 | 0,88 |
+| C9–C10 | Med skillen | 1,00 | 1,00 | 1,00 | 1,00 |
+
+- «Virker» er andelen svar der filen bygger og kjører, eller der kommandoene virker,
+  uten verdier som agenten har funnet på.
+- Skillen ble skrevet etter at C1–C8 var kjørt uten skill. C9 og C10 ble laget etter at
+  skillen var skrevet, med mønstre som skillen ikke nevner.
+- Uten skill var 27 av 40 svar for omfattende: nye ressurser, prober og
+  `readOnlyRootFilesystem` uten kjente stier, og lange forklaringer. Med skillen var
+  ingen av dem det.
+- Uten skill viste tre av fire svar på C7 passordet i et valgfritt steg, og de fleste
+  ga kommandoer som starter pods på nytt. Ingen svar med skillen viste passordet.
+- Skillen sier at en verdi fra en Secret i en miljøvariabel er riktig. C4 bruker den
+  samme løsningen, så resultatet for C4 sier lite om annen trygg konfigurasjon. C9 er
+  trygg konfigurasjon med andre mønstre.
+- Etter kjøringen ble åtte svake punkter i skillen rettet, blant annet plassholdere i
+  `FROM`, en valgfri `rollout restart` i en sjekkoppgave og en ServiceAccount som ikke
+  finnes. C1, C2, C3, C6, C7 og C8 ble kjørt på nytt med Opus og Sonnet for å sjekke
+  rettelsene. Alle svarene oppfylte kravene til sikkerhet. Ett svar fra Sonnet på C2
+  bruker fortsatt en standardverdi i Helm som ikke virker når verdiblokken mangler.
+- C9 hadde en feil i teksten: `ADD` fra en URL gir filen modus 600, så en bruker som
+  ikke er root, kan ikke lese den. Ingen av kravene måler dette, og bare ett av åtte
+  svar så feilen. Teksten har nå `--chmod=644`. Tallene over gjelder den første
+  teksten. Med den rettede teksten og den endelige skillen oppfylte begge svarene
+  (Opus og Sonnet) alle kravene.
+
 ### Laster agenten skillen selv?
 
 I alle kjøringene over fikk agenten beskjed om å lese skillen først. Tallene viser
@@ -256,6 +292,13 @@ Sonnet.
   linjene lastet begge den, men la ikke til noe i koden.
 - Med linjene lastet agenten også `secure-coding` i tre av fire kjøringer med
   workflows. Det gjør prompten lengre.
+- En ny sjekk med tolv skills testet `container-security` med tre oppgaver: en
+  Dockerfile, en pod som krasjer med «Permission denied», og en liten endring i et
+  Helm-template. Agenten lastet `container-security` i alle de tolv kjøringene, også
+  uten linjene.
+- Den fjerde oppgaven var et bash-skript som sletter gamle loggfiler. Ingen kjøring
+  lastet `container-security`. Med linjene lastet begge modellene `secure-coding`, og
+  begge la til et testskript som brukeren ikke ba om.
 - Listen og regelen sto i prompten. Et verktøy viser listen på sin egen måte, ofte
   sammen med mange andre skills og verktøy. Sjekken viser derfor at beskrivelsene
   passer til vanlige oppgaver, men ikke at et verktøy laster skillene.
