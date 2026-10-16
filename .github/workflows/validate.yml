@@ -8,10 +8,21 @@ on:
 permissions:
   contents: read
 
+# A new push to the same branch stops the run that it replaces.
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  # The ruleset for main requires this job by its name. If you change the name, change
+  # the ruleset too (CONTRIBUTING.md).
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # No step pushes, so the token does not stay in .git/config.
+          persist-credentials: false
       - name: Valider repoet
         run: python3 scripts/validate.py

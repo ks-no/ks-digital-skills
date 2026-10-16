@@ -27,7 +27,12 @@ plugins/<skill-name>/
 scripts/validate.py                  # repository validation
 evals/cases.json                     # held-out test texts for the AI-marker rules and security skills
 evals/run.py                         # runs the test texts through a model
+.github/workflows/validate.yml       # CI: runs validate.py
+.github/dependabot.yml               # updates the pinned actions
+.github/CODEOWNERS                   # maintainers who review each pull request
 README.md                            # overview and installation (Norwegian)
+CONTRIBUTING.md                      # how to contribute, and the GitHub settings (Norwegian)
+SECURITY.md                          # how to report a vulnerability (Norwegian)
 ```
 
 ## Creating or editing a skill
@@ -146,6 +151,17 @@ It needs only Python 3. It checks that:
   contains a sentence from a case.
 
 CI runs the same script on every push to `main` and on every pull request.
+
+## Workflows and GitHub settings
+
+- A workflow in this repo uses no secrets, has `permissions: contents: read`, and has no
+  `pull_request_target` or `workflow_run` trigger.
+- Pin each action to a full commit SHA, with the version tag in a comment. Set
+  `persist-credentials: false` on each checkout.
+- `CONTRIBUTING.md` records the GitHub settings, such as the rulesets. Nothing in the
+  repo can check them. If a change affects a setting, update `CONTRIBUTING.md` in the
+  same pull request. For example, the ruleset for `main` requires the job `validate` by
+  its name.
 
 ## Before you finish
 
