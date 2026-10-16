@@ -19,6 +19,63 @@ ingen secrets og bare lesetilgang til repoet.
 
 Har du funnet en sårbarhet, følg [SECURITY.md](SECURITY.md) i stedet.
 
+## Versjoner av actions
+
+Dependabot oppdaterer actions i `.github/workflows/`. Den foreslår en ny versjon bare når
+versjonen er minst 7 dager gammel. I den tiden kan utgiveren trekke tilbake en versjon som
+er ødelagt eller kompromittert.
+
+- Ikke endre versjonen av en action for hånd. La Dependabot gjøre det. Unntaket er en
+  sikkerhetsfiks, se under.
+- Legger du til en ny action, velg en versjon som ble utgitt på GitHub for minst 7 dager
+  siden. Lås den til en full commit-SHA, med versjonen i en kommentar.
+- En action som ikke er fra GitHub, ks-no eller en verifisert utgiver, må stå i listen
+  over unntak under «Andre innstillinger». Ellers stopper workflowen med «Startup
+  failure».
+
+### Sikkerhetsfikser
+
+Dependabot lager ingen varsler og ingen security updates for en action som er låst til en
+SHA. Derfor slår zizmor opp hver action i GitHub Advisory Database. Det skjer i jobben
+`validate`, på hver pull request, ved hver push til `main` og hver mandag. Har en action
+vi bruker, en kjent sårbarhet, blir jobben rød. Er den planlagte kjøringen på mandag rød,
+sender GitHub e-post til den som sist endret `schedule` i
+`.github/workflows/validate.yml`.
+
+Kjøringen på mandag finner en ny advisory også i uker uten pull requester. GitHub slår den
+av når repoet har vært uten aktivitet i 60 dager. Da står det en advarsel under Actions →
+Validate. Slå kjøringen på igjen med «Enable workflow».
+
+Gjelder sårbarheten oss, bumper en vedlikeholder actionen for hånd med en gang:
+
+1. Lag en egen pull request for fiksen.
+2. Velg en versjon som advisoryen oppgir som rettet. Regelen om 7 dager gjelder ikke her.
+3. Finn SHA-en til versjonen:
+
+   ```sh
+   git ls-remote https://github.com/<eier>/<action> 'refs/tags/vX.Y.Z' 'refs/tags/vX.Y.Z^{}'
+   ```
+
+   Viser kommandoen to linjer, er taggen annotert. Da står SHA-en til commiten på linjen
+   med `^{}`.
+4. Skriv SHA-en på `uses:`-linjen, med versjonen i kommentaren.
+5. Skriv GHSA-ID-en i pull requesten.
+
+Finnes det ingen rettet versjon ennå, eller gjelder sårbarheten ikke oss, legg GHSA-ID-en i
+`.github/zizmor.yml`:
+
+```yaml
+rules:
+  known-vulnerable-actions:
+    config:
+      allow:
+        - GHSA-xxxx-xxxx-xxxx
+```
+
+Skriv grunnen i pull requesten. Fjern ID-en når en rettet versjon finnes. Ikke bruk
+`# zizmor: ignore[known-vulnerable-actions]` på `uses:`-linjen, fordi den skjuler alle
+advisoryene for actionen, også nye.
+
 ## Vedlikeholdere
 
 Vedlikeholderne har rollen Maintain eller Admin på repoet. Bare de kan:
@@ -89,7 +146,16 @@ dem. Endrer du en innstilling, endre også listen her.
 - **Features** (Settings → General): Issues er på. Wiki og Projects er av. Et ruleset
   gjelder ikke wikien, så med wikien på kunne alle med skrivetilgang endre den.
 - **Actions permissions** (Settings → Actions → General): «Require actions to be pinned
-  to a full-length commit SHA» er på.
+  to a full-length commit SHA» er på. «Allow ks-no, and select non-ks-no, actions and
+  reusable workflows» er valgt, med «Allow actions created by GitHub» og «Allow actions
+  by Marketplace verified creators» krysset av, og dette unntaket:
+
+  ```text
+  zizmorcore/zizmor-action@*
+  ```
+
+  Listen har `@*`, fordi workflowen låser actionen til en SHA. En SHA i listen ville
+  stoppet hver bump fra Dependabot.
 - **Workflow permissions** (samme side): «Read repository contents and packages
   permissions» er valgt, og «Allow GitHub Actions to create and approve pull requests»
   er av.

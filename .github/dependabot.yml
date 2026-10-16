@@ -1,6 +1,9 @@
 # Dependabot updates the actions in .github/workflows. Each action is pinned to a
 # commit SHA, so no other tool updates them.
 #
+# Dependabot makes no alerts and no security updates for an action that is pinned to a
+# SHA. zizmor in validate.yml finds those advisories (CONTRIBUTING.md, Sikkerhetsfikser).
+#
 # Cooldown of 7 days: Dependabot proposes a version only when it is 7 days old. In that
 # time, the publisher can withdraw a broken or compromised release.
 #

@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Once a week, so that zizmor finds a new advisory for an action also when nobody
+  # pushes (CONTRIBUTING.md, Sikkerhetsfikser).
+  schedule:
+    - cron: "17 6 * * 1"
 
 permissions:
   contents: read
@@ -26,3 +30,10 @@ jobs:
           persist-credentials: false
       - name: Valider repoet
         run: python3 scripts/validate.py
+      # zizmor checks the workflows and dependabot.yml. With the token of the run, it also
+      # finds each action in the GitHub Advisory Database. Red: read the findings in the
+      # log. For an action with an advisory, see CONTRIBUTING.md, Sikkerhetsfikser.
+      - name: Sjekk workflowene med zizmor
+        uses: zizmorcore/zizmor-action@cc914d7f3750a2d13d75c7f184a1060aa0e9d482 # v0.6.4
+        with:
+          advanced-security: false
