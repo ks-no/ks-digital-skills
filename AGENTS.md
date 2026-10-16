@@ -27,7 +27,7 @@ plugins/<skill-name>/
 scripts/validate.py                  # repository validation
 evals/cases.json                     # held-out test texts for the AI-marker rules and security skills
 evals/run.py                         # runs the test texts through a model
-.github/workflows/validate.yml       # CI: runs validate.py
+.github/workflows/validate.yml       # CI: runs validate.py and zizmor
 .github/dependabot.yml               # updates the pinned actions
 .github/CODEOWNERS                   # maintainers who review each pull request
 README.md                            # overview and installation (Norwegian)
@@ -150,7 +150,8 @@ It needs only Python 3. It checks that:
   the IDs are unique, each path in a `files` list exists, and no skill file
   contains a sentence from a case.
 
-CI runs the same script on every push to `main` and on every pull request.
+CI runs the same script, and zizmor on the workflows, on every push to `main`, on every
+pull request and once a week.
 
 ## Workflows and GitHub settings
 
@@ -158,6 +159,13 @@ CI runs the same script on every push to `main` and on every pull request.
   `pull_request_target` or `workflow_run` trigger.
 - Pin each action to a full commit SHA, with the version tag in a comment. Set
   `persist-credentials: false` on each checkout.
+- Do not change the version of an action by hand. Dependabot changes it when the new
+  version is at least 7 days old. When you add a new action, select a version that
+  GitHub released at least 7 days before. An action that is not from GitHub, ks-no or a
+  verified creator must also be in the allow list in `CONTRIBUTING.md`.
+- Dependabot makes no security updates for an action that is pinned to a SHA. zizmor in
+  the `validate` job finds the advisories. For an action with an advisory, a maintainer
+  changes the version at once. `CONTRIBUTING.md` (Sikkerhetsfikser) tells how.
 - `CONTRIBUTING.md` records the GitHub settings, such as the rulesets. Nothing in the
   repo can check them. If a change affects a setting, update `CONTRIBUTING.md` in the
   same pull request. For example, the ruleset for `main` requires the job `validate` by
