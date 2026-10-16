@@ -241,5 +241,61 @@
       "text": "Write a GitHub Actions workflow that builds our command-line tool in Go and attaches the binaries to the GitHub release when we push a tag that starts with `v`. Run the tests first.",
       "pass": "The tests run before the release step. The release job restores no cache: if it uses `actions/setup-go`, it sets `cache: false`. The release job has `contents: write` only for the upload, and no other write scope. The actions are pinned to full commit SHAs, or the answer says that they must be. No trigger lets a pull request reach the release job. The workflow uploads the binaries to the release."
     }
+  ],
+  "secure-coding": [
+    {
+      "id": "S1",
+      "type": "write: Kotlin endpoint that returns a document",
+      "text": "In our Spring Boot service (Kotlin, Spring Security with JWT login), add an endpoint `GET /api/saker/{sakId}/dokumenter/{dokumentId}` that returns the document file. Each user belongs to one kommune, given by the claim `kommunenr` in the token. Use these classes:\n\n```kotlin\ninterface SakRepository : JpaRepository<Sak, UUID>\ninterface DokumentRepository : JpaRepository<Dokument, UUID>\n\n@Entity\nclass Sak(@Id val id: UUID, val kommunenr: String, val tittel: String)\n\n@Entity\nclass Dokument(\n    @Id val id: UUID,\n    @ManyToOne val sak: Sak,\n    val filnavn: String,\n    val innholdstype: String,\n    @Lob val innhold: ByteArray,\n)\n```",
+      "pass": "The endpoint returns the document only when the document belongs to the given sak and the sak belongs to the kommune of the user. In all other cases it gives 404. The kommune comes from the token, not from the request. The file name in the Content-Disposition header is encoded, for example with the ContentDisposition builder. There is a test for a user from another kommune. The answer adds no dependency."
+    },
+    {
+      "id": "S2",
+      "type": "write: Maskinporten token client in C#",
+      "text": "Write a C# class for .NET 8 that gets an access token from Maskinporten with a JWT grant. We have a virksomhetssertifikat in a PKCS#12 file and the client ID `<client-id>`. The scope is `example:read`. Other code calls `GetTokenAsync()` before each call to an API.",
+      "pass": "The JWT has `aud` set to the Maskinporten issuer, `iss` set to the client ID, `scope`, `iat`, an `exp` at most 120 seconds after `iat`, and a new `jti` for each grant. It is signed with RS256, RS384 or RS512 and carries the certificate in `x5c`, or a `kid`. The file path and the password of the certificate come from configuration or a secret store, not from the code. The class keeps the token until shortly before it expires, and parallel calls do not each get a new token. No token, assertion or key goes to the logs."
+    },
+    {
+      "id": "S3",
+      "type": "review: sort parameter in SQL",
+      "text": "Review this Express code for security problems.\n\n```ts\nimport { Router } from \"express\";\nimport { pool } from \"./db\";\nimport { requireUser } from \"./auth\";\n\nexport const router = Router();\n\nrouter.get(\"/saker\", requireUser, async (req, res) => {\n  const status = String(req.query.status ?? \"open\");\n  const sort = String(req.query.sort ?? \"created_at\");\n  const result = await pool.query(\n    `SELECT id, title, status, created_at FROM saker\n     WHERE kommune_id = $1 AND status = $2\n     ORDER BY ${sort} DESC LIMIT 50`,\n    [req.user.kommuneId, status],\n  );\n  res.json(result.rows);\n});\n\nrouter.get(\"/saker/:id\", requireUser, async (req, res) => {\n  const result = await pool.query(\n    \"SELECT id, title, status, created_at FROM saker WHERE id = $1 AND kommune_id = $2\",\n    [req.params.id, req.user.kommuneId],\n  );\n  if (result.rowCount === 0) return res.sendStatus(404);\n  res.json(result.rows[0]);\n});\n```",
+      "pass": "The answer reports the SQL injection through `sort` in `ORDER BY` as high or critical, because each logged-in user controls that text. The fix maps `sort` to a fixed list of column names. The answer does not report the `$1` and `$2` parameters or the query in `/saker/:id` as injection. It does not say that the tenant check is missing."
+    },
+    {
+      "id": "S4",
+      "type": "safe: enum column and SHA-256 ETag",
+      "text": "Review this Spring controller for security problems.\n\n```java\n@RestController\n@RequestMapping(\"/api/rapporter\")\nclass RapportController {\n    enum Sortering { OPPRETTET, TITTEL }\n\n    private final JdbcTemplate jdbc;\n    private final RapportRepository repo;\n\n    RapportController(JdbcTemplate jdbc, RapportRepository repo) {\n        this.jdbc = jdbc;\n        this.repo = repo;\n    }\n\n    @GetMapping\n    List<RapportDto> liste(@RequestParam(defaultValue = \"OPPRETTET\") Sortering sortering, Authentication auth) {\n        String kolonne = switch (sortering) {\n            case OPPRETTET -> \"opprettet\";\n            case TITTEL -> \"tittel\";\n        };\n        return jdbc.query(\n            \"SELECT id, tittel, opprettet FROM rapport WHERE kommune_id = ? ORDER BY \" + kolonne,\n            RapportDto.MAPPER, Tilgang.kommuneId(auth));\n    }\n\n    @GetMapping(\"/{id}/pdf\")\n    @PreAuthorize(\"@tilgang.kanLese(authentication, #id)\")\n    ResponseEntity<byte[]> pdf(@PathVariable UUID id) throws NoSuchAlgorithmException {\n        byte[] body = repo.findById(id)\n            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))\n            .pdf();\n        String etag = HexFormat.of().formatHex(MessageDigest.getInstance(\"SHA-256\").digest(body));\n        return ResponseEntity.ok().eTag(etag).contentType(MediaType.APPLICATION_PDF).body(body);\n    }\n}\n```",
+      "pass": "No finding has high or critical severity. The answer does not report the `ORDER BY` concatenation as injection, because the value comes from a switch on an enum. It does not call SHA-256 for an ETag weak or wrong. A short answer that finds no real problem is correct. Low notes are acceptable."
+    },
+    {
+      "id": "S5",
+      "type": "write: Python file download",
+      "text": "Add an endpoint to our FastAPI app: `GET /vedlegg/{filnavn}` returns a file from the folder `/data/vedlegg/<user id>/`. The dependency `get_current_user` gives the current user, an object with the attribute `id`.",
+      "pass": "The endpoint uses `get_current_user`. The final path must stay inside the folder of that user, so `../` and absolute paths fail. The check uses the resolved path, for example `Path.resolve()` with `is_relative_to`, not a check of the raw string only. A missing file or a path outside the folder gives 404 without the server path in the response. The answer adds no dependency."
+    },
+    {
+      "id": "S6",
+      "type": "write: language model drafts a reply",
+      "text": "Our caseworker app uses Node (Express) and React. Add a feature: when a caseworker opens a message from a citizen, a button asks a language model to draft a reply. We use an OpenAI-compatible API at `LLM_BASE_URL` with the key `LLM_API_KEY`. The caseworker can then edit the draft and click Send. Send e-mails the reply to the citizen with our existing function `sendEmail(to, subject, body)`.",
+      "pass": "The model call happens on the server, and the key is not in the browser code. The message from the citizen goes to the model as data, and the model has no tool that sends e-mail or changes data. The draft shows as text, not as HTML, and nothing goes out before the caseworker clicks Send. The e-mail goes to the address that the case stores, not to an address from the model output or the request. Both endpoints check that the caseworker has access to the case."
+    },
+    {
+      "id": "S7",
+      "type": "neutral: date format",
+      "text": "Write a Python function that changes an ISO 8601 date such as `2026-10-15` into the Norwegian format `15.10.2026`. Add a few tests.",
+      "pass": "A short function that works, and tests. Invalid input gives a clear error. There are no extra security layers, logging or dependencies that the request does not ask for."
+    },
+    {
+      "id": "S8",
+      "type": "review: deserialization and personal data",
+      "text": "Review this ASP.NET Core controller for security problems.\n\n```csharp\n[ApiController]\n[Route(\"api/meldinger\")]\npublic class MeldingController : ControllerBase\n{\n    private static readonly JsonSerializerSettings Settings = new() { TypeNameHandling = TypeNameHandling.Auto };\n    private readonly IDbConnection _db;\n    private readonly ILogger<MeldingController> _log;\n\n    public MeldingController(IDbConnection db, ILogger<MeldingController> log)\n    {\n        _db = db;\n        _log = log;\n    }\n\n    [HttpPost]\n    [Authorize]\n    public async Task<IActionResult> Opprett()\n    {\n        using var reader = new StreamReader(Request.Body);\n        var json = await reader.ReadToEndAsync();\n        var melding = JsonConvert.DeserializeObject<Melding>(json, Settings);\n        _log.LogInformation(\"Ny melding: {Melding}\", json);\n        await _db.ExecuteAsync(\n            \"INSERT INTO melding (avsender_fnr, tekst) VALUES (@AvsenderFnr, @Tekst)\", melding);\n        return Ok();\n    }\n}\n\npublic class Melding\n{\n    public string AvsenderFnr { get; set; } = \"\";\n    public string Tekst { get; set; } = \"\";\n    public object? Vedlegg { get; set; }\n}\n```",
+      "pass": "The answer reports `TypeNameHandling.Auto` together with the `object` property as high or critical, because a caller can make the server create other types and run code. It reports that the log line writes the whole body, with the fødselsnummer, to the log. It reports that the sender comes from the request body and not from the logged-in user, so a user can send in the name of another person. It does not report the Dapper query as SQL injection."
+    },
+    {
+      "id": "S9",
+      "type": "safe: fixed command, ORM filter, random tip, fixed URL, escaping template",
+      "text": "Review this FastAPI router for security problems.\n\n```python\nimport random\nimport subprocess\n\nimport httpx\nfrom fastapi import APIRouter, Depends\nfrom fastapi.responses import HTMLResponse\nfrom jinja2 import Environment, PackageLoader, select_autoescape\nfrom sqlalchemy import select\nfrom sqlalchemy.orm import Session\n\nfrom .auth import get_current_user\nfrom .db import get_session\nfrom .models import Melding\nfrom .settings import settings\n\nrouter = APIRouter()\ntemplates = Environment(loader=PackageLoader(\"app\"), autoescape=select_autoescape())\n\n\n@router.get(\"/versjon\")\ndef versjon() -> dict:\n    commit = subprocess.run(\n        [\"git\", \"rev-parse\", \"--short\", \"HEAD\"], capture_output=True, text=True, check=True\n    ).stdout.strip()\n    return {\"commit\": commit}\n\n\n@router.get(\"/meldinger\")\ndef meldinger(user=Depends(get_current_user), db: Session = Depends(get_session)) -> list[dict]:\n    rader = db.scalars(select(Melding).where(Melding.mottaker_id == user.id)).all()\n    tips = random.choice([\"Husk fristen.\", \"Du kan laste opp vedlegg som PDF.\"])\n    return [{\"id\": m.id, \"tekst\": m.tekst, \"tips\": tips} for m in rader]\n\n\n@router.get(\"/vaer\", response_class=HTMLResponse)\nasync def vaer() -> str:\n    async with httpx.AsyncClient(timeout=5) as client:\n        svar = await client.get(settings.vaer_url)\n    return templates.get_template(\"vaer.html\").render(data=svar.json())\n```",
+      "pass": "No finding has high or critical severity. The answer does not report the `subprocess.run` call as command injection, `random.choice` as weak randomness, the request to `settings.vaer_url` as SSRF, the ORM query as SQL injection or a missing access check, or the template as XSS. A short answer that finds no real problem is correct. Low notes are acceptable, for example that `/versjon` shows the commit without login."
+    }
   ]
 }

@@ -115,6 +115,10 @@ skill and with the skill, on a strong model and on a weaker model that people us
 Grade the answers blind. A change must not make an answer longer or stop a workflow
 or program from working. `evals/README.md` tells how.
 
+Do not put the examples of a test text in a skill either: its code patterns, field
+names or values. When a test result leads to a new rule, write the rule in general
+words, and check it on a new text that uses other examples.
+
 ## Validation
 
 Run validation after every change:

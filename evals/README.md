@@ -82,7 +82,8 @@ Svake punkter etter endringen:
 ## Sikkerhetsskillene
 
 `cases.json` har også tekster for sikkerhetsskillene, under navnet på skillen. G1–G11
-tester `github-actions-security`. Det er fire typer tekster:
+tester `github-actions-security`, og S1–S9 tester `secure-coding`. Det er fire typer
+tekster:
 
 - `write`: en oppgave der den usikre løsningen ligger nær
 - `review`: en workflow med en feil som agenten skal finne
@@ -200,23 +201,64 @@ har kontrollert vurderingene ennå.
 - G3, G4 og G7 er gjennomganger. De har nå `review.md` i `files`, så også en modell
   som ikke kan lese filer, får filen som skillen ber om.
 
+### Resultater for secure-coding
+
+Kjørt 15. oktober 2026 med agenter i Claude Code, to kjøringer per tekst og variant, på
+Opus og Sonnet. En egen KI-agent vurderte svarene til hver tekst uten å vite varianten.
+Ingen person har kontrollert vurderingene ennå.
+
+| Variant | Opus: krav oppfylt | Opus: virker | Sonnet: krav oppfylt | Sonnet: virker |
+| --- | --- | --- | --- | --- |
+| Uten skill | 0,90 | 0,62 | 0,92 | 0,31 |
+| Med skillen | 1,00 | 0,94 | 0,97 | 0,94 |
+
+- «Virker» er andelen svar der koden gjør det brukeren ba om, kan kjøre og bare kaller
+  navn som finnes.
+- Uten skill var de fleste svarene for omfattende: rate limiting, ekstra
+  avhengigheter, hjelpefunksjoner som ikke finnes, og lange forklaringer. Med skillen
+  var ingen av svarene det.
+- Tabellen gjelder S1–S8 med den første versjonen av skillen.
+- S4 er trygg kode. Uten skill fant agentene problemer som ikke finnes (0,55 med Opus
+  og 0,65 med Sonnet). Den første versjonen av skillen nevnte de samme mønstrene som
+  S4, så resultatet sa lite om annen kode. Nå sier skillen bare prinsippet. Med den
+  nye teksten fikk alle de fire svarene på S4 fortsatt 1,00.
+- S9 er en ny tekst med trygg kode og mønstre som skillen ikke nevner. Den ble laget
+  etter at skillen var skrevet. Uten skill fikk Opus 0,75 og Sonnet 0,56, og tre av
+  fire svar var for omfattende. Med skillen fikk alle fire svarene 1,00, og ingen var
+  for omfattende.
+- Etter kjøringen ble fem svake punkter i skillen rettet, blant annet tester som
+  passerer av feil grunn. S1, S3, S5 og S7 ble kjørt på nytt med Sonnet for å sjekke
+  rettelsene.
+
 ### Laster agenten skillen selv?
 
 I alle kjøringene over fikk agenten beskjed om å lese skillen først. Tallene viser
-derfor hvor godt skillen virker når agenten har lastet den, ikke om agenten laster den
-selv. I Claude Code, Codex og Copilot velger agenten en skill ut fra beskrivelsen.
+derfor hvor godt skillene virker når agenten har lastet dem, ikke om agenten laster
+dem selv. I Claude Code, Codex og Copilot velger agenten en skill ut fra beskrivelsen.
 
-En liten sjekk 15. oktober 2026 testet beskrivelsen. Agenten fikk en liste med elleve
+En liten sjekk 15. oktober 2026 testet beskrivelsene. Agenten fikk en liste med elleve
 skills (navn, beskrivelse og fil) og en regel om å bruke en skill når oppgaven passer
-til beskrivelsen. Den fikk to vanlige oppgaver som ikke nevner sikkerhet eller en
-skill: en ny workflow som kommenterer pull requests, og en ny versjon av en action.
-Hver oppgave ble kjørt med og uten linjen fra README i `AGENTS.md`, på Opus og Sonnet.
+til beskrivelsen. Den fikk seks vanlige oppgaver på norsk og engelsk som ikke nevner
+sikkerhet eller en skill:
 
-- Agenten lastet `github-actions-security` i alle de åtte kjøringene, også uten
-  linjen.
+- tre oppgaver med applikasjonskode: et endepunkt som henter ett objekt, en
+  nedlasting av filer og en gjennomgang av en diff før merge
+- to oppgaver med workflows: en ny workflow som kommenterer pull requests, og en ny
+  versjon av en action
+- én datofunksjon uten noe å beskytte
+
+Hver oppgave ble kjørt med og uten linjene fra README i `AGENTS.md`, på Opus og
+Sonnet.
+
+- Agenten lastet riktig skill i alle de 20 kjøringene med kode eller workflows, også
+  uten linjene.
+- For datofunksjonen lastet ingen av modellene `secure-coding` uten linjene. Med
+  linjene lastet begge den, men la ikke til noe i koden.
+- Med linjene lastet agenten også `secure-coding` i tre av fire kjøringer med
+  workflows. Det gjør prompten lengre.
 - Listen og regelen sto i prompten. Et verktøy viser listen på sin egen måte, ofte
-  sammen med mange andre skills og verktøy. Sjekken viser derfor at beskrivelsen
-  passer til vanlige oppgaver, men ikke at et verktøy laster skillen.
-- README anbefaler derfor linjen i `AGENTS.md`. Agenten leser instruksjonsfilen hver
+  sammen med mange andre skills og verktøy. Sjekken viser derfor at beskrivelsene
+  passer til vanlige oppgaver, men ikke at et verktøy laster skillene.
+- README anbefaler derfor linjene i `AGENTS.md`. Agenten leser instruksjonsfilen hver
   gang, men en skill bare når den velger den selv.
 - Ingen har gjort sjekken i et ekte verktøy ennå.
