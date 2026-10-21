@@ -16,21 +16,25 @@ Repoet er nytt. Innhold og struktur kan endre seg.
 | `norsk-sprakvask` | skriving | skriv og språkvask norsk bokmål etter Språkrådets normer og klarspråksrådene, og fanger engelsk smitte, inkonsekvente former, særskriving og KI-preg |
 | `asd-ste100-norsk` | skriving | skriv norsk teknisk tekst som ikke kan misforstås, etter prinsippene i ASD-STE100 tilpasset norsk grammatikk |
 | `asd-ste100-english` | skriving | skriv engelsk etter ASD-STE100 (Simplified Technical English), så verktøybeskrivelser, feilmeldinger og instruksjoner ikke kan misforstås av en agent eller en leser |
-| `polish` | produktivitet | rydd opp i, språkvask og gå gjennom branchen i runder til sjekken passerer og en runde ikke finner flere feil, og avslutt alltid med en gjennomgang |
+| `polish` | produktivitet | rydd opp i, språkvask, sjekk universell utforming og gå gjennom branchen i runder til sjekken passerer og en runde ikke finner flere feil, og avslutt alltid med en gjennomgang |
 | `guided-click-through` | testing | test oppførselen til en endring i grensesnittet med komponenttestene i prosjektet, og lag en kort sjekkliste som brukeren klikker gjennom for det testene ikke ser, som layout, stil og synlig fokus |
 | `github-actions-security` | sikkerhet | skriv og gå gjennom workflowene i GitHub Actions med regler for risikoene i OWASP Top 10 og OWASP Top 10 CI/CD Security Risks, så tekst, kode og artefakter fra forks, issues og kommentarer ikke når tokenet og secretene |
 | `secure-coding` | sikkerhet | skriv og gå gjennom applikasjonskode i Java, Kotlin, C#, Python og TypeScript med regler for risikoene i OWASP Top 10, OWASP API Security Top 10 og OWASP Top 10 for LLM Applications, også for Maskinporten og ID-porten, uten ekstra kode og uten falske funn |
 | `container-security` | sikkerhet | skriv og gå gjennom Dockerfiler, Helm-charts og manifester for Kubernetes og OpenShift med regler for risikoene i OWASP Top 10 og OWASP Kubernetes Top 10, uten gjetteverdier som stopper arbeidslasten, og uten kommandoer som viser secrets |
+| `universell-utforming` | testing | sjekk hver endring i grensesnittet mot kravene til universell utforming og suksesskriteriene i WCAG som forskriften krever, planlegg brukertester med personer med funksjonsnedsettelser etter sjekklisten til Frank Dahle (Digdir) i UX Norge, og gjør notatene om til funn og rettelser i koden |
 
 `asd-ste100-norsk` er laget for å brukes sammen med `norsk-sprakvask`. Den første tar
 setningsbygningen, og den andre tar rettskriving, tegnsetting og ordvalg. Installer
 begge.
 
-`polish` bruker de tre språkskillene i språkvasken. Er en av dem ikke installert, hopper
-`polish` over den skillen og sier fra i rapporten. Endrer branchen grensesnittet og
-prosjektet har komponenttester, skriver `polish` tester for oppførselen med
-`guided-click-through` før første runde. Rapporten slutter med en sjekkliste fra samme
-skill når testene ikke viser alt, eller når et valg er lettere å ta i appen.
+`polish` bruker de tre språkskillene i språkvasken og `universell-utforming` på koden for
+grensesnittet. En hindring som bryter et suksesskriterium som gjelder, er et funn som
+betyr noe, med mindre kravene til prosjektet sier at universell utforming ikke gjelder.
+Da retter `polish` hindringen som en kosmetisk endring. Er en av skillene ikke
+installert, hopper `polish` over den og sier fra i rapporten. Endrer branchen grensesnittet og prosjektet har komponenttester, skriver
+`polish` tester for oppførselen med `guided-click-through` før første runde. Rapporten
+slutter med en sjekkliste fra samme skill når testene ikke viser alt, eller når et valg
+er lettere å ta i appen.
 
 `guided-click-through` starter ikke appen og bruker ingen nettleser. Har prosjektet
 komponenttester, tester agenten oppførselen selv. Mangler prosjektet slike tester,
@@ -38,6 +42,32 @@ foreslår agenten å legge dem til, men gjør det bare når du ber om det. Deret
 den steg for det testene ikke ser, og du klikker gjennom i appen slik du pleier. Du
 svarer «ok» eller oppgir stegene som feilet, og agenten retter dem. Er et valg lettere
 å ta når du ser appen, kan sjekklisten også be deg velge mellom to eller tre løsninger.
+
+`universell-utforming` sjekker hver endring i grensesnittet mot kravene til universell
+utforming, med suksesskriteriene i WCAG 2.1 som forskriften krever av offentlige
+virksomheter. Agenten retter hindringene med så små endringer som mulig og melder ikke
+mønstre som er riktige. En sjekk av koden finner ikke alt, så agenten sier ikke at
+løsningen oppfyller kravene.
+
+Skillen hjelper også teamet å teste med personer som bruker hjelpemidler: agenten lager
+plan, invitasjon og samtykketekst, og går gjennom notatene etterpå. Agenten skiller det
+deltakeren gjorde, fra det testlederen konkluderte, og lager rettelser med tester.
+Agenten rekrutterer ikke deltakere og ser ikke øktene. Det gjør teamet.
+
+Skriv linjen for `universell-utforming` i `AGENTS.md` i prosjektet, så sjekker agenten
+hver endring i grensesnittet. Se [Linjer i AGENTS.md](#linjer-i-agentsmd).
+
+**Merk: ingen fagperson har gått gjennom `universell-utforming`.** En KI-agent skrev
+skillen ut fra offentlige kilder: sjekklisten i UX Norge, Uutilsynet, W3C, WebAIM og
+GOV.UK. KI-agenter gikk gjennom skillen mot kildene og mot Designsystemet og Aksel, og
+vurderte svarene i testene. Ingen person med fagkunnskap om
+universell utforming har kontrollert reglene eller resultatene.
+
+- Bruk skillen som en hjelp til å finne og rette hindringer, ikke som bevis for at en
+  løsning oppfyller kravene.
+- Kravene står i forskriften, og Uutilsynet fører tilsyn med dem. Sjekk viktige valg på
+  uutilsynet.no, og med en fagperson når du kan.
+- Har du fagkunnskap og ser en feil, si fra i en issue.
 
 ### Sikkerhet
 
@@ -47,26 +77,33 @@ kilder og inneholder ingen opplysninger om interne systemer.
 
 - Bruk en sterk modell når du ber om en sikkerhetsgjennomgang. Kjernereglene står i
   `SKILL.md`, så også en mindre modell får det viktigste.
-- Agenten leser instruksjonsfilen til prosjektet hver gang, men en skill bare når den
-  velger den selv. Skriv derfor disse linjene i `AGENTS.md` i prosjektet:
+- Skriv linjene for sikkerhetsskillene i `AGENTS.md` i prosjektet. Se
+  [Linjer i AGENTS.md](#linjer-i-agentsmd).
 
-  ```text
-  Before you write, change or review code, use the skill secure-coding.
-  Before you create or change a GitHub Actions workflow, use the skill github-actions-security.
-  Before you create, change or review a Dockerfile, a Helm chart or a Kubernetes or OpenShift manifest, or run oc, kubectl or helm, use the skill container-security.
-  ```
+### Linjer i AGENTS.md
 
-  Codex, Copilot og OpenCode leser `AGENTS.md`. Claude Code leser `AGENTS.md` fra
-  versjon 2.1.277, men bare når det ikke finnes en `CLAUDE.md` eller
-  `CLAUDE.local.md` i prosjektmappen eller i en mappe over den. Skriv `@AGENTS.md` på
-  en egen linje i `CLAUDE.md` hvis
+Agenten leser instruksjonsfilen til prosjektet hver gang, men en skill bare når den
+velger den selv. Skriv derfor linjene for skillene du bruker, i `AGENTS.md` i
+prosjektet:
 
-  - prosjektet allerede har en `CLAUDE.md`
-  - noen i teamet har en `CLAUDE.local.md`
-  - noen i teamet bruker en eldre versjon av Claude Code
+```text
+Before you write, change or review a user interface, use the skill universell-utforming.
+Before you write, change or review code, use the skill secure-coding.
+Before you create or change a GitHub Actions workflow, use the skill github-actions-security.
+Before you create, change or review a Dockerfile, a Helm chart or a Kubernetes or OpenShift manifest, or run oc, kubectl or helm, use the skill container-security.
+```
 
-  Da leser Claude Code `AGENTS.md` i alle tilfellene, og aldri to ganger. Se
-  [dokumentasjonen til Claude Code](https://code.claude.com/docs/en/memory#share-one-file-with-other-coding-tools).
+Codex, Copilot og OpenCode leser `AGENTS.md`. Claude Code leser `AGENTS.md` fra versjon
+2.1.277, men bare når det ikke finnes en `CLAUDE.md` eller `CLAUDE.local.md` i
+prosjektmappen eller i en mappe over den. Skriv `@AGENTS.md` på en egen linje i
+`CLAUDE.md` hvis
+
+- prosjektet allerede har en `CLAUDE.md`
+- noen i teamet har en `CLAUDE.local.md`
+- noen i teamet bruker en eldre versjon av Claude Code
+
+Da leser Claude Code `AGENTS.md` i alle tilfellene, og aldri to ganger. Se
+[dokumentasjonen til Claude Code](https://code.claude.com/docs/en/memory#share-one-file-with-other-coding-tools).
 
 ## Installer
 
@@ -206,3 +243,12 @@ fra Kubernetes, Red Hat OpenShift og Docker,
 bruker vi bare ID-ene og navnene på risikoene. Skillen er ikke utgitt eller godkjent av
 OWASP, Red Hat eller Kubernetes-prosjektet, og den sier ikke at filer er i samsvar med
 noe fra OWASP.
+
+`universell-utforming` har også bare egen tekst. Kildene står i skillen: sjekklisten til
+Frank Dahle (Digdir) i UX Norge, Uutilsynet, W3C WAI med ARIA Authoring Practices Guide,
+GOV.UK, WebAIM, Designsystemet fra Digdir, Aksel fra NAV og
+[WCAG 2.1](https://www.w3.org/TR/WCAG21/). Sjekklisten i UX Norge
+oppgir ingen lisens, og lisensen til W3C tillater ikke endrede kopier. Skillen gjengir
+derfor innholdet med egne ord og bruker bare numrene på suksesskriteriene i WCAG. Skillen
+er ikke utgitt eller godkjent av UX Norge, Digdir, Uutilsynet, W3C, WebAIM, NAV eller
+GOV.UK.

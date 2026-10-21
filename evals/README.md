@@ -1,8 +1,9 @@
 # Testtekster
 
-Tekstene i `cases.json` tester sikkerhetsskillene (se [Sikkerhetsskillene](#sikkerhetsskillene))
-og reglene for KI-markører i `asd-ste100-english` og `norsk-sprakvask`. Tekstene for
-KI-markørene inneholder:
+Tekstene i `cases.json` tester sikkerhetsskillene (se
+[Sikkerhetsskillene](#sikkerhetsskillene)), `universell-utforming` (se
+[universell-utforming](#universell-utforming)) og reglene for KI-markører i
+`asd-ste100-english` og `norsk-sprakvask`. Tekstene for KI-markørene inneholder:
 
 - kontraster av typen «not just X, it is Y»
 - bilder og sammenligninger som skal forklare noe
@@ -17,8 +18,8 @@ får en setning fra en testtekst.
 ## Innhold
 
 - `cases.json`: tekstene, med `en` for engelsk, `no` for norsk og en liste for hver
-  sikkerhetsskill. Hver tekst har en `id`, en `type`, selve teksten (`text`) og kravet
-  til et riktig svar (`pass`).
+  sikkerhetsskill og for `universell-utforming`. Hver tekst har en `id`, en `type`,
+  selve teksten (`text`) og kravet til et riktig svar (`pass`).
 - `run.py`: kjører tekstene gjennom en modell og setter svarene ved siden av kravene.
 
 ## Kjøring
@@ -102,7 +103,8 @@ python3 evals/run.py --cmd "claude -p" --only G1,G2 --baseline none,sentence --r
 ```
 
 - `--baseline none,sentence` legger til en variant uten skill og en variant med
-  én setning om sikkerhet i stedet for skillen.
+  én setning i stedet for skillen. Setningen for hver skill står i `SENTENCES` i
+  `run.py`.
 - `--workdir <mappe>` kjører modellen i mappen. Er mappen tom, leser ikke modellen
   prosjektet.
 - Et agentverktøy som `claude -p` kan laste skills som du har installert, også i
@@ -305,3 +307,314 @@ Sonnet.
 - README anbefaler derfor linjene i `AGENTS.md`. Agenten leser instruksjonsfilen hver
   gang, men en skill bare når den velger den selv.
 - Ingen har gjort sjekken i et ekte verktøy ennå.
+
+## universell-utforming
+
+U1–U17 tester `universell-utforming`. Det er syv typer tekster:
+
+- `plan`: en plan for økter med deltakere som bruker ulike hjelpemidler
+- `review`: en testplan eller en PR med hull og noen deler som er riktige
+- `analyse`: notater fra økter med funn som trolig er feil, og funn som testlederen
+  ikke så
+- `ready`: kode som skal brukertestes, med hindringer for hjelpemidler og noen
+  mønstre som er riktige
+- `write`: en ny komponent der agenten selv må gjøre koden tilgjengelig
+- `transfer`: deltakere med behov som skillen ikke nevner
+- `neutral`: en endring i et skjema uten noen brukertest, eller kode uten
+  grensesnitt. Den måler om agenten gjør mer enn brukeren ba om.
+
+Kjør og vurder tekstene på samme måte som tekstene for sikkerhetsskillene, med
+`--baseline none`. Varianten med én setning er ikke kjørt for denne skillen.
+
+### Resultater for universell-utforming
+
+Kjørt 20. oktober 2026 med agenter i Claude Code, to kjøringer per tekst og variant, på
+Opus og Sonnet. En egen KI-agent (Opus) vurderte svarene til hver tekst uten å vite
+varianten. Ingen person har kontrollert vurderingene ennå.
+
+- «Brukbar» er andelen svar som teamet kan bruke slik de er: riktige, praktiske og
+  uten mye innhold som brukeren ikke trengte. «Ord» er snittet av antall ord per svar.
+- Skillen ble skrevet etter at U1–U6 var kjørt uten skill. Reglene for øktene kommer
+  fra sjekklisten i UX Norge, og U1–U3 tester om agenten følger dem. U5 og U7–U13 ble
+  laget med behov og mønstre som skillen ikke nevnte da de ble laget. For U14 og U15,
+  se «Etter en polish-kjøring».
+
+#### Brukertester (U1–U8)
+
+Første versjon av skillen, U1–U7, 14 svar per variant og modell:
+
+| Variant | Opus: krav oppfylt | Opus: brukbar | Opus: ord | Sonnet: krav oppfylt | Sonnet: brukbar | Sonnet: ord |
+| --- | --- | --- | --- | --- | --- | --- |
+| Uten skill | 0,83 | 0,79 | 1243 | 0,76 | 0,71 | 1044 |
+| Med skillen | 0,97 | 1,00 | 880 | 0,95 | 0,93 | 792 |
+
+- Uten skill var planene lange (U1: i snitt 2420 ord med Opus og 2078 med Sonnet). De
+  manglet de fleste punktene som er særegne for sjekklisten:
+  - blandet erfaring
+  - spørsmål om hvor lenge deltakeren orker
+  - lavere talehastighet og hva den gjør med tiden
+  - at en skjermleserbruker går forbi noe for å få oversikt
+  - samme krav til bestått
+  - hvordan økten slutter
+- Med skillen var planene omtrent halvparten så lange og oppfylte 0,98–1,00 av
+  kravene.
+- U5 har døve og tunghørte deltakere. Krav oppfylt gikk fra 0,71 til 1,00 med Opus og
+  fra 0,71 til 0,93 med Sonnet. Med skillen tok ingen svar med råd for
+  skjermleserbrukere.
+- I U3 godtok alle de fire svarene uten skill at en lenke var vanskelig å finne fordi
+  skjermleserbrukeren gikk forbi den. Ingen av svarene med skillen gjorde det.
+- Etter kjøringen ble to punkter rettet: en oppgave til backloggen skal si hvilket
+  resultat rettelsen må gi, og agenten skal ikke be brukeren kjøre en annen skill. U3 og
+  U5 ble kjørt på nytt. I U3 fikk to av fire svar en rettelse for bekreftelsessiden mot
+  null før. Ingen svar på U5 ba brukeren kjøre en skill.
+- U8 ble laget etter rettelsene, med navn på deltakerne i notatene. Uten skill skrev
+  alle de fire svarene navn eller diagnose inn i sakene til Jira. Med skillen gjorde
+  ingen det. Krav oppfylt gikk fra 0,89 til 1,00 med Opus og fra 0,75 til 0,93 med
+  Sonnet.
+
+#### Sjekk av kode (U4, U6, U7, U9–U11)
+
+Skillen sjekker hver endring i grensesnittet, ikke bare før en brukertest. Tabellen
+gjelder U4, U7, U9 og U10 med versjon v4 av teksten, åtte svar per variant og modell:
+
+| Variant | Opus: krav oppfylt | Opus: brukbar | Opus: ord | Sonnet: krav oppfylt | Sonnet: brukbar | Sonnet: ord |
+| --- | --- | --- | --- | --- | --- | --- |
+| Uten skill | 0,89 | 0,12 | 872 | 0,82 | 0,50 | 653 |
+| Med skillen | 0,99 | 1,00 | 468 | 0,99 | 0,88 | 409 |
+
+- Uten skill fant agentene de fleste hindringene, men svarene var for omfattende:
+  lovtekst, store omskrivinger, testplaner og råd for skjermleser når ingen deltaker
+  bruker skjermleser. U9 uten skill med Sonnet mistet fokus etter sletting og meldte
+  ikke fra om slettingen (0,64).
+- En mellomversjon ba om tester også når agenten ikke ser prosjektet. Da skrev ett svar
+  en testfil med pakker som prosjektet kanskje ikke har, og alle fire svarene på U10
+  la til teststeg i en gjennomgang. Fra v4 ber teksten om tester bare når agenten
+  kan kjøre testene i prosjektet. Med den fikk alle de fire svarene på U10 1,00.
+- U6 og U11 er nøytrale: et nytt felt i et skjema, og et endepunkt uten grensesnitt.
+  Alle svarene fikk 1,00, med og uten skill, og ingen svar med skillen nevnte
+  universell utforming i U11.
+- To svar fra Sonnet på U4 brukte `autocomplete="bday"` på elevens fødselsdato. Regelen
+  sier nå at `autocomplete` gjelder opplysninger om den som fyller ut skjemaet. Med den
+  nye teksten gjorde ingen av to svar det, og begge svarene på U6 beholdt
+  `autoComplete="tel"`.
+- Svake punkter: ett svar fra Sonnet på U7 flyttet fokus til en overskrift mens
+  dialogen fortsatt var åpen, og flere svar fra Sonnet viste til feil
+  suksesskriterium for en gjentatt knappetekst.
+
+#### Etter en gjennomgang mot kildene
+
+20. oktober 2026 gikk en KI-agent gjennom skillen mot kilder om universell utforming:
+WCAG 2.1 og Understanding-sidene til W3C, ARIA Authoring Practices Guide (APG),
+Uutilsynet, WebAIM Million 2026, GOV.UK, Designsystemet og Aksel. Ingen ekspert på
+universell utforming har lest gjennomgangen ennå.
+
+- Regelen om synlig ledetekst ble stående. Uutilsynet sier at en placeholder som blir
+  borte når brukeren skriver, bryter 3.3.2. Manglende ledetekster er den tredje
+  vanligste feilen i WebAIM Million (51 % av forsidene).
+- Fakta som ble rettet:
+  - Offentlige virksomheter må følge 48 krav (ikke 1.2.3 og 1.2.4).
+  - 1.2.5 gjelder video fra 1. februar 2024.
+  - 4.1.1 regnes nå som oppfylt for HTML.
+  - Landemerker er ikke et krav i seg selv.
+- Regler som kom til:
+  - fokus i dialoger, når et element forsvinner og ved bytte av side i klienten
+  - statusmeldinger i en live region som finnes fra før
+  - oppsummering av feil i skjemaer
+  - bekreftelse eller angre ved sletting (3.3.4)
+  - WCAG 2.2 bare som råd
+  - flere grupper av deltakere i brukertester
+- U12 og U13 ble laget for de nye reglene, med mønstre som skillen ikke nevner.
+
+Krav oppfylt med den endelige teksten (v6) og uten skill:
+
+| Tekst | Opus uten | Opus med | Sonnet uten | Sonnet med |
+| --- | --- | --- | --- | --- |
+| U12: endre navn i en liste | 1,00 | 1,00 | 0,71 | 1,00 |
+| U13: stemmestyring og skjelving | 0,75 | 0,93 | 0,57 | 0,96 |
+| U9: liste med sletting | 1,00 | 1,00 | 0,64 | 1,00 |
+
+- U12 uten skill: begge svarene fra Opus var riktige, men for omfattende. Begge svarene
+  fra Sonnet mistet fokus når tekstfeltet forsvant.
+- U13: teksten for «avtal hvordan dere snakker» gjaldt først bare skjermleser, og
+  begge svarene fra Sonnet tok det bare halvveis med for stemmestyring. Regelen gjelder
+  nå også stemmestyring. U13 er derfor ikke lenger en uavhengig test av den regelen.
+- U9: en mellomversjon (v5) mistet bekreftelse eller angre ved sletting i tre av fire
+  svar. Den endelige teksten har regelen, og alle fire svarene fikk 1,00.
+- De andre tekstene ble kjørt på nytt med v5 for å se etter tilbakegang: U1, U2, U5,
+  U6 og U11 med én kjøring per modell, U4, U7 og U10 med to. Ingen gikk tilbake.
+  Begge svarene fra Opus på U10 byttet en meny som åpnet ved hover, med en knapp som
+  åpner og lukker menyen. Det er mønsteret som APG anbefaler, men ikke den minste
+  endringen.
+- Skillen nevner nå dialoger, fokus etter sletting, tolk og stemmestyring. U5, U7, U9
+  og U13 er derfor tester av regler som står i skillen, ikke uavhengige tester.
+- Svake punkter: Sonnet regner fortsatt en gjentatt knappetekst som en hindring, og
+  ett svar fra Sonnet la til `inputMode="numeric"` på et datofelt.
+
+#### polish
+
+`polish` 0.2.0 har et pass for universell utforming i hver runde. Det er ikke kjørt en
+full batch med fixturene til `polish`. I stedet simulerte agenter runde 1 på en ny
+branch. Branchen hadde faner, en lenke med teksten «Klikk her», et bilde med filnavn
+som alternativ tekst og et filter som var snudd. En KI-agent vurderte fire svar med den
+gamle og fire med den nye `polish` uten å vite versjonen:
+
+- Krav oppfylt var 0,96 (Opus) og 0,89 (Sonnet) med den gamle, og 1,00 og 0,96 med
+  den nye. Tre av fire svar var brukbare med den gamle, og alle fire med den nye.
+- Forskjellen er liten, fordi README i fixturen sier at universell utforming gjelder,
+  og den gamle `polish` regner det allerede som et krav.
+- På en branch uten grensesnitt hoppet begge svarene over passet.
+- Fixturen `moter` i testoppsettet for `polish` har feil som passet nå ser etter i
+  generelle ord: en ledetekst som bare er en placeholder, og et antall treff som ikke
+  blir lest opp. Les derfor de radene for seg, og avgjør en ny versjon av `polish` ut
+  fra de andre radene. En ny fixture med andre feil i universell utforming trengs for å
+  teste selve passet.
+- Resultatene for `polish` 0.2.0 etter polish-kjøringen står i «Etter en
+  polish-kjøring».
+
+#### Etter en polish-kjøring
+
+20. oktober 2026 gikk `polish` gjennom branchen. Gjennomgangen førte til disse
+endringene i skillene:
+
+- Sjekken av kode bruker ikke `guided-click-through` og kjører ingen kommando som
+  starter appen eller en nettleser. Svaret på en sjekk nevner de automatiske sjekkene
+  som ikke ble kjørt, og har én `Check:`-linje for hver fil eller del som agenten ikke
+  har.
+- Svaret har plass til `Check:`-linjer og til delene som en annen skill ber om.
+- Tekst i en kontroll trenger 4,5:1 i kontrast. Det som viser en kontroll og
+  tilstanden til den, trenger 3:1.
+- Fokus går inn i en dialog og tilbake når den lukkes. Tab skal bare bli i en dialog
+  som er modal.
+- En sak i backloggen kan nevne hjelpemiddelet det skal testes med, men ikke sammen med
+  koden til deltakeren.
+- I `polish` er universell utforming et krav for hvert grensesnitt, med mindre kravene
+  sier at det ikke gjelder. Tekstene som passet skriver, får språkvask. Må en rettelse
+  endre en tekst som en snapshot- eller kontrakttest låser, blir hindringen et åpent
+  funn.
+- Merknaden om at ingen fagperson har gått gjennom skillen, kommer bare når brukeren
+  spør om løsningen oppfyller kravene.
+
+En KI-agent (Opus) vurderte svarene uten å vite varianten. Det var én kjøring per
+variant og modell, med unntakene som står i teksten, så små forskjeller er støy. Ingen
+person har kontrollert vurderingene.
+
+Første runde, krav oppfylt. Rettelsene for kontrast og dialoger hadde da en første
+versjon («kantene på kontrollen trenger 3:1», «Tab blir bare i en modal dialog»), som
+andre runde endret:
+
+| Tekster | Opus før | Opus etter | Sonnet før | Sonnet etter |
+| --- | --- | --- | --- | --- |
+| U4, U7, U9, U10, U12 og U16 (kontrast) | 1,00 | 0,99 | 0,94 | 0,97 |
+| U8: notater med navn og hjelpemidler | 1,00 | 1,00 | 0,86 | 0,86 |
+| `polish` på en branch med grensesnitt | 1,00 | 1,00 | 0,94 | 0,94 |
+| `polish` på en branch uten grensesnitt | 1,00 | 1,00 | 0,88 | 0,88 |
+
+- U8: den gamle teksten fikk Sonnet til å skrive P2 sammen med bryterstyring i en sak
+  til Jira. Med den nye teksten gjorde ingen svar det.
+- En mellomversjon skrev «denne skillen legger bare til disse delene». Da la Sonnet til
+  en egen liste over det koden gjør for tilgjengeligheten, i U12 og U7. Med den
+  endelige teksten («hvert svar har bare disse delene», og delene som en annen skill
+  ber om) gjorde ingen av fire svar det.
+- Ett svar fra Sonnet på U12 skjulte statusmeldingen visuelt, selv om brukeren ba om
+  at den skulle vises.
+
+Andre runde:
+
+- 3:1 gjelder det som viser en kontroll og tilstanden til den, ikke kantene alene.
+- Fokus går inn i og ut av alle dialoger, og Tab blir bare i en modal dialog.
+- Ingen kommando starter appen eller en nettleser.
+- Merknaden om fagperson kommer bare når brukeren spør om løsningen oppfyller kravene.
+- I `polish` står unntaket for universell utforming der kravene blir definert.
+
+| Tekster | Opus før | Opus etter | Sonnet før | Sonnet etter |
+| --- | --- | --- | --- | --- |
+| U7, U12 og U16: krav oppfylt | 1,00 | 0,97 | 0,92 | 0,92 |
+| U7, U12 og U16: ord | 337 | 462 | 430 | 469 |
+| U17 (blind): krav oppfylt | 1,00 | 1,00 | 0,83 | 0,92 |
+| `polish` på en branch med grensesnitt | 0,94 | 1,00 | 0,83 | 1,00 |
+
+- U17 ble laget av en agent som ikke hadde lest skillen. Uten skill fikk U17 0,67 med
+  Opus og 0,75 med Sonnet. Med den gamle teksten ba Sonnet om 3:1 for fokusmarkeringen
+  fra nettleseren, som 1.4.11 unntar. Med den nye teksten gjorde den ikke det.
+- Svarene ble lengre med den nye teksten, mest fordi de fikk flere `Check:`-linjer.
+  AGENTS.md sier at en endring ikke skal gjøre svarene lengre. Tredje runde ga
+  `Check:`-linjene en grense (se under).
+- Merknaden om fagperson ble testet med to kjøringer av Sonnet per variant på U16 (en
+  sjekk før en merge). Med den gamle teksten kom merknaden i begge svarene, og ingen av
+  dem var brukbare. Med den nye kom den i ingen av dem. Når brukeren spurte om et skjema
+  oppfyller kravene, kom merknaden i alle fire svarene, to med hver tekst.
+
+Tredje runde ga `Check:`-linjene en grense: én linje for hver fil eller del som agenten
+ikke har, og ingen linje for en del som koden ikke inneholder. De automatiske sjekkene
+for tilgjengelighet som ikke ble kjørt fordi de starter en nettleser, står på én linje.
+
+| Tekster | Opus før | Opus etter | Sonnet før | Sonnet etter |
+| --- | --- | --- | --- | --- |
+| U7, U12 og U16: krav oppfylt | 1,00 | 1,00 | 0,94 | 0,94 |
+| U7, U12 og U16: ord | 412 | 385 | 404 | 441 |
+
+- I samme kjøring ble svarene fra Opus kortere med grensen (412 mot 385 ord), men
+  svarene fra Sonnet ble lengre på alle tre tekstene (404 mot 441). Lengden er derfor
+  fortsatt et åpent funn.
+- Ett av tre svar fra Sonnet på U16 hadde fortsatt merknaden om fagperson.
+
+Gjennomgangen etter tredje runde fant flere hull. Rettelser for seks av dem ble prøvd på
+U7, U12, U16 og U17 med én kjøring av Opus og to av Sonnet per variant:
+
+| Tekster | Opus før | Opus etter | Sonnet før | Sonnet etter |
+| --- | --- | --- | --- | --- |
+| U7, U12, U16 og U17: krav oppfylt | 1,00 | 1,00 | 0,96 | 0,91 |
+| U7, U12, U16 og U17: brukbare svar | 4 av 4 | 4 av 4 | 8 av 8 | 6 av 8 |
+| U7, U12, U16 og U17: ord | 366 | 373 | 406 | 485 |
+
+- Med rettelsene la Sonnet til lister og forklaringer som brukeren ikke ba om. Teksten i
+  skillen ble derfor satt tilbake. Disse hullene er åpne funn:
+  - de to setningene om `Check:`-linjer kan leses slik at de motsier hverandre
+  - en test som starter en nettleser, blir ikke nevnt når den ikke blir kjørt
+  - regelen for 1.4.11 mangler «som trengs for å kjenne igjen» kontrollen
+  - unntaket for kontroller som ikke er aktive, gjelder bare 1.4.11 i teksten
+  - en test i prosjektet som feiler, blir bare nevnt når agenten selv har skrevet tester
+  - merknaden om fagperson kommer ikke når brukeren vil bruke sjekken som bevis
+- Rettelsen for 1.4.11 i `references/wcag-check.md` ble beholdt, men ingen av disse
+  tekstene leser den filen.
+
+Regel R13 (avtal hvordan dere snakker) nevner eksemplene fra U13 (se over).
+Gjennomgangen ba om en regel med generelle ord. Den ble prøvd slik:
+«når hjelpemiddelet snakker, eller lytter til stemmen til deltakeren». To nye tekster
+testet den:
+
+- U14 (talemaskin, bryterstyring med lyd og en skjermleser) ble laget av samme agent
+  rett etter at regelen ble skrevet om. U14 er derfor ikke en blind test.
+- U15 (opplesingsprogram for en deltaker med dysleksi, og to deltakere uten
+  hjelpemidler som snakker) ble laget av en agent som ikke hadde lest skillen.
+
+| Tekst | Opus uten | Opus dagens | Opus generell | Sonnet uten | Sonnet dagens | Sonnet generell |
+| --- | --- | --- | --- | --- | --- | --- |
+| U14 | 0,83 | 0,89 | 1,00 | 0,78 | 1,00 | 1,00 |
+| U15 | 1,00 | 0,67 | 0,61 | 0,72 | 0,67 | 0,61 |
+
+- Med den generelle regelen ga begge modellene rådene om lyd og tenke høyt også til de
+  to deltakerne som ikke bruker et hjelpemiddel som snakker. Regelen ble derfor satt
+  tilbake.
+- Også dagens tekst ga et råd til feil deltaker: Sonnet ga rådene for skjermleser til
+  deltakeren med opplesingsprogram. Problemet er derfor hvilken deltaker en regel
+  gjelder for, ikke bare ordene i R13.
+- På U15 gjorde skillen svaret fra Opus dårligere enn uten skill (0,67 mot 1,00). Svarene
+  med skillen manglet mer om opplesingsprogrammet og om oppsettet i rommet. Dette er et
+  åpent problem. Det trengs flere kjøringer og en ny blind tekst før en ny regel blir
+  lagt til.
+
+### Laster agenten skillen?
+
+Samme sjekk som for sikkerhetsskillene, med ni skills i listen og syv oppgaver, på Opus
+og Sonnet:
+
+- Agenten lastet `universell-utforming` i alle de ti kjøringene med en oppgave om
+  grensesnitt eller brukertest med personer med funksjonsnedsettelser (fem oppgaver,
+  to modeller). Den lastet skillen også når oppgaven ikke nevnte universell utforming
+  (for eksempel en nedtrekksmeny eller en `aria-label`).
+- Den lastet ikke skillen for en refaktorering uten grensesnitt (to av to kjøringer).
+- Sonnet lastet skillen for en vanlig brukertest med kolleger. Beskrivelsen sier nå at
+  skillen ikke gjelder en brukertest uten deltakere med funksjonsnedsettelser. Med den
+  nye beskrivelsen lastet ingen av to kjøringer skillen for den oppgaven, og begge
+  kjøringene med en brukertest med svaksynte lastet den.
