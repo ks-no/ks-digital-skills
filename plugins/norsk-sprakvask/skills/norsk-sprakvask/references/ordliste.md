@@ -91,6 +91,7 @@ Tabellen viser skrivemåte og bøyning for vanlige ord fra steg 5 over.
 | push, rebase, squash, commit | | `pushet`, `rebaset`, `commiten` |
 | secret, secreten | hemmelighet (om GitHub-secrets) | |
 | token, tokenet, tokens | tokener | `tokenet er utløpt`, `hent nye tokens` |
+| session, sessionen, sessions | økt, økten, sesjon | `sessionen er utløpt`, `start en ny session`; en brukertest har `økter` |
 | image, imaget; chart, chartet | | Docker-image, Helm-chart |
 | cluster, clusteret, clustere | klynge, klyngen | om Kubernetes og OpenShift |
 | path, pathen, paths | sti, stien, stier | `URL-pathen`, `pathen til filen` |
