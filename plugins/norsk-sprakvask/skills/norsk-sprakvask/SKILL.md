@@ -55,7 +55,7 @@ vesentlig lavere.
 
 Avgjør dette først, hver gang. **Prosa** er det et menneske leser som språk: markdown,
 kommentarer og strenger som skrives ut, vises eller logges. **Identifikator** er alt
-annet: navn i kode, JSON-nøkler, API-felt, URL-stier, query-parametre, enum- og
+annet: navn i kode, JSON-nøkler, API-felt, URL-paths, query-parametre, enum- og
 statusverdier, kodeverk, loggnøkler, CSS-klasser, miljøvariabler og skriptnavn.
 
 Språkvask endrer prosa. Den endrer aldri en identifikator, heller ikke for å rette en

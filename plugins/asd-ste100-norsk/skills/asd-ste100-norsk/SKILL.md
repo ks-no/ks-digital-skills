@@ -204,7 +204,7 @@ skriver om.
 1. Velg grad: streng eller STE-preget.
 2. Les teksten én gang for meningen. Ikke begynn å skrive om før du vet hva teksten
    fortsatt skal si etterpå.
-3. Finn identifikatorene. Navn i kode, JSON-nøkler, API-felt, URL-stier, enum-verdier og
+3. Finn identifikatorene. Navn i kode, JSON-nøkler, API-felt, URL-paths, enum-verdier og
    miljøvariabler endres aldri, heller ikke for å rette en skrivefeil. Egennavn og sitater
    beholder sin egen skrivemåte.
 4. Gå gjennom teksten setning for setning. Marker hvert brudd på strukturreglene og hver
