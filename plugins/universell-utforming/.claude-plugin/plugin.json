@@ -1,0 +1,17 @@
+{
+  "name": "universell-utforming",
+  "description": "Check each change to a user interface against the requirements for universell utforming (accessibility) and the WCAG success criteria that the Norwegian regulation requires, with minimal fixes and no false findings. Also plan, run and follow up user tests with people with disabilities. The rules for the sessions restate a checklist by Frank Dahle (Digdir) in UX Norge: recruit through the user organisations, mix the experience of the participants, ask each participant what to arrange, plan up to double time, prepare remote sessions and screen reader sound, and look for false findings. An AI agent wrote this skill from public sources. No human accessibility expert has reviewed the skill.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Sindre Eik de Lange"
+  },
+  "repository": "https://github.com/ks-no/ks-digital-skills",
+  "license": "MIT",
+  "keywords": [
+    "accessibility",
+    "universell-utforming",
+    "wcag",
+    "user-testing",
+    "brukertesting"
+  ]
+}

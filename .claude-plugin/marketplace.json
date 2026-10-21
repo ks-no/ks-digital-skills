@@ -63,8 +63,8 @@
     {
       "name": "polish",
       "source": "./plugins/polish",
-      "description": "Run a cleanup review, a language pass with the STE100 and Norwegian language skills, and a correctness review on the current branch, round by round, until the project's check passes and a round finds nothing that affects correctness or a stated requirement, or until the round limit (default 3). The run always ends on a correctness review. For a change to a web interface, it first writes behaviour tests when the project has component tests, and ends the report with a click-through when tests cannot show everything or a visual decision is open.",
-      "version": "0.1.0",
+      "description": "On the current branch, run a cleanup review, a language pass with the STE100 and Norwegian language skills, a universell utforming (accessibility) pass on interface code, and a correctness review, round by round. The run stops when the project's check passes and a round finds nothing that affects correctness or a stated requirement, or at the round limit (default 3). The run always ends on a correctness review. For a change to a web interface, it first writes behaviour tests when the project has component tests, and ends the report with a click-through when tests cannot show everything or a visual decision is open.",
+      "version": "0.2.0",
       "author": {
         "name": "Sindre Eik de Lange"
       },
@@ -75,7 +75,8 @@
         "cleanup",
         "ste100",
         "language",
-        "workflow"
+        "workflow",
+        "accessibility"
       ]
     },
     {
@@ -145,6 +146,23 @@
         "openshift",
         "helm",
         "owasp"
+      ]
+    },
+    {
+      "name": "universell-utforming",
+      "source": "./plugins/universell-utforming",
+      "description": "Check each change to a user interface against the requirements for universell utforming (accessibility) and the WCAG success criteria that the Norwegian regulation requires, with minimal fixes and no false findings. Also plan, run and follow up user tests with people with disabilities. The rules for the sessions restate a checklist by Frank Dahle (Digdir) in UX Norge: recruit through the user organisations, mix the experience of the participants, ask each participant what to arrange, plan up to double time, prepare remote sessions and screen reader sound, and look for false findings. An AI agent wrote this skill from public sources. No human accessibility expert has reviewed the skill.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Sindre Eik de Lange"
+      },
+      "category": "testing",
+      "tags": [
+        "accessibility",
+        "universell-utforming",
+        "wcag",
+        "user-testing",
+        "brukertesting"
       ]
     }
   ]

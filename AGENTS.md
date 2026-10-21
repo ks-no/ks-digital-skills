@@ -25,7 +25,7 @@ plugins/<skill-name>/
     ├── SKILL.md                     # required, with frontmatter
     └── references/                  # optional supporting files
 scripts/validate.py                  # repository validation
-evals/cases.json                     # held-out test texts for the AI-marker rules and security skills
+evals/cases.json                     # held-out test texts for the AI-marker rules, security skills and universell-utforming
 evals/run.py                         # runs the test texts through a model
 .github/workflows/validate.yml       # CI: runs validate.py and zizmor
 .github/dependabot.yml               # updates the pinned actions
@@ -91,6 +91,10 @@ SECURITY.md                          # how to report a vulnerability (Norwegian)
   Paraphrase the rules and cite rule numbers.
 - The OWASP lists, Cheat Sheets and ASVS are CC BY-SA, and the OWASP Kubernetes
   Top 10 is CC BY-NC-SA. Do not copy their text. Cite IDs and names only.
+- `universell-utforming` uses a checklist from UX Norge. The checklist states no
+  license. The W3C WAI pages and WCAG are under the W3C Document License, which does
+  not permit changed copies. Restate the content of the checklist, the WAI pages and
+  WCAG in new words, and credit each source. Give WCAG success criteria by number only.
 - Security skills are generic. Do not describe the setup, tools or findings of KS
   Digital or of any other organization.
 
@@ -115,10 +119,11 @@ texts in `evals/`. `evals/README.md` tells how to run them and how to add a text
 new rule or exception gets at least one new text, with words that are not in any
 skill. Do not copy a sentence from a test text into a skill.
 
-For a security skill, use its cases in `evals/cases.json`. Run each case without the
-skill and with the skill, on a strong model and on a weaker model that people use.
-Grade the answers blind. A change must not make an answer longer or stop a workflow
-or program from working. `evals/README.md` tells how.
+For a security skill and for `universell-utforming`, use its cases in
+`evals/cases.json`. Run each case without the skill and with the skill, on a strong
+model and on a weaker model that people use. Grade the answers blind. A change must not
+make an answer longer or stop a workflow or program from working. `evals/README.md`
+tells how.
 
 Do not put the examples of a test text in a skill either: its code patterns, field
 names or values. When a test result leads to a new rule, write the rule in general

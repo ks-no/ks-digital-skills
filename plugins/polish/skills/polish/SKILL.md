@@ -24,9 +24,10 @@ In this skill, "the diff" is `git diff --merge-base <base>` plus the untracked f
 `git status --short` shows. It includes the commits and the uncommitted changes.
 
 The stated requirements are in the task, the issue, the pull request text and the full
-commit messages. They also include the rules that the project or its domain must obey,
-such as universell utforming (accessibility) for public-sector services in Norway. A
-finding matters when it affects correctness or a stated requirement.
+commit messages. They also include the rules that the project or its domain must obey.
+Universell utforming (accessibility) is a stated requirement for each user interface,
+unless the stated requirements say that it does not apply. A finding matters when it
+affects correctness or a stated requirement.
 
 If a restriction, such as the sandbox or a permission, stops a command, report the
 command and the restriction, and stop the run. Do not try another way to do what the
@@ -52,7 +53,7 @@ must stay byte-identical to the default branch, unless the change is meant to mo
 If the diff changes what a user sees or does in a web interface, use
 `guided-click-through` before the first round. Use its sections to find what to check
 and to write and run behaviour tests for the change, but not for the click-through yet.
-Fix what the tests show. Give the other findings in the code to the reviewer in step 3
+Fix what the tests show. Give the other findings in the code to the reviewer in step 4
 of round 1, and triage them with its findings. The tests are part of the check in every
 round, so the check fails at once if a cleanup breaks the behaviour. If the project has
 no component tests, say so in the report, and suggest that the project adds them.
@@ -63,7 +64,7 @@ At most the number of rounds the user gives, default 3. One round is:
 
 1. **Cleanup review** of the diff: reuse, simplification, efficiency, and code at the
    wrong level of abstraction. It looks for quality, not bugs: a bug you notice here goes
-   to the correctness review in step 3.
+   to the correctness review in step 4.
 2. **Language pass** on the prose that the diff adds or changes. From round 2, only on
    prose that changed since the last language pass. Prose is docs, comments, docstrings,
    test names, error and log messages, and strings that a person or a model reads.
@@ -71,24 +72,35 @@ At most the number of rounds the user gives, default 3. One round is:
    then `norsk-sprakvask`. Do not change identifiers, quotations, strings that the code
    matches against user input, or messages that a snapshot or contract test pins. When
    you change a message that another test asserts on, update the test in the same edit.
-3. **Correctness review** of the diff: bugs, unhandled cases, and broken contracts. The
-   review also covers the language pass.
-4. **Run the check.** A failure is a finding that matters. Fix the cause and run the
+3. **Universell utforming pass** on the interface code that the diff adds or changes:
+   HTML, CSS, JSX or TSX, templates, components, and the texts on a screen. From round
+   2, only on interface code that changed since the last universell utforming pass. Do
+   the code check of `universell-utforming` on this code, and fix the barriers that it
+   finds. For each text that you add or change, use the language skills of step 2, and
+   update a test that asserts on the text in the same edit. When universell utforming
+   is a stated requirement, a barrier that breaks a success criterion that applies is a
+   finding that matters. Other barriers are cosmetic. When a fix that matters must
+   change a string that a snapshot or contract test pins, and the diff is not meant to
+   move that test, report the barrier as an open finding. Skip this step when the diff
+   changes no user interface.
+4. **Correctness review** of the diff: bugs, unhandled cases, and broken contracts. The
+   review also covers the language pass and the universell utforming pass.
+5. **Run the check.** A failure is a finding that matters. Fix the cause and run the
    check again.
 
-The reviews in steps 1 and 3:
+The reviews in steps 1 and 4:
 
 - If your tool has a built-in command for a cleanup review, use it in step 1. If it has
-  a built-in code-review command that looks for bugs, use it in step 3. If not, and you
+  a built-in code-review command that looks for bugs, use it in step 4. If not, and you
   can start a separate agent with a fresh context, let that agent review. If a command
   applies its changes itself, treat each change as a finding, and undo the changes that
   do not survive your triage.
 - Give each reviewer the diff with the untracked files named, and the findings that you
-  already skipped. Also give the reviewer in step 3 each edit of the language pass in
-  this round, with the old and the new text. Tell it that a rewrite that changes a
-  meaning or removes a hedge is a finding. From round 2, also tell each reviewer what
-  changed since the last review.
-- Tell the reviewer in step 3 what counts: gaps that affect correctness or a stated
+  already skipped. Also give the reviewer in step 4 each edit of the language pass and
+  of the universell utforming pass in this round, with the old and the new text. Tell
+  it that a rewrite that changes a meaning or removes a hedge is a finding. From round
+  2, also tell each reviewer what changed since the last review.
+- Tell the reviewer in step 4 what counts: gaps that affect correctness or a stated
   requirement. Give it the stated requirements. Tell it that no findings is a valid
   answer.
 - Apply the findings that survive your triage (see "Do not touch what the findings do
@@ -96,16 +108,17 @@ The reviews in steps 1 and 3:
 
 Call each skill by its name. A tool that prefixes plugin skills with the plugin name
 gives them these full names: `asd-ste100-english:asd-ste100-english`,
-`asd-ste100-norsk:asd-ste100-norsk`, `norsk-sprakvask:norsk-sprakvask` and
+`asd-ste100-norsk:asd-ste100-norsk`, `norsk-sprakvask:norsk-sprakvask`,
+`universell-utforming:universell-utforming` and
 `guided-click-through:guided-click-through`.
 
 Stop when a round finds nothing that matters and the check passes, or at the cap.
 
 The run ends on a correctness review of the final tree. If you applied anything in or
-after step 3 of the last round, run step 3 and the check once more. A cosmetic fix and a
-fix for a failed check also count as applied. Apply nothing from this last step 3 and
+after step 4 of the last round, run step 4 and the check once more. A cosmetic fix and a
+fix for a failed check also count as applied. Apply nothing from this last step 4 and
 check. If they find something that matters, and the cap allows another round, start that
-round, and give the finding to its step 3. If the cap does not allow it, report the
+round, and give the finding to its step 4. If the cap does not allow it, report the
 finding as open.
 
 **Cosmetic fixes do not extend the run.** Examples are whitespace, a helper in an
@@ -123,7 +136,8 @@ code and abstraction that nobody wanted. The list of findings that you already s
 stops the reviewer from reporting them again.
 
 **Never end on a cleanup.** A cleanup pass adds defects of its own, and the review after
-it finds them. This is why the language pass comes before the review, not after it.
+it finds them. This is why the language pass and the universell utforming pass come
+before the review, not after it.
 
 **Break every new or changed check before you trust it.** Undo the thing that it must
 catch, see that the check fails, and restore the code. A green check that you did not
@@ -148,20 +162,22 @@ decision. Then the change stays small if the user makes the choice later.
 Start with one to three lines about what can change the next action of the reader.
 Then give the behaviour tests from before round 1 and the fixes they caused, if any.
 Then, per round: what was fixed, what the language pass changed (one line, not every
-sentence), what was skipped and why, and what the check said. Then say which reason
-ended the run, and give the other notes that this skill sends to the report, such as a
-gate that you left out or a skill that is not installed. Then give the open findings:
-each finding that matters and that the run did not fix, with the reason. Then give the
-open decisions that the run found but did not take. Keep the two lists apart, so that
-the reader can see what is a defect and what is a choice.
+sentence), which barriers the universell utforming pass fixed, what was skipped and why,
+and what the check said. Then say which reason ended the run, and give the other notes
+that this skill sends to the report, such as a gate that you left out or a skill that
+is not installed. Then give the open findings: each finding that matters and that the
+run did not fix, with the reason. Then give the open decisions that the run found but
+did not take. Keep the two lists apart, so that the reader can see what is a defect and
+what is a choice.
 
 For a change to a web interface, end the report with a click-through of the final tree
 from `guided-click-through`. Give the skill the open decisions. Also give it, as a risk
 to check, each fix that the check cannot catch and that changes what a user sees or
-does. In this use, the skill changes no file. From its output, give only the
-click-through, the risks that it left out, and each defect that it finds. Report each
-defect as an open finding. If the skill gives no click-through, end the report with its
-reason in one line. The click-through is not a step in the loop, because it needs a
+does, and each result that the universell utforming pass could not check in the code.
+In this use, the skill changes no file. From its output, give only the click-through,
+the risks that it left out, and each defect that it finds. Report each defect as an
+open finding. If the skill gives no click-through, end the report with its reason in
+one line. The click-through is not a step in the loop, because it needs a
 person and the run must be able to finish without one.
 
 When the user reports a failed step or selects an option in a decision step, apply the
