@@ -80,7 +80,7 @@ Legg til repoet som plugin-marketplace, og installer de skillene du vil ha:
 ```
 
 - `/plugin` viser alle plugins i marketplacen.
-- Start en ny økt etterpå. Plugins lastes ved oppstart.
+- Start en ny session etterpå. Plugins lastes ved oppstart.
 - Hent nye versjoner med `/plugin marketplace update ks-digital-skills`.
 
 ### Codex
