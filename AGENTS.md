@@ -91,6 +91,10 @@ SECURITY.md                          # how to report a vulnerability (Norwegian)
   Paraphrase the rules and cite rule numbers.
 - The OWASP lists, Cheat Sheets and ASVS are CC BY-SA, and the OWASP Kubernetes
   Top 10 is CC BY-NC-SA. Do not copy their text. Cite IDs and names only.
+- `universell-utforming` uses a checklist from UX Norge. The checklist states no
+  license. The W3C WAI pages and WCAG are under the W3C Document License, which does
+  not permit changed copies. Restate the content of the checklist, the WAI pages and
+  WCAG in new words, and credit each source. Give WCAG success criteria by number only.
 - Security skills are generic. Do not describe the setup, tools or findings of KS
   Digital or of any other organization.
 

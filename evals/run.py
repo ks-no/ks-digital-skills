@@ -50,6 +50,9 @@ SKILL_FILES = {
     "end-session": [
         "plugins/end-session/skills/end-session/SKILL.md",
     ],
+    "universell-utforming": [
+        "plugins/universell-utforming/skills/universell-utforming/SKILL.md",
+    ],
 }
 
 ASK_TASK = (
@@ -73,6 +76,10 @@ SENTENCES = {
         "Before we end the session, check if we learned anything that we should add to "
         "the docs, and if we should add something to a TODO list, for example an answer "
         "that we wait for."
+    ),
+    "universell-utforming": (
+        "Make the solution and the user test accessible. Follow WCAG and the advice "
+        "for user tests with people with disabilities."
     ),
 }
 
