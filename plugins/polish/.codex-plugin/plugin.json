@@ -1,7 +1,7 @@
 {
   "name": "polish",
-  "version": "0.1.0",
-  "description": "Run a cleanup review, a language pass with the STE100 and Norwegian language skills, and a correctness review on the current branch, round by round, until the project's check passes and a round finds nothing that affects correctness or a stated requirement, or until the round limit (default 3). The run always ends on a correctness review. For a change to a web interface, it first writes behaviour tests when the project has component tests, and ends the report with a click-through when tests cannot show everything or a visual decision is open.",
+  "version": "0.2.0",
+  "description": "Run a cleanup review, a language pass with the STE100 and Norwegian language skills, a correctness review, and a security review with the security skills on the current branch, round by round, until the project's check passes and a round finds nothing that affects correctness or a stated requirement, or until the round limit (default 3). The run always ends on a correctness review, and on a security review when the diff has files for the security skills. For a change to a web interface, it first writes behaviour tests when the project has component tests, and ends the report with a click-through when tests cannot show everything or a visual decision is open.",
   "author": {
     "name": "Sindre Eik de Lange"
   },
@@ -22,7 +22,7 @@
     "capabilities": [
       "Skills"
     ],
-    "longDescription": "Run a cleanup review, a language pass with the STE100 and Norwegian language skills, and a correctness review on the current branch, round by round, until the project's check passes and a round finds nothing that affects correctness or a stated requirement, or until the round limit (default 3). The run always ends on a correctness review. For a change to a web interface, it first writes behaviour tests when the project has component tests, and ends the report with a click-through when tests cannot show everything or a visual decision is open.",
+    "longDescription": "Run a cleanup review, a language pass with the STE100 and Norwegian language skills, a correctness review, and a security review with the security skills on the current branch, round by round, until the project's check passes and a round finds nothing that affects correctness or a stated requirement, or until the round limit (default 3). The run always ends on a correctness review, and on a security review when the diff has files for the security skills. For a change to a web interface, it first writes behaviour tests when the project has component tests, and ends the report with a click-through when tests cannot show everything or a visual decision is open.",
     "defaultPrompt": [
       "Use the Polish skill on the current branch."
     ]
