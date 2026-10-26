@@ -53,7 +53,7 @@ must stay byte-identical to the default branch, unless the change is meant to mo
 If the diff changes what a user sees or does in a web interface, use
 `guided-click-through` before the first round. Use its sections to find what to check
 and to write and run behaviour tests for the change, but not for the click-through yet.
-Fix what the tests show. Give the other findings in the code to the reviewer in step 4
+Fix what the tests show. Give the other findings in the code to the correctness reviewer
 of round 1, and triage them with its findings. The tests are part of the check in every
 round, so the check fails at once if a cleanup breaks the behaviour. If the project has
 no component tests, say so in the report, and suggest that the project adds them.
@@ -84,33 +84,56 @@ At most the number of rounds the user gives, default 3. One round is:
    move that test, report the barrier as an open finding. Skip this step when the diff
    changes no user interface.
 4. **Correctness review** of the diff: bugs, unhandled cases, and broken contracts. The
-   review also covers the language pass and the universell utforming pass.
+   review also covers the language pass and the universell utforming pass. In the same
+   step, do the security review (see "The security review in step 4").
 5. **Run the check.** A failure is a finding that matters. Fix the cause and run the
    check again.
 
 The reviews in steps 1 and 4:
 
 - If your tool has a built-in command for a cleanup review, use it in step 1. If it has
-  a built-in code-review command that looks for bugs, use it in step 4. If not, and you
-  can start a separate agent with a fresh context, let that agent review. If a command
-  applies its changes itself, treat each change as a finding, and undo the changes that
-  do not survive your triage.
+  a built-in code-review command that looks for bugs, use it for the correctness review
+  in step 4. If not, and you can start a separate agent with a fresh context, let that
+  agent review. If a command applies its changes itself, treat each change as a finding,
+  and undo the changes that do not survive your triage.
 - Give each reviewer the diff with the untracked files named, and the findings that you
-  already skipped. Also give the reviewer in step 4 each edit of the language pass and
+  already skipped. Also give the correctness reviewer each edit of the language pass and
   of the universell utforming pass in this round, with the old and the new text. Tell
   it that a rewrite that changes a meaning or removes a hedge is a finding. From round
   2, also tell each reviewer what changed since the last review.
-- Tell the reviewer in step 4 what counts: gaps that affect correctness or a stated
+- Tell the correctness reviewer what counts: gaps that affect correctness or a stated
   requirement. Give it the stated requirements. Tell it that no findings is a valid
   answer.
 - Apply the findings that survive your triage (see "Do not touch what the findings do
   not reach").
 
+The security review in step 4:
+
+- Select the security skills from the files in the diff:
+  - `secure-coding` for application code.
+  - `github-actions-security` for GitHub Actions workflows, composite actions and the
+    Dependabot configuration.
+  - `container-security` for Dockerfiles and Containerfiles, Helm charts, Kustomize
+    files, and Kubernetes or OpenShift manifests.
+- If no file in the diff is for a security skill, do not do the security review. Say so
+  in the report.
+- One security reviewer does the review for all the selected skills. If you can start a
+  separate agent with a fresh context, let that agent review. If not, do the review
+  yourself. Do not use a built-in command for a security review in its place.
+- Tell the security reviewer to use each selected skill in review mode, only on the
+  files for that skill. Give it the same input as the correctness reviewer, but not the
+  edits of the language pass and of the universell utforming pass.
+- Tell the security reviewer what counts: a finding with the severity Critical, High or
+  Medium in the selected skill. Tell it that no findings is a valid answer.
+- Triage and apply the security findings as the other findings.
+
 Call each skill by its name. A tool that prefixes plugin skills with the plugin name
 gives them these full names: `asd-ste100-english:asd-ste100-english`,
 `asd-ste100-norsk:asd-ste100-norsk`, `norsk-sprakvask:norsk-sprakvask`,
-`universell-utforming:universell-utforming` and
-`guided-click-through:guided-click-through`.
+`universell-utforming:universell-utforming`,
+`guided-click-through:guided-click-through`, `secure-coding:secure-coding`,
+`github-actions-security:github-actions-security` and
+`container-security:container-security`.
 
 Stop when a round finds nothing that matters and the check passes, or at the cap.
 
@@ -126,7 +149,8 @@ awkward place, and a comment that you would write differently. Apply them or ski
 They do not make the round count as one that found something. If they did, a blank line
 could make the loop start again forever. The language pass is cosmetic too, unless the
 old text could make a reader do the wrong thing. A new test that closes a gap in the
-tests, and fixes no defect, counts the same way.
+tests, and fixes no defect, counts the same way. So does a fix for a security finding
+with the severity Low, because Low is hardening with no known attack path.
 
 ## What makes this converge
 

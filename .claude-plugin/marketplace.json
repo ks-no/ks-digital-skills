@@ -63,8 +63,8 @@
     {
       "name": "polish",
       "source": "./plugins/polish",
-      "description": "On the current branch, run a cleanup review, a language pass with the STE100 and Norwegian language skills, a universell utforming (accessibility) pass on interface code, and a correctness review, round by round. The run stops when the project's check passes and a round finds nothing that affects correctness or a stated requirement, or at the round limit (default 3). The run always ends on a correctness review. For a change to a web interface, it first writes behaviour tests when the project has component tests, and ends the report with a click-through when tests cannot show everything or a visual decision is open.",
-      "version": "0.2.0",
+      "description": "On the current branch, run a cleanup review, a language pass with the STE100 and Norwegian language skills, a universell utforming (accessibility) pass on interface code, a correctness review, and a security review with the security skills, round by round. The run stops when the project's check passes and a round finds nothing that affects correctness or a stated requirement, or at the round limit (default 3). The run always ends on a correctness review, and on a security review when the diff has files for the security skills. For a change to a web interface, it first writes behaviour tests when the project has component tests, and ends the report with a click-through when tests cannot show everything or a visual decision is open.",
+      "version": "0.3.0",
       "author": {
         "name": "Sindre Eik de Lange"
       },

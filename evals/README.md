@@ -452,7 +452,7 @@ Krav oppfylt med den endelige teksten (v6) og uten skill:
 
 #### polish
 
-`polish` 0.2.0 har et pass for universell utforming i hver runde. Det er ikke kjørt en
+`polish` 0.3.0 har et pass for universell utforming i hver runde. Det er ikke kjørt en
 full test av `polish` på en testapp. I stedet simulerte agenter runde 1 på en ny
 branch. Branchen hadde faner, en lenke med teksten «Klikk her», et bilde med filnavn
 som alternativ tekst og et filter som var snudd. En KI-agent vurderte fire svar med den
@@ -465,7 +465,7 @@ gamle og fire med den nye `polish` uten å vite versjonen:
 - På en branch uten grensesnitt hoppet begge svarene over passet.
 - En full test av passet trenger en testapp med feil i universell utforming som
   skillen ikke nevner. Den er ikke kjørt ennå.
-- Resultatene for `polish` 0.2.0 etter polish-kjøringen står i «Etter en
+- Resultatene for `polish` 0.3.0 etter polish-kjøringen står i «Etter en
   polish-kjøring».
 
 #### Etter en polish-kjøring
