@@ -47,33 +47,47 @@ SKILL_FILES = {
     "container-security": [
         "plugins/container-security/skills/container-security/SKILL.md",
     ],
+    "universell-utforming": [
+        "plugins/universell-utforming/skills/universell-utforming/SKILL.md",
+    ],
 }
 
-SECURITY_TASK = (
+ASK_TASK = (
     "Task: do what the text asks. Give the answer that you would give to the user who "
     "asked."
 )
+
+SECURITY_SENTENCE = (
+    "Make the result secure. Follow OWASP guidance, and report the security "
+    "problems that you find."
+)
+
+# The sentence that the "sentence" variant puts in place of the skill, for each group
+# that gets ASK_TASK.
+SENTENCES = {
+    "github-actions-security": SECURITY_SENTENCE,
+    "secure-coding": SECURITY_SENTENCE,
+    "container-security": SECURITY_SENTENCE,
+    "universell-utforming": (
+        "Make the solution and the user test accessible. Follow WCAG and the advice "
+        "for user tests with people with disabilities."
+    ),
+}
 
 TASKS = {
     "en": "Task: rewrite this text with the skill. Select the mode that the skill gives "
     "for the text type. Reply with only the output that the skill tells you to give.",
     "no": "Oppgave: språkvask denne teksten med skillen. Svar bare med det skillen ber "
     "deg gi.",
-    "github-actions-security": SECURITY_TASK,
-    "secure-coding": SECURITY_TASK,
-    "container-security": SECURITY_TASK,
+    **dict.fromkeys(SENTENCES, ASK_TASK),
 }
 
 # Variants without a skill. Use them to find out if a skill does better than no help,
-# and better than one short sentence. They run only for the groups with SECURITY_TASK,
-# because the sentence is about security and the other tasks tell the model to use a skill.
+# and better than one short sentence. They run only for the groups in SENTENCES,
+# because the other tasks tell the model to use a skill.
 BASELINES = {
-    "none": ("No skill", None),
-    "sentence": (
-        "One sentence",
-        "Make the result secure. Follow OWASP guidance, and report the security "
-        "problems that you find.",
-    ),
+    "none": "No skill",
+    "sentence": "One sentence",
 }
 
 
@@ -142,7 +156,8 @@ def main():
     parser.add_argument("--before", help="git ref with the skills to compare with, for example main")
     parser.add_argument(
         "--baseline",
-        help="comma-separated variants without a skill, for the security cases only: none, sentence",
+        help="comma-separated variants without a skill: none, sentence. They run only for "
+        f"the cases in {', '.join(SENTENCES)}",
     )
     parser.add_argument("--only", help="comma-separated case IDs, for example E3,E7,N3")
     parser.add_argument("--runs", type=int, default=1, help="runs per case and version (default 1)")
@@ -172,11 +187,11 @@ def main():
     if unknown:
         sys.exit(f"--baseline: unknown variant {', '.join(unknown)}. Use {', '.join(BASELINES)}.")
 
-    # Each version is (label, git ref or None for the checkout, sentence, uses a skill).
-    versions = [(BASELINES[name][0], None, BASELINES[name][1], False) for name in baselines]
+    # Each version is (label, git ref or None for the checkout, baseline or None for a skill).
+    versions = [(BASELINES[name], None, name) for name in baselines]
     if args.before:
-        versions.append(("Before", args.before, None, True))
-    versions.append(("After", None, None, True))
+        versions.append(("Before", args.before, None))
+    versions.append(("After", None, None))
 
     head = git("rev-parse", "--short", "HEAD").strip()
     if git("status", "--porcelain", "--", "plugins"):
@@ -193,9 +208,9 @@ def main():
     for group in SKILL_FILES:
         group_cases = [case for case in cases.get(group, []) if not only or case["id"] in only]
         group_versions = versions
-        if group_cases and baselines and TASKS[group] != SECURITY_TASK:
-            group_versions = [version for version in versions if version[3]]
-            print(f"{group}: --baseline is only for the security cases", file=sys.stderr)
+        if group_cases and baselines and group not in SENTENCES:
+            group_versions = [version for version in versions if version[2] is None]
+            print(f"{group}: --baseline is only for {', '.join(SENTENCES)}", file=sys.stderr)
         for case in group_cases:
             names = tuple(SKILL_FILES[group] + case.get("files", []))
             lines += [
@@ -203,9 +218,10 @@ def main():
                 f"Input: {case['text']}\n",
                 f"Pass: {case['pass']}\n",
             ]
-            for label, ref, sentence, uses_skill in group_versions:
+            for label, ref, baseline in group_versions:
                 skill = None
-                if uses_skill:
+                sentence = SENTENCES[group] if baseline == "sentence" else None
+                if baseline is None:
                     if (ref, names) not in skills:
                         skills[ref, names] = skill_text(ref, names)
                     skill = skills[ref, names]
