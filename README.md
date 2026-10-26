@@ -16,7 +16,7 @@ Repoet er nytt. Innhold og struktur kan endre seg.
 | `norsk-sprakvask` | skriving | skriv og språkvask norsk bokmål etter Språkrådets normer og klarspråksrådene, og fanger engelsk smitte, inkonsekvente former, særskriving og KI-preg |
 | `asd-ste100-norsk` | skriving | skriv norsk teknisk tekst som ikke kan misforstås, etter prinsippene i ASD-STE100 tilpasset norsk grammatikk |
 | `asd-ste100-english` | skriving | skriv engelsk etter ASD-STE100 (Simplified Technical English), så verktøybeskrivelser, feilmeldinger og instruksjoner ikke kan misforstås av en agent eller en leser |
-| `polish` | produktivitet | rydd opp i, språkvask og gå gjennom branchen i runder til sjekken passerer og en runde ikke finner flere feil, og avslutt alltid med en gjennomgang |
+| `polish` | produktivitet | rydd opp i, språkvask og gå gjennom branchen, også for sikkerhet, i runder til sjekken passerer og en runde ikke finner flere feil, og avslutt alltid med en gjennomgang |
 | `guided-click-through` | testing | test oppførselen til en endring i grensesnittet med komponenttestene i prosjektet, og lag en kort sjekkliste som brukeren klikker gjennom for det testene ikke ser, som layout, stil og synlig fokus |
 | `github-actions-security` | sikkerhet | skriv og gå gjennom workflowene i GitHub Actions med regler for risikoene i OWASP Top 10 og OWASP Top 10 CI/CD Security Risks, så tekst, kode og artefakter fra forks, issues og kommentarer ikke når tokenet og secretene |
 | `secure-coding` | sikkerhet | skriv og gå gjennom applikasjonskode i Java, Kotlin, C#, Python og TypeScript med regler for risikoene i OWASP Top 10, OWASP API Security Top 10 og OWASP Top 10 for LLM Applications, også for Maskinporten og ID-porten, uten ekstra kode og uten falske funn |
@@ -26,10 +26,11 @@ Repoet er nytt. Innhold og struktur kan endre seg.
 setningsbygningen, og den andre tar rettskriving, tegnsetting og ordvalg. Installer
 begge.
 
-`polish` bruker de tre språkskillene i språkvasken. Er en av dem ikke installert, hopper
-`polish` over den skillen og sier fra i rapporten. Endrer branchen grensesnittet og
-prosjektet har komponenttester, skriver `polish` tester for oppførselen med
-`guided-click-through` før første runde. Rapporten slutter med en sjekkliste fra samme
+`polish` bruker de tre språkskillene i språkvasken og de tre sikkerhetsskillene i
+gjennomgangen. Hver sikkerhetsskill går bare gjennom filene den gjelder for. Er en av
+skillene ikke installert, hopper `polish` over den skillen og sier fra i rapporten.
+Endrer branchen grensesnittet og prosjektet har komponenttester, skriver `polish` tester
+for oppførselen med `guided-click-through` før første runde. Rapporten slutter med en sjekkliste fra samme
 skill når testene ikke viser alt, eller når et valg er lettere å ta i appen.
 
 `guided-click-through` starter ikke appen og bruker ingen nettleser. Har prosjektet
