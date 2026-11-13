@@ -152,8 +152,9 @@ it finds them. This is why the language pass comes before the review, not after 
 **Break every new or changed check before you trust it.** Undo the thing that it must
 catch, see that the check fails, and restore the code. A green check that you did not
 break has not measured anything. Also make sure that the edit changed the file: a revert
-that matched nothing passes for the wrong reason. If the check cannot catch a fix, say
-so in the report.
+that matched nothing passes for the wrong reason. Then read why the check fails. It must
+fail on the test that covers the thing, not on another error, such as a missing file or
+a tool that does not start. If the check cannot catch a fix, say so in the report.
 
 **Fix the cause, not each symptom.** When several findings point at one mechanism, make
 one fix upstream of all of them. Say so, and do not patch three places.
