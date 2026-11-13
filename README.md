@@ -18,6 +18,7 @@ Repoet er nytt. Innhold og struktur kan endre seg.
 | `asd-ste100-english` | skriving | skriv engelsk etter ASD-STE100 (Simplified Technical English), så verktøybeskrivelser, feilmeldinger og instruksjoner ikke kan misforstås av en agent eller en leser |
 | `polish` | produktivitet | rydd opp i, språkvask og gå gjennom branchen, også for sikkerhet, i runder til sjekken passerer og en runde ikke finner flere feil, og avslutt alltid med en gjennomgang |
 | `guided-click-through` | testing | test oppførselen til en endring i grensesnittet med komponenttestene i prosjektet, og lag en kort sjekkliste som brukeren klikker gjennom for det testene ikke ser, som layout, stil og synlig fokus |
+| `end-session` | produktivitet | avslutt en session: sjekk tilstanden, finn det sessionen lærte og det som fortsatt er åpent, og foreslå hvor hvert punkt skal stå, som en test, noen få linjer i dokumentasjonen, et punkt du venter på med en dato, eller et notat til neste session |
 | `github-actions-security` | sikkerhet | skriv og gå gjennom workflowene i GitHub Actions med regler for risikoene i OWASP Top 10 og OWASP Top 10 CI/CD Security Risks, så tekst, kode og artefakter fra forks, issues og kommentarer ikke når tokenet og secretene |
 | `secure-coding` | sikkerhet | skriv og gå gjennom applikasjonskode i Java, Kotlin, C#, Python og TypeScript med regler for risikoene i OWASP Top 10, OWASP API Security Top 10 og OWASP Top 10 for LLM Applications, også for Maskinporten og ID-porten, uten ekstra kode og uten falske funn |
 | `container-security` | sikkerhet | skriv og gå gjennom Dockerfiler, Helm-charts og manifester for Kubernetes og OpenShift med regler for risikoene i OWASP Top 10 og OWASP Kubernetes Top 10, uten gjetteverdier som stopper arbeidslasten, og uten kommandoer som viser secrets |
@@ -39,6 +40,22 @@ foreslår agenten å legge dem til, men gjør det bare når du ber om det. Deret
 den steg for det testene ikke ser, og du klikker gjennom i appen slik du pleier. Du
 svarer «ok» eller oppgir stegene som feilet, og agenten retter dem. Er et valg lettere
 å ta når du ser appen, kan sjekklisten også be deg velge mellom to eller tre løsninger.
+
+`end-session` starter bare når du ber om det, for eksempel med `/end-session` i Claude
+Code. Agenten leser hele sessionen og foreslår selv hva som skal skrives ned, og hvor.
+Den spør deg bare om det sessionen ikke viser, for eksempel et svar du venter på per
+e-post. Du godkjenner forslagene i ett svar, og agenten skriver ingenting før det.
+
+- Agenten foreslår få nye linjer i `AGENTS.md`, og foreslår å fjerne linjer som er feil
+  eller utdatert. Hver linje i instruksjonsfilen gjelder for hver oppgave. En
+  [studie fra 2026](https://arxiv.org/abs/2602.11988) fant at instruksjonsfiler som en
+  språkmodell skrev, gjorde agentene litt dårligere og dyrere å kjøre.
+- Et punkt du venter på, får en dato. Det sier også hva du gjør når svaret kommer, og
+  hva du gjør hvis det ikke kommer.
+- Notatet til neste session havner der prosjektet har notater. Har prosjektet ingen
+  slike, havner det i minnet til verktøyet eller i en fil som git ignorerer.
+- Agenten pusher ikke, oppretter ingen saker og poster ingen kommentarer. Den gir deg
+  teksten eller kommandoen.
 
 ### Sikkerhet
 

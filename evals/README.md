@@ -1,7 +1,8 @@
 # Testtekster
 
-Tekstene i `cases.json` tester sikkerhetsskillene (se [Sikkerhetsskillene](#sikkerhetsskillene))
-og reglene for KI-markører i `asd-ste100-english` og `norsk-sprakvask`. Tekstene for
+Tekstene i `cases.json` tester sikkerhetsskillene (se [Sikkerhetsskillene](#sikkerhetsskillene)),
+`end-session` (se [end-session](#end-session)) og reglene for KI-markører i
+`asd-ste100-english` og `norsk-sprakvask`. Tekstene for
 KI-markørene inneholder:
 
 - kontraster av typen «not just X, it is Y»
@@ -17,7 +18,7 @@ får en setning fra en testtekst.
 ## Innhold
 
 - `cases.json`: tekstene, med `en` for engelsk, `no` for norsk og en liste for hver
-  sikkerhetsskill. Hver tekst har en `id`, en `type`, selve teksten (`text`) og kravet
+  sikkerhetsskill og for `end-session`. Hver tekst har en `id`, en `type`, selve teksten (`text`) og kravet
   til et riktig svar (`pass`).
 - `run.py`: kjører tekstene gjennom en modell og setter svarene ved siden av kravene.
 
@@ -305,3 +306,59 @@ Sonnet.
 - README anbefaler derfor linjene i `AGENTS.md`. Agenten leser instruksjonsfilen hver
   gang, men en skill bare når den velger den selv.
 - Ingen har gjort sjekken i et ekte verktøy ennå.
+
+## end-session
+
+`cases.json` har seks tekster for `end-session`, H1–H6. Hver tekst er en kort, oppdiktet
+session: et sammendrag, utdata fra kommandoer, deler av `AGENTS.md` og en bruker som vil
+avslutte. Tekstene tester om agenten
+
+- retter en linje i `AGENTS.md` i stedet for å legge til en ny (H1)
+- lar være å gjøre en instruksjon fra en nettside om til en regel (H2)
+- svarer kort når sessionen ikke har noe å skrive ned (H3)
+- lar være å skrive ned det repoet viser, og legger en beslutning og et ønske fra
+  brukeren på riktig sted (H4)
+- foreslår en sjekk i stedet for en linje i dokumentasjonen (H5)
+- rydder opp etter sessionen, og skriver punkter du venter på, med dato og plan (H6)
+
+Kjør tekstene i tre varianter: uten skill, med én setning og med skillen. Setningen er
+spørsmålet en bruker stiller uten skillen: om sessionen lærte noe som skal inn i
+dokumentasjonen, og om noe skal på en TODO-liste.
+
+```sh
+python3 evals/run.py --dump <mappe> --only H1,H2,H3,H4,H5,H6 --baseline none,sentence
+```
+
+Skillen starter bare når brukeren ber om det. Testene måler derfor ikke om agenten
+laster skillen selv.
+
+### Resultater for end-session
+
+Kjørt 13. november 2026 med agenter i Claude Code, to kjøringer per tekst, variant og
+modell. En egen KI-agent vurderte svarene til hver tekst uten å vite variant eller
+modell. Ingen person har kontrollert vurderingene ennå.
+
+| Variant | Opus: krav oppfylt | Sonnet: krav oppfylt | Dårlige linjer | Ord, Opus / Sonnet |
+| --- | --- | --- | --- | --- |
+| Uten skill | 0,95 | 0,87 | 2 | 283 / 247 |
+| Én setning | 0,96 | 0,89 | 5 | 314 / 272 |
+| Med skillen | 1,00 | 1,00 | 0 | 551 / 433 |
+
+- «Krav oppfylt» er snittet av kravene i `pass` (riktig = 1, delvis = 0,5).
+- «Dårlige linjer» er linjer for `AGENTS.md` eller for et minne som lastes i hver
+  session, der vurdereren mente at agenten kan finne linjen i repoet, at linjen bare
+  gjelder denne sessionen, at den gjentar en linje, eller at den er feil. Tallet gjelder
+  begge modellene til sammen.
+- Uten skill manglet punktet om en review som kommer i morgen, en plan for hva du gjør
+  hvis den ikke kommer (H1). Med én setning foreslo agenten flere linjer i `AGENTS.md`,
+  og la beslutningen i H4 der.
+- Tekstene sier mye om hva som skjedde, så også svarene uten skill ble gode.
+  Forskjellen er størst for Sonnet.
+- Svarene med skillen er lengre, fordi de viser teksten til hver endring.
+
+Etter kjøringen viser forslaget bare neste steg og punktene du venter på fra
+overleveringsnotatet, ikke hele notatet. Den nye teksten kjørte én gang per tekst og
+modell. Svarene ble vurdert blandet med svarene fra den første teksten, uten at
+vurdereren visste hvilken tekst som var hvilken. Begge modellene oppfylte alle kravene,
+og svarene ble om lag 11 % kortere: 486 ord for Opus og 386 for Sonnet. Ett svar fra Opus
+foreslo et overleveringsnotat i minnet med status som bare gjelder nå.

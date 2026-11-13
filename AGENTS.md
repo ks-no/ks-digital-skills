@@ -25,7 +25,7 @@ plugins/<skill-name>/
     ├── SKILL.md                     # required, with frontmatter
     └── references/                  # optional supporting files
 scripts/validate.py                  # repository validation
-evals/cases.json                     # held-out test texts for the AI-marker rules and security skills
+evals/cases.json                     # held-out test texts for the AI-marker rules, security skills and end-session
 evals/run.py                         # runs the test texts through a model
 .github/workflows/validate.yml       # CI: runs validate.py and zizmor
 .github/dependabot.yml               # updates the pinned actions
@@ -115,8 +115,9 @@ texts in `evals/`. `evals/README.md` tells how to run them and how to add a text
 new rule or exception gets at least one new text, with words that are not in any
 skill. Do not copy a sentence from a test text into a skill.
 
-For a security skill, use its cases in `evals/cases.json`. Run each case without the
-skill and with the skill, on a strong model and on a weaker model that people use.
+For a security skill and for `end-session`, use its cases in `evals/cases.json`. Run
+each case without the skill and with the skill, on a strong model and on a weaker
+model that people use.
 Grade the answers blind. A change must not make an answer longer or stop a workflow
 or program from working. `evals/README.md` tells how.
 
