@@ -362,3 +362,16 @@ modell. Svarene ble vurdert blandet med svarene fra den første teksten, uten at
 vurdereren visste hvilken tekst som var hvilken. Begge modellene oppfylte alle kravene,
 og svarene ble om lag 11 % kortere: 486 ord for Opus og 386 for Sonnet. Ett svar fra Opus
 foreslo et overleveringsnotat i minnet med status som bare gjelder nå.
+
+### Begrensninger
+
+- Samme agent skrev skillen, tekstene og kravene i `pass`. Mange krav sjekker derfor
+  reglene i skillen: en plan for når svaret ikke kommer, at svaret sier at det ikke er
+  noe å skrive ned, og en lint-regel i stedet for en linje. Tallene viser at agenten
+  følger reglene, men mindre om resultatet blir bedre for brukeren.
+- Tekstene er sammendrag som allerede nevner det som skal skrives ned. De måler hvor
+  agenten legger punktene, ikke om den finner dem i en lang session.
+- Agenten kunne ikke kjøre kommandoer. Kravet om å spørre før den skriver, kunne derfor
+  ikke feile i noen variant.
+- En modell fra samme familie (Claude) vurderte svarene.
+- Prøv skillen i en ekte session før du stoler på tallene.
