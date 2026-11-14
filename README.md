@@ -41,11 +41,12 @@ den steg for det testene ikke ser, og du klikker gjennom i appen slik du pleier.
 svarer «ok» eller oppgir stegene som feilet, og agenten retter dem. Er et valg lettere
 å ta når du ser appen, kan sjekklisten også be deg velge mellom to eller tre løsninger.
 
-`end-session` er laget for å starte når du ber om det, for eksempel med `/end-session`
-i Claude Code. Et verktøy som ikke støtter den innstillingen, kan starte skillen selv når
-du sier at du vil avslutte. Agenten leser hele sessionen og foreslår selv hva som skal skrives ned, og hvor.
-Den spør deg bare om det sessionen ikke viser, for eksempel et svar du venter på per
-e-post. Du godkjenner forslagene i ett svar, og agenten skriver ingenting før det.
+`end-session` er laget for å starte når du ber om det, for eksempel med
+`/end-session:end-session` i Claude Code. Et verktøy som ikke følger innstillingen
+`disable-model-invocation`, kan starte skillen selv når du sier at du vil avslutte.
+Agenten leser hele sessionen og foreslår selv hva som skal skrives ned, og hvor. Den
+spør deg bare om det sessionen ikke viser, for eksempel et svar du venter på per e-post.
+Du godkjenner forslagene i ett svar, og agenten skriver ingenting før det.
 
 - Agenten foreslår få nye linjer i `AGENTS.md`, og foreslår å fjerne linjer som er feil
   eller utdaterte. Hver linje i instruksjonsfilen gjelder for hver oppgave. En

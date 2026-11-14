@@ -33,19 +33,22 @@ one reply.
 
 Use evidence from now, not your memory of the session.
 
-1. Run `git branch --show-current`, `git status --short` and `git stash list`. If the
+1. Read the current note for this work, if one exists, in the places that section 5
+   names. Each open item in it stays open until a session finishes it.
+2. Run `git branch --show-current`, `git status --short` and `git stash list`. If the
    branch has an upstream, find the commits that are not pushed with
-   `git log @{upstream}..HEAD`. If the branch has no upstream, report that the branch
-   is not pushed. Use only the local refs. Do not fetch.
-2. Read the diff of the session. Find what must not stay: debug output, focused or
+   `git log @{upstream}..HEAD`. If the branch has no upstream, report that, and say
+   that the branch is not pushed or was pushed without an upstream. Use only the local
+   refs, and say that they show the remote at the last fetch. Do not fetch.
+3. Read the diff of the session. Find what must not stay: debug output, focused or
    skipped tests, code in comments, temporary flags or values, TODO comments that the
    session added, and secrets or personal data.
-3. Find what the session started: background processes, servers, watchers, temporary
+4. Find what the session started: background processes, servers, watchers, temporary
    files and branches, and worktrees. Take the list from the commands that the session
    ran, and run `git worktree list` and `git branch`. Do not search the whole system,
    because a sandbox can hide the processes that it did not start. Propose to stop or
    remove only what the session made. For other things, ask.
-4. If the code changed after the last run of the check of the project, run the check
+5. If the code changed after the last run of the check of the project, run the check
    again. Leave out each gate that starts the app, a server or a browser, and each step
    that changes files, such as a formatter that fixes the code. Report the
    command and the result. If you do not run it, write "not run". Never write that the
@@ -68,7 +71,8 @@ Read the whole session, not only the last part. A candidate is one of these:
   question with no answer, and an item that waits for a person, a system or a date.
 - A diff that nobody reviewed in the session, when the work goes to a pull request.
   Propose a review as the next step, for example with the skill polish if it is
-  installed (its full name is `polish:polish` in a tool that prefixes plugin skills). Do not run the review in this skill. Do not propose a review for a small,
+  installed (its full name is `polish:polish` in a tool that prefixes plugin skills).
+  Do not run the review in this skill. Do not propose a review for a small,
   mechanical change that the check of the project covers.
 - A manual step that the session did again and again.
 
@@ -143,8 +147,8 @@ lines or fewer, in this form:
 ```text
 # <name of the work>: handoff <date>
 
-Before you continue: run git status and the check, and compare the result with
-"State". Tell the user about each difference before you change anything.
+Before you continue: run git status and the check command in "State", and compare the
+result with "State". Tell the user about each difference before you change anything.
 
 Goal: <one line, and where the requirements are>
 State: <branch, last commit, files not committed, the check: command and result, or "not run">
@@ -163,7 +167,8 @@ Put the note in the first of these places that exists:
 1. The place that the project names for notes.
 2. The persistent memory of your tool, if it has one. Keep one entry for each open piece
    of work. Update the entry, and remove it when the work is done. If a part of the
-   memory loads in each session, put only one line about the work in that part.
+   memory loads in each session, put only one line in that part: the name of the work
+   and where the note is, with no status.
 3. A file that git ignores, with one file for each piece of work, such as one for each
    branch. Overwrite the file each session, so that only the current note for that work
    exists. Before you write, make sure that git ignores the file. If git does not ignore
