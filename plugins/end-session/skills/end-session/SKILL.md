@@ -91,7 +91,8 @@ it at the right time.
    the tools that the project already has. Do not add a dependency unless the user asks.
 2. **A comment next to the code**, for a trap in one place in the code.
 3. **The instruction file of the project for agents**, such as AGENTS.md, for a rule or
-   a fact that an agent needs in many sessions and cannot find fast in the repo.
+   a fact about the project that an agent needs in many sessions and cannot find fast
+   in the repo.
 4. **The docs for people**, such as the README, a guide or a runbook, for what people
    need and for what an agent needs only for some tasks. A decision and its reason go
    in the next commit message, the pull request text, or a decision record if the
@@ -147,8 +148,9 @@ lines or fewer, in this form:
 ```text
 # <name of the work>: handoff <date>
 
-Before you continue: run git status and the check command in "State", and compare the
-result with "State". Tell the user about each difference before you change anything.
+Before you continue: run git status and the steps of the check in "State" that do not
+change files, and compare the result with "State". Tell the user about each difference
+before you change anything.
 
 Goal: <one line, and where the requirements are>
 State: <branch, last commit, files not committed, the check: command and result, or "not run">

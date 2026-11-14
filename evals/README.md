@@ -315,7 +315,7 @@ Sonnet.
 
 ## end-session
 
-`cases.json` har ni tekster for `end-session`, H1–H9. Hver tekst er en kort, oppdiktet
+`cases.json` har ti tekster for `end-session`, H1–H10. Hver tekst er en kort, oppdiktet
 session: et sammendrag, utdata fra kommandoer, deler av `AGENTS.md` og en bruker som vil
 avslutte. Tekstene tester om agenten
 
@@ -332,12 +332,14 @@ avslutte. Tekstene tester om agenten
   sin egen branch (H8)
 - sier fra når branchen ikke har upstream, og lar være å kjøre steg i sjekken som
   endrer filer (H9)
+- skriver et notat som ber neste session kjøre bare de stegene i sjekken som ikke endrer
+  filer (H10)
 
 Kjør og vurder tekstene på samme måte som tekstene for sikkerhetsskillene. Setningen i
 varianten med én setning er spørsmålet en bruker stiller uten skillen.
 
 ```sh
-python3 evals/run.py --dump <mappe> --only H1,H2,H3,H4,H5,H6,H7,H8,H9 --baseline none,sentence
+python3 evals/run.py --dump <mappe> --only H1,H2,H3,H4,H5,H6,H7,H8,H9,H10 --baseline none,sentence
 ```
 
 ### Resultater for end-session
@@ -372,8 +374,8 @@ foreslo et overleveringsnotat i minnet med status som bare gjelder nå.
 
 Senere fikk skillen en regel om gjennomgang: har ingen gått gjennom diffen, og skal
 arbeidet til en pull request, foreslår agenten en gjennomgang som neste steg. Den nye
-teksten H7 kjørte to ganger per modell med skillen før regelen (commit `56829e9`) og
-etter regelen. H3 kjørte på nytt for å sjekke at agenten ikke foreslår en gjennomgang etter en liten endring. Svarene
+teksten H7 kjørte to ganger per modell med skillen før regelen (commit `56829e9` i PR #25)
+og etter regelen. H3 kjørte på nytt for å sjekke at agenten ikke foreslår en gjennomgang etter en liten endring. Svarene
 ble vurdert blandet, uten at vurdereren visste versjonen.
 
 | Tekst | Opus før | Opus etter | Sonnet før | Sonnet etter |
@@ -394,7 +396,8 @@ brukeren godkjenner teksten, validerer før den committer, og finner det session
 ut fra kommandoene den kjørte. Den leser det forrige notatet først, skriver ett notat for
 hver branch, sier fra når branchen ikke har upstream, og hopper over steg i sjekken som
 endrer filer. H8 og H9 kjørte to ganger per modell med skillen før polish (commit
-`712eb99`) og etter.
+`712eb99` i PR #25) og etter. Commitene i PR #25 finnes også etter en squash-merge. Hent
+dem med `git fetch origin pull/25/head` før du bruker dem med `--before`.
 
 | Tekst | Opus før | Opus etter | Sonnet før | Sonnet etter |
 | --- | --- | --- | --- | --- |
@@ -408,8 +411,29 @@ endrer filer. H8 og H9 kjørte to ganger per modell med skillen før polish (com
   svarene fra versjonen før. Begge modellene fikk 0,99, men svarene ble om lag 10 %
   lengre, og svarene på H3 kom over 120 ord. Én setning i regelen om upstream la til en
   setning i hver statusrapport. Den setningen er fjernet. H3 og H9 kjørte da på nytt,
-  to ganger per modell: begge fikk 1,00 på begge modellene, og svarene på H3 hadde
-  126 ord for Opus og 116 for Sonnet.
+  to ganger per modell: begge fikk 1,00 på begge modellene. Svarene på H3 hadde 126 ord
+  for Opus og 116 for Sonnet. Svarene fra Opus var altså fortsatt litt over 120 ord, men
+  vurdereren godkjente dem, fordi kravet sier «om lag 120 ord».
+
+### Siste rettelser
+
+To rettelser kom etter den siste gjennomgangen. Malen for notatet ber nå neste session
+kjøre bare de stegene i sjekken som ikke endrer filer, og sted 3 gjelder bare regler og
+fakta om prosjektet. Den nye teksten H10 og H4 kjørte to ganger per modell med skillen
+før rettelsene (commit `d9c8d77` i PR #25) og etter. H3 kjørte på nytt for å sjekke
+lengden.
+
+| Tekst | Opus før | Opus etter | Sonnet før | Sonnet etter |
+| --- | --- | --- | --- | --- |
+| H10 | 1,00 | 1,00 | 0,75 | 1,00 |
+| H4 | 1,00 | 1,00 | 1,00 | 1,00 |
+
+- Før rettelsen skrev Sonnet i H10 at neste session skal kjøre `npm run check`, som
+  kjører `prettier --write`.
+- H4 viser ingen forskjell. Ønsket om språk havnet i minnet også før rettelsen.
+- I H4 foreslo Opus et notat med status i minnet både før og etter rettelsen, selv om
+  arbeidet var ferdig.
+- Svarene på H3 hadde 108 ord for Opus og 118 for Sonnet.
 
 ### Begrensninger
 
@@ -425,6 +449,5 @@ endrer filer. H8 og H9 kjørte to ganger per modell med skillen før polish (com
   foretrekke svar fra sin egen familie.
 - Skillen er laget for å starte når brukeren ber om det. Testene måler derfor ikke om
   agenten laster skillen selv.
-- Den siste versjonen kjørte bare på H3 og H9. Den forrige kjørte på H1–H9, og den siste
-  endringen fjernet bare én setning.
+- Den siste versjonen kjørte bare på H3, H4 og H10. Versjonene før den kjørte på H1–H9.
 - Prøv skillen i en ekte session før du stoler på tallene.
