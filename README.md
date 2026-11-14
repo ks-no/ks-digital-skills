@@ -54,6 +54,9 @@ e-post. Du godkjenner forslagene i ett svar, og agenten skriver ingenting før d
   hva du gjør hvis det ikke kommer.
 - Notatet til neste session havner der prosjektet har notater. Har prosjektet ingen
   slike, havner det i minnet til verktøyet eller i en fil som git ignorerer.
+- Har ingen gått gjennom endringene, og skal arbeidet bli en PR, foreslår agenten en
+  gjennomgang som neste steg, for eksempel med `polish`. Den kjører ikke gjennomgangen
+  selv.
 - Agenten pusher ikke, oppretter ingen saker og poster ingen kommentarer. Den gir deg
   teksten eller kommandoen.
 

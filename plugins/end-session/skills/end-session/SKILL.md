@@ -62,6 +62,10 @@ Read the whole session, not only the last part. A candidate is one of these:
 - A decision and its reason, made in the conversation and not recorded in the repo.
 - Open work: a task that is not done, a finding outside the scope of the session, a
   question with no answer, and an item that waits for a person, a system or a date.
+- A diff that nobody reviewed in the session, when the work goes to a pull request.
+  Propose a review as the next step, for example with the skill polish if it is
+  installed. Do not run the review in this skill. Do not propose a review for a small,
+  mechanical change that the check of the project covers.
 - A manual step that the session did again and again.
 
 A candidate must come from what the user said, or from what you saw in a result, such as
@@ -197,7 +201,10 @@ Reply "ok" to do all, the numbers to do, such as "1, 3", or a change, such as "2
 
 1. Do only the items that the user approved. Write in the language and the style of the
    target file. If the skills asd-ste100-english, asd-ste100-norsk or norsk-sprakvask
-   are installed, use them on new text in their language.
+   are installed, use them on new text in their language. A tool that prefixes plugin
+   skills with the plugin name gives them these full names:
+   `asd-ste100-english:asd-ste100-english`, `asd-ste100-norsk:asd-ste100-norsk`,
+   `norsk-sprakvask:norsk-sprakvask` and `polish:polish`.
 2. Commit only when the user approves it. Give the push command to the user.
 3. If you changed a file that the validation of the project checks, run the validation.
 4. End with:

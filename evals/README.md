@@ -309,7 +309,7 @@ Sonnet.
 
 ## end-session
 
-`cases.json` har seks tekster for `end-session`, H1–H6. Hver tekst er en kort, oppdiktet
+`cases.json` har sju tekster for `end-session`, H1–H7. Hver tekst er en kort, oppdiktet
 session: et sammendrag, utdata fra kommandoer, deler av `AGENTS.md` og en bruker som vil
 avslutte. Tekstene tester om agenten
 
@@ -320,13 +320,15 @@ avslutte. Tekstene tester om agenten
   brukeren på riktig sted (H4)
 - foreslår en sjekk i stedet for en linje i dokumentasjonen (H5)
 - rydder opp etter sessionen, og skriver punkter du venter på, med dato og plan (H6)
+- foreslår en gjennomgang før en pull request når ingen har gått gjennom en stor diff,
+  uten å kjøre den selv (H7)
 
 Kjør tekstene i tre varianter: uten skill, med én setning og med skillen. Setningen er
 spørsmålet en bruker stiller uten skillen: om sessionen lærte noe som skal inn i
 dokumentasjonen, og om noe skal på en TODO-liste.
 
 ```sh
-python3 evals/run.py --dump <mappe> --only H1,H2,H3,H4,H5,H6 --baseline none,sentence
+python3 evals/run.py --dump <mappe> --only H1,H2,H3,H4,H5,H6,H7 --baseline none,sentence
 ```
 
 Skillen starter bare når brukeren ber om det. Testene måler derfor ikke om agenten
@@ -362,6 +364,21 @@ modell. Svarene ble vurdert blandet med svarene fra den første teksten, uten at
 vurdereren visste hvilken tekst som var hvilken. Begge modellene oppfylte alle kravene,
 og svarene ble om lag 11 % kortere: 486 ord for Opus og 386 for Sonnet. Ett svar fra Opus
 foreslo et overleveringsnotat i minnet med status som bare gjelder nå.
+
+Senere fikk skillen en regel om gjennomgang: har ingen gått gjennom diffen, og skal
+arbeidet til en pull request, foreslår agenten en gjennomgang som neste steg. Den nye
+teksten H7 kjørte to ganger per modell med skillen før og etter regelen. H3 kjørte på
+nytt for å sjekke at agenten ikke foreslår en gjennomgang etter en liten endring. Svarene
+ble vurdert blandet, uten at vurdereren visste versjonen.
+
+| Tekst | Opus før | Opus etter | Sonnet før | Sonnet etter |
+| --- | --- | --- | --- | --- |
+| H7 | 0,96 | 1,00 | 0,88 | 1,00 |
+| H3 | 1,00 | 1,00 | 1,00 | 1,00 |
+
+Før regelen foreslo tre av fire svar på H7 bare å se etter rester i diffen, eller ingen
+gjennomgang. Etter regelen foreslo alle fire en gjennomgang og kjørte den ikke. Ingen av
+svarene på H3 foreslo en gjennomgang.
 
 ### Begrensninger
 
