@@ -39,7 +39,7 @@ Use evidence from now, not your memory of the session.
    branch has an upstream, find the commits that are not pushed with
    `git log @{upstream}..HEAD`. If the branch has no upstream, report that, and say
    that the branch is not pushed or was pushed without an upstream. Use only the local
-   refs, and say that they show the remote at the last fetch. Do not fetch.
+   refs. Do not fetch.
 3. Read the diff of the session. Find what must not stay: debug output, focused or
    skipped tests, code in comments, temporary flags or values, TODO comments that the
    session added, and secrets or personal data.

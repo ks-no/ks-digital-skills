@@ -315,7 +315,7 @@ Sonnet.
 
 ## end-session
 
-`cases.json` har sju tekster for `end-session`, H1–H7. Hver tekst er en kort, oppdiktet
+`cases.json` har ni tekster for `end-session`, H1–H9. Hver tekst er en kort, oppdiktet
 session: et sammendrag, utdata fra kommandoer, deler av `AGENTS.md` og en bruker som vil
 avslutte. Tekstene tester om agenten
 
@@ -328,12 +328,16 @@ avslutte. Tekstene tester om agenten
 - rydder opp etter sessionen, og skriver punkter du venter på, med dato og plan (H6)
 - foreslår en gjennomgang før en pull request når ingen har gått gjennom en stor diff,
   uten å kjøre den selv (H7)
+- leser det forrige notatet før den skriver et nytt, og skriver bare til notatet for
+  sin egen branch (H8)
+- sier fra når branchen ikke har upstream, og lar være å kjøre steg i sjekken som
+  endrer filer (H9)
 
 Kjør og vurder tekstene på samme måte som tekstene for sikkerhetsskillene. Setningen i
 varianten med én setning er spørsmålet en bruker stiller uten skillen.
 
 ```sh
-python3 evals/run.py --dump <mappe> --only H1,H2,H3,H4,H5,H6,H7 --baseline none,sentence
+python3 evals/run.py --dump <mappe> --only H1,H2,H3,H4,H5,H6,H7,H8,H9 --baseline none,sentence
 ```
 
 ### Resultater for end-session
@@ -369,8 +373,7 @@ foreslo et overleveringsnotat i minnet med status som bare gjelder nå.
 Senere fikk skillen en regel om gjennomgang: har ingen gått gjennom diffen, og skal
 arbeidet til en pull request, foreslår agenten en gjennomgang som neste steg. Den nye
 teksten H7 kjørte to ganger per modell med skillen før regelen (commit `56829e9`) og
-etter regelen. H3 kjørte på
-nytt for å sjekke at agenten ikke foreslår en gjennomgang etter en liten endring. Svarene
+etter regelen. H3 kjørte på nytt for å sjekke at agenten ikke foreslår en gjennomgang etter en liten endring. Svarene
 ble vurdert blandet, uten at vurdereren visste versjonen.
 
 | Tekst | Opus før | Opus etter | Sonnet før | Sonnet etter |
@@ -380,7 +383,33 @@ ble vurdert blandet, uten at vurdereren visste versjonen.
 
 Før regelen foreslo tre av fire svar på H7 bare å se etter rester i diffen, eller ingen
 gjennomgang. Etter regelen foreslo alle fire en gjennomgang og kjørte den ikke. Ingen av
-svarene på H3 foreslo en gjennomgang.
+svarene på H3 foreslo en gjennomgang. Svarene på H7 ble kortere med regelen: fra 561 til
+438 ord for Opus og fra 435 til 431 for Sonnet. På H3 gikk Opus fra 98 til 102 ord og
+Sonnet fra 96 til 122.
+
+### Etter polish
+
+En kjøring av `polish` på branchen ga flere regler. Agenten bruker språkskillene før
+brukeren godkjenner teksten, validerer før den committer, og finner det sessionen startet
+ut fra kommandoene den kjørte. Den leser det forrige notatet først, skriver ett notat for
+hver branch, sier fra når branchen ikke har upstream, og hopper over steg i sjekken som
+endrer filer. H8 og H9 kjørte to ganger per modell med skillen før polish (commit
+`712eb99`) og etter.
+
+| Tekst | Opus før | Opus etter | Sonnet før | Sonnet etter |
+| --- | --- | --- | --- | --- |
+| H8 | 1,00 | 1,00 | 1,00 | 1,00 |
+| H9 | 0,94 | 1,00 | 0,75 | 1,00 |
+
+- H8 viser ingen forskjell. Skillen leste det forrige notatet også før polish, fordi H8
+  viser både mappen og filen. H8 viser at regelen ikke skader, ikke at den trengs.
+- Før polish foreslo Sonnet `make check` i H9 uten å si at `black .` skriver om filer.
+- H1–H7 kjørte én gang per tekst og modell med versjonen etter polish, blandet med
+  svarene fra versjonen før. Begge modellene fikk 0,99, men svarene ble om lag 10 %
+  lengre, og svarene på H3 kom over 120 ord. Én setning i regelen om upstream la til en
+  setning i hver statusrapport. Den setningen er fjernet. H3 og H9 kjørte da på nytt,
+  to ganger per modell: begge fikk 1,00 på begge modellene, og svarene på H3 hadde
+  126 ord for Opus og 116 for Sonnet.
 
 ### Begrensninger
 
@@ -396,4 +425,6 @@ svarene på H3 foreslo en gjennomgang.
   foretrekke svar fra sin egen familie.
 - Skillen er laget for å starte når brukeren ber om det. Testene måler derfor ikke om
   agenten laster skillen selv.
+- Den siste versjonen kjørte bare på H3 og H9. Den forrige kjørte på H1–H9, og den siste
+  endringen fjernet bare én setning.
 - Prøv skillen i en ekte session før du stoler på tallene.
