@@ -47,7 +47,7 @@ Den spør deg bare om det sessionen ikke viser, for eksempel et svar du venter p
 e-post. Du godkjenner forslagene i ett svar, og agenten skriver ingenting før det.
 
 - Agenten foreslår få nye linjer i `AGENTS.md`, og foreslår å fjerne linjer som er feil
-  eller utdatert. Hver linje i instruksjonsfilen gjelder for hver oppgave. En
+  eller utdaterte. Hver linje i instruksjonsfilen gjelder for hver oppgave. En
   [studie fra 2026](https://arxiv.org/abs/2602.11988) fant at instruksjonsfiler som en
   språkmodell skrev, gjorde agentene litt dårligere og dyrere å kjøre.
 - Et punkt du venter på, får en dato. Det sier også hva du gjør når svaret kommer, og

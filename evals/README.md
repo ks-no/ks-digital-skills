@@ -1,8 +1,8 @@
 # Testtekster
 
-Tekstene i `cases.json` tester sikkerhetsskillene (se [Sikkerhetsskillene](#sikkerhetsskillene)),
-`end-session` (se [end-session](#end-session)) og reglene for KI-markører i
-`asd-ste100-english` og `norsk-sprakvask`. Tekstene for
+Tekstene i `cases.json` tester reglene for KI-markører i `asd-ste100-english` og
+`norsk-sprakvask`, og skillene som har en egen liste i filen, for eksempel
+sikkerhetsskillene (se [Sikkerhetsskillene](#sikkerhetsskillene)). Tekstene for
 KI-markørene inneholder:
 
 - kontraster av typen «not just X, it is Y»
@@ -17,8 +17,8 @@ får en setning fra en testtekst.
 
 ## Innhold
 
-- `cases.json`: tekstene, med `en` for engelsk, `no` for norsk og en liste for hver
-  sikkerhetsskill og for `end-session`. Hver tekst har en `id`, en `type`, selve teksten (`text`) og kravet
+- `cases.json`: tekstene, med `en` for engelsk, `no` for norsk og en liste for hver av
+  de andre skillene. Hver tekst har en `id`, en `type`, selve teksten (`text`) og kravet
   til et riktig svar (`pass`).
 - `run.py`: kjører tekstene gjennom en modell og setter svarene ved siden av kravene.
 
@@ -108,7 +108,8 @@ python3 evals/run.py --cmd "claude -p" --only G1,G2 --baseline none,sentence --r
 ```
 
 - `--baseline none,sentence` legger til en variant uten skill og en variant med
-  én setning om sikkerhet i stedet for skillen.
+  én setning i stedet for skillen. Setningen for hver skill står i `SENTENCES` i
+  `run.py`.
 - `--workdir <mappe>` kjører modellen i mappen. Er mappen tom, leser ikke modellen
   prosjektet.
 - Et agentverktøy som `claude -p` kan laste skills som du har installert, også i
@@ -328,22 +329,19 @@ avslutte. Tekstene tester om agenten
 - foreslår en gjennomgang før en pull request når ingen har gått gjennom en stor diff,
   uten å kjøre den selv (H7)
 
-Kjør tekstene i tre varianter: uten skill, med én setning og med skillen. Setningen er
-spørsmålet en bruker stiller uten skillen: om sessionen lærte noe som skal inn i
-dokumentasjonen, og om noe skal på en TODO-liste.
+Kjør og vurder tekstene på samme måte som tekstene for sikkerhetsskillene. Setningen i
+varianten med én setning er spørsmålet en bruker stiller uten skillen.
 
 ```sh
 python3 evals/run.py --dump <mappe> --only H1,H2,H3,H4,H5,H6,H7 --baseline none,sentence
 ```
 
-Skillen starter bare når brukeren ber om det. Testene måler derfor ikke om agenten
-laster skillen selv.
 
 ### Resultater for end-session
 
 Kjørt 13. november 2026 med agenter i Claude Code, to kjøringer per tekst, variant og
-modell. En egen KI-agent vurderte svarene til hver tekst uten å vite variant eller
-modell. Ingen person har kontrollert vurderingene ennå.
+modell. En egen KI-agent (Claude) vurderte svarene til hver tekst uten å vite variant
+eller modell. Ingen person har kontrollert vurderingene ennå.
 
 | Variant | Opus: krav oppfylt | Sonnet: krav oppfylt | Dårlige linjer | Ord, Opus / Sonnet |
 | --- | --- | --- | --- | --- |
@@ -351,7 +349,6 @@ modell. Ingen person har kontrollert vurderingene ennå.
 | Én setning | 0,96 | 0,89 | 5 | 314 / 272 |
 | Med skillen | 1,00 | 1,00 | 0 | 551 / 433 |
 
-- «Krav oppfylt» er snittet av kravene i `pass` (riktig = 1, delvis = 0,5).
 - «Dårlige linjer» er linjer for `AGENTS.md` eller for et minne som lastes i hver
   session, der vurdereren mente at agenten kan finne linjen i repoet, at linjen bare
   gjelder denne sessionen, at den gjentar en linje, eller at den er feil. Tallet gjelder
@@ -364,9 +361,9 @@ modell. Ingen person har kontrollert vurderingene ennå.
 - Svarene med skillen er lengre, fordi de viser teksten til hver endring.
 
 Etter kjøringen viser forslaget bare neste steg og punktene du venter på fra
-overleveringsnotatet, ikke hele notatet. Den nye teksten kjørte én gang per tekst og
-modell. Svarene ble vurdert blandet med svarene fra den første teksten, uten at
-vurdereren visste hvilken tekst som var hvilken. Begge modellene oppfylte alle kravene,
+overleveringsnotatet, ikke hele notatet. Den nye versjonen av skillen kjørte én gang per
+tekst og modell. Svarene ble vurdert blandet med svarene fra den første versjonen, uten
+at vurdereren visste hvilken versjon som var hvilken. Begge modellene oppfylte alle kravene,
 og svarene ble om lag 11 % kortere: 486 ord for Opus og 386 for Sonnet. Ett svar fra Opus
 foreslo et overleveringsnotat i minnet med status som bare gjelder nå.
 
@@ -395,5 +392,8 @@ svarene på H3 foreslo en gjennomgang.
   agenten legger punktene, ikke om den finner dem i en lang session.
 - Agenten kunne ikke kjøre kommandoer. Kravet om å spørre før den skriver, kunne derfor
   ikke feile i noen variant.
-- En modell fra samme familie (Claude) vurderte svarene.
+- Svarene kommer fra Claude-modeller, og en Claude-modell vurderte dem. En modell kan
+  foretrekke svar fra sin egen familie.
+- Skillen starter bare når brukeren ber om det. Testene måler derfor ikke om agenten
+  laster skillen selv.
 - Prøv skillen i en ekte session før du stoler på tallene.

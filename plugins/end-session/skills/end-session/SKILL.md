@@ -40,8 +40,10 @@ Use evidence from now, not your memory of the session.
    skipped tests, code in comments, temporary flags or values, TODO comments that the
    session added, and secrets or personal data.
 3. Find what the session started: background processes, servers, watchers, temporary
-   files and branches, and worktrees. You can stop or remove only what the session made.
-   For other things, ask.
+   files and branches, and worktrees. Take the list from the commands that the session
+   ran, and run `git worktree list` and `git branch`. Do not search the whole system,
+   because a sandbox can hide the processes that it did not start. You can stop or
+   remove only what the session made. For other things, ask.
 4. If the code changed after the last run of the check of the project, run the check
    again. Leave out each gate that starts the app, a server or a browser. Report the
    command and the result. If you do not run it, write "not run". Never write that the
@@ -186,6 +188,12 @@ Reply "ok" to do all, the numbers to do, such as "1, 3", or a change, such as "2
   its own number.
 - Give the exact text of each change to a doc, a code file or a memory, so that the user
   approves the words and not only the idea. For a removal, quote the line.
+- Write each text in the language and the style of the target file. If the skills
+  asd-ste100-english, asd-ste100-norsk or norsk-sprakvask are installed, use them on the
+  text before you show it, so that the user approves the final words. A tool that
+  prefixes plugin skills with the plugin name gives them these full names:
+  `asd-ste100-english:asd-ste100-english`, `asd-ste100-norsk:asd-ste100-norsk`,
+  `norsk-sprakvask:norsk-sprakvask` and `polish:polish`.
 - For the note, give only the next step and the waiting-for items. Write the rest of
   the note when you apply it.
 - Ask three questions or fewer. Ask only about what the session cannot show you: an
@@ -199,14 +207,10 @@ Reply "ok" to do all, the numbers to do, such as "1, 3", or a change, such as "2
 
 ## 7. Apply and close
 
-1. Do only the items that the user approved. Write in the language and the style of the
-   target file. If the skills asd-ste100-english, asd-ste100-norsk or norsk-sprakvask
-   are installed, use them on new text in their language. A tool that prefixes plugin
-   skills with the plugin name gives them these full names:
-   `asd-ste100-english:asd-ste100-english`, `asd-ste100-norsk:asd-ste100-norsk`,
-   `norsk-sprakvask:norsk-sprakvask` and `polish:polish`.
-2. Commit only when the user approves it. Give the push command to the user.
-3. If you changed a file that the validation of the project checks, run the validation.
+1. Do only the items that the user approved, with the words that the user approved.
+   Write the rest of the note in the same way as the texts in section 6.
+2. If you changed a file that the validation of the project checks, run the validation.
+3. Commit only when the user approves it. Give the push command to the user.
 4. End with:
    - one line for each item that you wrote, and where,
    - one line for each item that you did not write, and why,
