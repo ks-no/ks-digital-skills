@@ -57,6 +57,11 @@ reglene, sjekker lett om svaret følger reglene, og ikke om meningen er den samm
   tekst som regelen ikke skal treffe.
 - Bruk ord og eksempler som ikke står i skillene.
 - Skriv i `pass` hva svaret må beholde, og hva det ikke må legge til.
+- Skriv kravene i `pass` ut fra hva brukeren trenger, ikke ut fra reglene i skillen.
+  Har samme agent skrevet skillen og kravene, la en annen modell eller en person
+  skrive minst én tekst uten å lese skillen.
+- Sjekk at hvert krav kan feile i oppsettet. Et krav som ingen variant kan bryte,
+  måler ingenting.
 - Gi teksten neste ledige `id`. Ikke gjenbruk en `id`, så resultatene kan sammenlignes.
 
 ## Resultater
