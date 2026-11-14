@@ -35,17 +35,19 @@ Use evidence from now, not your memory of the session.
 
 1. Run `git branch --show-current`, `git status --short` and `git stash list`. If the
    branch has an upstream, find the commits that are not pushed with
-   `git log @{upstream}..HEAD`. Use only the local refs. Do not fetch.
+   `git log @{upstream}..HEAD`. If the branch has no upstream, report that the branch
+   is not pushed. Use only the local refs. Do not fetch.
 2. Read the diff of the session. Find what must not stay: debug output, focused or
    skipped tests, code in comments, temporary flags or values, TODO comments that the
    session added, and secrets or personal data.
 3. Find what the session started: background processes, servers, watchers, temporary
    files and branches, and worktrees. Take the list from the commands that the session
    ran, and run `git worktree list` and `git branch`. Do not search the whole system,
-   because a sandbox can hide the processes that it did not start. You can stop or
+   because a sandbox can hide the processes that it did not start. Propose to stop or
    remove only what the session made. For other things, ask.
 4. If the code changed after the last run of the check of the project, run the check
-   again. Leave out each gate that starts the app, a server or a browser. Report the
+   again. Leave out each gate that starts the app, a server or a browser, and each step
+   that changes files, such as a formatter that fixes the code. Report the
    command and the result. If you do not run it, write "not run". Never write that the
    tests pass when you did not see the output in this session.
 
@@ -66,7 +68,7 @@ Read the whole session, not only the last part. A candidate is one of these:
   question with no answer, and an item that waits for a person, a system or a date.
 - A diff that nobody reviewed in the session, when the work goes to a pull request.
   Propose a review as the next step, for example with the skill polish if it is
-  installed. Do not run the review in this skill. Do not propose a review for a small,
+  installed (its full name is `polish:polish` in a tool that prefixes plugin skills). Do not run the review in this skill. Do not propose a review for a small,
   mechanical change that the check of the project covers.
 - A manual step that the session did again and again.
 
@@ -160,8 +162,10 @@ Put the note in the first of these places that exists:
 
 1. The place that the project names for notes.
 2. The persistent memory of your tool, if it has one. Keep one entry for each open piece
-   of work. Update the entry. Do not add a second one.
-3. A file that git ignores. Overwrite it each session, so that only the current note
+   of work. Update the entry, and remove it when the work is done. If a part of the
+   memory loads in each session, put only one line about the work in that part.
+3. A file that git ignores, with one file for each piece of work, such as one for each
+   branch. Overwrite the file each session, so that only the current note for that work
    exists. Before you write, make sure that git ignores the file. If git does not ignore
    it, ask the user.
 
@@ -192,8 +196,8 @@ Reply "ok" to do all, the numbers to do, such as "1, 3", or a change, such as "2
   asd-ste100-english, asd-ste100-norsk or norsk-sprakvask are installed, use them on the
   text before you show it, so that the user approves the final words. A tool that
   prefixes plugin skills with the plugin name gives them these full names:
-  `asd-ste100-english:asd-ste100-english`, `asd-ste100-norsk:asd-ste100-norsk`,
-  `norsk-sprakvask:norsk-sprakvask` and `polish:polish`.
+  `asd-ste100-english:asd-ste100-english`, `asd-ste100-norsk:asd-ste100-norsk` and
+  `norsk-sprakvask:norsk-sprakvask`.
 - For the note, give only the next step and the waiting-for items. Write the rest of
   the note when you apply it.
 - Ask three questions or fewer. Ask only about what the session cannot show you: an

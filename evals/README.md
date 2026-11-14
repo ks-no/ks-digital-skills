@@ -336,7 +336,6 @@ varianten med én setning er spørsmålet en bruker stiller uten skillen.
 python3 evals/run.py --dump <mappe> --only H1,H2,H3,H4,H5,H6,H7 --baseline none,sentence
 ```
 
-
 ### Resultater for end-session
 
 Kjørt 13. november 2026 med agenter i Claude Code, to kjøringer per tekst, variant og
@@ -369,7 +368,8 @@ foreslo et overleveringsnotat i minnet med status som bare gjelder nå.
 
 Senere fikk skillen en regel om gjennomgang: har ingen gått gjennom diffen, og skal
 arbeidet til en pull request, foreslår agenten en gjennomgang som neste steg. Den nye
-teksten H7 kjørte to ganger per modell med skillen før og etter regelen. H3 kjørte på
+teksten H7 kjørte to ganger per modell med skillen før regelen (commit `56829e9`) og
+etter regelen. H3 kjørte på
 nytt for å sjekke at agenten ikke foreslår en gjennomgang etter en liten endring. Svarene
 ble vurdert blandet, uten at vurdereren visste versjonen.
 
@@ -394,6 +394,6 @@ svarene på H3 foreslo en gjennomgang.
   ikke feile i noen variant.
 - Svarene kommer fra Claude-modeller, og en Claude-modell vurderte dem. En modell kan
   foretrekke svar fra sin egen familie.
-- Skillen starter bare når brukeren ber om det. Testene måler derfor ikke om agenten
-  laster skillen selv.
+- Skillen er laget for å starte når brukeren ber om det. Testene måler derfor ikke om
+  agenten laster skillen selv.
 - Prøv skillen i en ekte session før du stoler på tallene.
