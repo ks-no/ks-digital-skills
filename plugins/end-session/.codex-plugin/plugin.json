@@ -1,0 +1,29 @@
+{
+  "name": "end-session",
+  "version": "0.1.0",
+  "description": "At the end of a session, check the state of the work with evidence, find what the session learned and what is still open, and propose where each item goes: a test or a check, a few lines in the project docs, a waiting-for item with a date to check and a plan for each outcome, or a handoff note that the next session checks before it continues. Adds few lines to the instruction file for agents, and proposes to remove lines that are out of date. Writes nothing until the user approves, and pushes nothing.",
+  "author": {
+    "name": "Sindre Eik de Lange"
+  },
+  "keywords": [
+    "handoff",
+    "session",
+    "documentation",
+    "todo",
+    "workflow"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "End Session",
+    "shortDescription": "Close the open loops of a session: state, learnings, waiting-for items and a handoff note.",
+    "developerName": "Sindre Eik de Lange",
+    "category": "Productivity",
+    "capabilities": [
+      "Skills"
+    ],
+    "longDescription": "At the end of a session, check the state of the work with evidence, find what the session learned and what is still open, and propose where each item goes: a test or a check, a few lines in the project docs, a waiting-for item with a date to check and a plan for each outcome, or a handoff note that the next session checks before it continues. Adds few lines to the instruction file for agents, and proposes to remove lines that are out of date. Writes nothing until the user approves, and pushes nothing.",
+    "defaultPrompt": [
+      "Use the End Session skill to end this session."
+    ]
+  }
+}

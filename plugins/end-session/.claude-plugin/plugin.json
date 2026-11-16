@@ -1,0 +1,17 @@
+{
+  "name": "end-session",
+  "description": "At the end of a session, check the state of the work with evidence, find what the session learned and what is still open, and propose where each item goes: a test or a check, a few lines in the project docs, a waiting-for item with a date to check and a plan for each outcome, or a handoff note that the next session checks before it continues. Adds few lines to the instruction file for agents, and proposes to remove lines that are out of date. Writes nothing until the user approves, and pushes nothing.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Sindre Eik de Lange"
+  },
+  "repository": "https://github.com/ks-no/ks-digital-skills",
+  "license": "MIT",
+  "keywords": [
+    "handoff",
+    "session",
+    "documentation",
+    "todo",
+    "workflow"
+  ]
+}

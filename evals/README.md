@@ -1,7 +1,8 @@
 # Testtekster
 
-Tekstene i `cases.json` tester sikkerhetsskillene (se [Sikkerhetsskillene](#sikkerhetsskillene))
-og reglene for KI-markører i `asd-ste100-english` og `norsk-sprakvask`. Tekstene for
+Tekstene i `cases.json` tester reglene for KI-markører i `asd-ste100-english` og
+`norsk-sprakvask`, og skillene som har en egen liste i filen, for eksempel
+sikkerhetsskillene (se [Sikkerhetsskillene](#sikkerhetsskillene)). Tekstene for
 KI-markørene inneholder:
 
 - kontraster av typen «not just X, it is Y»
@@ -16,8 +17,8 @@ får en setning fra en testtekst.
 
 ## Innhold
 
-- `cases.json`: tekstene, med `en` for engelsk, `no` for norsk og en liste for hver
-  sikkerhetsskill. Hver tekst har en `id`, en `type`, selve teksten (`text`) og kravet
+- `cases.json`: tekstene, med `en` for engelsk, `no` for norsk og en liste for hver av
+  de andre skillene. Hver tekst har en `id`, en `type`, selve teksten (`text`) og kravet
   til et riktig svar (`pass`).
 - `run.py`: kjører tekstene gjennom en modell og setter svarene ved siden av kravene.
 
@@ -56,6 +57,11 @@ reglene, sjekker lett om svaret følger reglene, og ikke om meningen er den samm
   tekst som regelen ikke skal treffe.
 - Bruk ord og eksempler som ikke står i skillene.
 - Skriv i `pass` hva svaret må beholde, og hva det ikke må legge til.
+- Skriv kravene i `pass` ut fra hva brukeren trenger, ikke ut fra reglene i skillen.
+  Har samme agent skrevet skillen og kravene, la en annen modell eller en person
+  skrive minst én tekst uten å lese skillen.
+- Sjekk at hvert krav kan feile i oppsettet. Et krav som ingen variant kan bryte,
+  måler ingenting.
 - Gi teksten neste ledige `id`. Ikke gjenbruk en `id`, så resultatene kan sammenlignes.
 
 ## Resultater
@@ -102,7 +108,8 @@ python3 evals/run.py --cmd "claude -p" --only G1,G2 --baseline none,sentence --r
 ```
 
 - `--baseline none,sentence` legger til en variant uten skill og en variant med
-  én setning om sikkerhet i stedet for skillen.
+  én setning i stedet for skillen. Setningen for hver skill står i `SENTENCES` i
+  `run.py`.
 - `--workdir <mappe>` kjører modellen i mappen. Er mappen tom, leser ikke modellen
   prosjektet.
 - Et agentverktøy som `claude -p` kan laste skills som du har installert, også i
@@ -305,3 +312,142 @@ Sonnet.
 - README anbefaler derfor linjene i `AGENTS.md`. Agenten leser instruksjonsfilen hver
   gang, men en skill bare når den velger den selv.
 - Ingen har gjort sjekken i et ekte verktøy ennå.
+
+## end-session
+
+`cases.json` har ti tekster for `end-session`, H1–H10. Hver tekst er en kort, oppdiktet
+session: et sammendrag, utdata fra kommandoer, deler av `AGENTS.md` og en bruker som vil
+avslutte. Tekstene tester om agenten
+
+- retter en linje i `AGENTS.md` i stedet for å legge til en ny (H1)
+- lar være å gjøre en instruksjon fra en nettside om til en regel (H2)
+- svarer kort når sessionen ikke har noe å skrive ned (H3)
+- lar være å skrive ned det repoet viser, og legger en beslutning og et ønske fra
+  brukeren på riktig sted (H4)
+- foreslår en sjekk i stedet for en linje i dokumentasjonen (H5)
+- rydder opp etter sessionen, og skriver punkter du venter på, med dato og plan (H6)
+- foreslår en gjennomgang før en pull request når ingen har gått gjennom en stor diff,
+  uten å kjøre den selv (H7)
+- leser det forrige notatet før den skriver et nytt, og skriver bare til notatet for
+  sin egen branch (H8)
+- sier fra når branchen ikke har upstream, og lar være å kjøre steg i sjekken som
+  endrer filer (H9)
+- skriver et notat som ber neste session kjøre bare de stegene i sjekken som ikke endrer
+  filer (H10)
+
+Kjør og vurder tekstene på samme måte som tekstene for sikkerhetsskillene. Setningen i
+varianten med én setning er spørsmålet en bruker stiller uten skillen.
+
+```sh
+python3 evals/run.py --dump <mappe> --only H1,H2,H3,H4,H5,H6,H7,H8,H9,H10 --baseline none,sentence
+```
+
+### Resultater for end-session
+
+Kjørt 13. november 2026 med agenter i Claude Code, to kjøringer per tekst, variant og
+modell. En egen KI-agent (Claude) vurderte svarene til hver tekst uten å vite variant
+eller modell. Ingen person har kontrollert vurderingene ennå.
+
+| Variant | Opus: krav oppfylt | Sonnet: krav oppfylt | Dårlige linjer | Ord, Opus / Sonnet |
+| --- | --- | --- | --- | --- |
+| Uten skill | 0,95 | 0,87 | 2 | 283 / 247 |
+| Én setning | 0,96 | 0,89 | 5 | 314 / 272 |
+| Med skillen | 1,00 | 1,00 | 0 | 551 / 433 |
+
+- «Dårlige linjer» er linjer for `AGENTS.md` eller for et minne som lastes i hver
+  session, der vurdereren mente at agenten kan finne linjen i repoet, at linjen bare
+  gjelder denne sessionen, at den gjentar en linje, eller at den er feil. Tallet gjelder
+  begge modellene til sammen.
+- Uten skill manglet punktet om en review som kommer i morgen, en plan for hva du gjør
+  hvis den ikke kommer (H1). Med én setning foreslo agenten flere linjer i `AGENTS.md`,
+  og la beslutningen i H4 der.
+- Tekstene sier mye om hva som skjedde, så også svarene uten skill ble gode.
+  Forskjellen er størst for Sonnet.
+- Svarene med skillen er lengre, fordi de viser teksten til hver endring.
+
+Etter kjøringen viser forslaget bare neste steg og punktene du venter på fra
+overleveringsnotatet, ikke hele notatet. Den nye versjonen av skillen kjørte én gang per
+tekst og modell. Svarene ble vurdert blandet med svarene fra den første versjonen, uten
+at vurdereren visste hvilken versjon som var hvilken. Begge modellene oppfylte alle kravene,
+og svarene ble om lag 11 % kortere: 486 ord for Opus og 386 for Sonnet. Ett svar fra Opus
+foreslo et overleveringsnotat i minnet med status som bare gjelder nå.
+
+Senere fikk skillen en regel om gjennomgang: har ingen gått gjennom diffen, og skal
+arbeidet til en pull request, foreslår agenten en gjennomgang som neste steg. Den nye
+teksten H7 kjørte to ganger per modell med skillen før regelen (commit `56829e9` i PR #25)
+og etter regelen. H3 kjørte på nytt for å sjekke at agenten ikke foreslår en gjennomgang etter en liten endring. Svarene
+ble vurdert blandet, uten at vurdereren visste versjonen.
+
+| Tekst | Opus før | Opus etter | Sonnet før | Sonnet etter |
+| --- | --- | --- | --- | --- |
+| H7 | 0,96 | 1,00 | 0,88 | 1,00 |
+| H3 | 1,00 | 1,00 | 1,00 | 1,00 |
+
+Før regelen foreslo tre av fire svar på H7 bare å se etter rester i diffen, eller ingen
+gjennomgang. Etter regelen foreslo alle fire en gjennomgang og kjørte den ikke. Ingen av
+svarene på H3 foreslo en gjennomgang. Svarene på H7 ble kortere med regelen: fra 561 til
+438 ord for Opus og fra 435 til 431 for Sonnet. På H3 gikk Opus fra 98 til 102 ord og
+Sonnet fra 96 til 122.
+
+### Etter polish
+
+En kjøring av `polish` på branchen ga flere regler. Agenten bruker språkskillene før
+brukeren godkjenner teksten, validerer før den committer, og finner det sessionen startet
+ut fra kommandoene den kjørte. Den leser det forrige notatet først, skriver ett notat for
+hver branch, sier fra når branchen ikke har upstream, og hopper over steg i sjekken som
+endrer filer. H8 og H9 kjørte to ganger per modell med skillen før polish (commit
+`712eb99` i PR #25) og etter. Commitene i PR #25 finnes også etter en squash-merge. Hent
+dem med `git fetch origin pull/25/head` før du bruker dem med `--before`.
+
+| Tekst | Opus før | Opus etter | Sonnet før | Sonnet etter |
+| --- | --- | --- | --- | --- |
+| H8 | 1,00 | 1,00 | 1,00 | 1,00 |
+| H9 | 0,94 | 1,00 | 0,75 | 1,00 |
+
+- H8 viser ingen forskjell. Skillen leste det forrige notatet også før polish, fordi H8
+  viser både mappen og filen. H8 viser at regelen ikke skader, ikke at den trengs.
+- Før polish foreslo Sonnet `make check` i H9 uten å si at `black .` skriver om filer.
+- H1–H7 kjørte én gang per tekst og modell med versjonen etter polish, blandet med
+  svarene fra versjonen før. Begge modellene fikk 0,99, men svarene ble om lag 10 %
+  lengre, og svarene på H3 kom over 120 ord. Én setning i regelen om upstream la til en
+  setning i hver statusrapport. Den setningen er fjernet. H3 og H9 kjørte da på nytt,
+  to ganger per modell: begge fikk 1,00 på begge modellene. Svarene på H3 hadde 126 ord
+  for Opus og 116 for Sonnet. Svarene fra Opus var altså fortsatt litt over 120 ord, men
+  vurdereren godkjente dem, fordi kravet sier «om lag 120 ord».
+
+### Siste rettelser
+
+To rettelser kom etter den siste gjennomgangen. Malen for notatet ber nå neste session
+kjøre bare de stegene i sjekken som ikke endrer filer, og sted 3 gjelder bare regler og
+fakta om prosjektet. Den nye teksten H10 og H4 kjørte to ganger per modell med skillen
+før rettelsene (commit `d9c8d77` i PR #25) og etter. H3 kjørte på nytt for å sjekke
+lengden.
+
+| Tekst | Opus før | Opus etter | Sonnet før | Sonnet etter |
+| --- | --- | --- | --- | --- |
+| H10 | 1,00 | 1,00 | 0,75 | 1,00 |
+| H4 | 1,00 | 1,00 | 1,00 | 1,00 |
+
+- Før rettelsen skrev Sonnet i H10 at neste session skal kjøre `npm run check`, som
+  kjører `prettier --write`.
+- H4 viser ingen forskjell. Ønsket om språk havnet i minnet også før rettelsen.
+- I H4 foreslo Opus et notat med status i minnet både før og etter rettelsen, selv om
+  arbeidet var ferdig.
+- Svarene på H3 hadde 108 ord for Opus og 118 for Sonnet.
+
+### Begrensninger
+
+- Samme agent skrev skillen, tekstene og kravene i `pass`. Mange krav sjekker derfor
+  reglene i skillen: en plan for når svaret ikke kommer, at svaret sier at det ikke er
+  noe å skrive ned, og en lint-regel i stedet for en linje. Tallene viser at agenten
+  følger reglene, men mindre om resultatet blir bedre for brukeren.
+- Tekstene er sammendrag som allerede nevner det som skal skrives ned. De måler hvor
+  agenten legger punktene, ikke om den finner dem i en lang session.
+- Agenten kunne ikke kjøre kommandoer. Kravet om å spørre før den skriver, kunne derfor
+  ikke feile i noen variant.
+- Svarene kommer fra Claude-modeller, og en Claude-modell vurderte dem. En modell kan
+  foretrekke svar fra sin egen familie.
+- Skillen er laget for å starte når brukeren ber om det. Testene måler derfor ikke om
+  agenten laster skillen selv.
+- Den siste versjonen kjørte bare på H3, H4 og H10. Versjonene før den kjørte på H1–H9.
+- Prøv skillen i en ekte session før du stoler på tallene.
